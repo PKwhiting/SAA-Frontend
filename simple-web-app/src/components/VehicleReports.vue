@@ -36,7 +36,6 @@
 <script>
 import axios from "axios";
 import api from "../../axios"
-console.log(api)
 export default {
   data() {
     return {
@@ -51,14 +50,13 @@ export default {
   methods: {
     makeRequest() {
         api.get("test/")
-
-        // api.get("test/")
-        // .then((response) => {
-        //   this.responseData = response.data; // Handle the response data
-        // })
-        // .catch((error) => {
-        //   console.error("Error:", error); // Handle errors
-        // });
+        .then((response) => {
+          this.responseData = response.data; // Handle the response data
+          console.log(this.responseData)
+        })
+        .catch((error) => {
+          console.error("Error:", error); // Handle errors
+        });
     },
   },
 };
