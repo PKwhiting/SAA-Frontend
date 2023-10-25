@@ -10,12 +10,23 @@
         </div>
       </div>
       <div class="rows">
-        <div class="data-table-row" style="grid-template-columns: .2fr 2fr auto; padding-top: 7px; padding-bottom: 7px" v-for="(sale, index) in sales" :key="index">
+        <div
+          class="data-table-row"
+          style="
+            grid-template-columns: 0.2fr 2fr auto;
+            padding-top: 7px;
+            padding-bottom: 7px;
+          "
+          v-for="(sale, index) in sales"
+          :key="index"
+        >
           <div class="logo">
             <img src="../assets/car-svg.svg" alt="Logo" />
           </div>
           <div class="text-100 bold color-neutral-800">{{ sale.label }}</div>
-          <a href="#" class="btn-primary w-inline-block"><div class="flex-horizontal gap-column-4px">View Report</div></a>
+          <a href="#" class="btn-primary w-inline-block" @click="makeRequest()"
+            ><div class="flex-horizontal gap-column-4px">View Report</div></a
+          >
         </div>
       </div>
     </div>
@@ -23,6 +34,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import api from "../../axios"
+console.log(api)
 export default {
   data() {
     return {
@@ -33,6 +47,19 @@ export default {
         { label: "Last Updated", link: "#" },
       ],
     };
+  },
+  methods: {
+    makeRequest() {
+        api.get("test/")
+
+        // api.get("test/")
+        // .then((response) => {
+        //   this.responseData = response.data; // Handle the response data
+        // })
+        // .catch((error) => {
+        //   console.error("Error:", error); // Handle errors
+        // });
+    },
   },
 };
 </script>
