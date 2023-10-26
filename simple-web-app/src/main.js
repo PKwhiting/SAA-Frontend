@@ -5,6 +5,9 @@ import "../src/assets/styles.css";
 import "../src/assets/index.js"
 import router from './router';
 import { createStore } from 'vuex';
+import axios from 'axios'
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+axios.defaults.xsrfCookieName = "csrftoken"
 
 const store = createStore({
   state: {

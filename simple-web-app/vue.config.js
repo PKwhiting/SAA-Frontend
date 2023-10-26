@@ -6,5 +6,5 @@
 //   transpileDependencies: true,
 // };
 module.exports = {
-  // Your other Vue CLI configuration options go here
+
 };

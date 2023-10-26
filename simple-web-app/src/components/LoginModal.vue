@@ -17,14 +17,17 @@
               alt=""
               class="max-w-12px"
             />
-            <div class="close-icon-wrapper floating-icon-top-right" @click="closeLoginModal()">
+            <div
+              class="close-icon-wrapper floating-icon-top-right"
+              @click="closeLoginModal()"
+            >
               <div class="close-icon-line first"></div>
               <div class="close-icon-line second"></div>
             </div>
             <h3 class="text-200 bold">{{ isLogin ? "Login" : "Register" }}</h3>
-            <form id="login-form" @submit="validateForm">
+            <form id="login-form" @submit.prevent="submitForm">
               <div>
-                <div style="margin-top: 24px" v-if="isLogin">
+                <div style="margin-top: 24px">
                   <input
                     type="text"
                     class="input w-input"
@@ -47,7 +50,7 @@
                     </div>
                   </div>
                 </div>
-                <div style="margin-top: 24px" v-if="isLogin">
+                <div style="margin-top: 24px">
                   <input
                     type="password"
                     class="input w-input"
@@ -143,43 +146,50 @@
                   </div>
                 </div>
               </div>
-            </form>
-            <div
-              class="buttons-row center gap-column-12px"
-              style="margin-top: 24px"
-            >
-              <div data-w-id="a99c1661-31b6-9ad4-73d2-7f6491da01bd">
-                <button
-                  type="button"
-                  @click="toggleForm"
-                  class="btn-secondary w-inline-block"
-                >
+              <div
+                class="buttons-row center gap-column-12px"
+                style="margin-top: 24px"
+              >
+                <div data-w-id="a99c1661-31b6-9ad4-73d2-7f6491da01bd">
+                  <button
+                    type="button"
+                    @click="toggleForm"
+                    class="btn-secondary w-inline-block"
+                  >
+                    <div class="flex-horizontal gap-column-4px">
+                      <div>{{ isLogin ? "Register" : "Login" }}</div>
+                    </div>
+                  </button>
+                </div>
+                <button type="submit" class="btn-primary w-inline-block">
                   <div class="flex-horizontal gap-column-4px">
-                    <div>{{ isLogin ? "Register" : "Login" }}</div>
+                    <div>{{ isLogin ? "Login" : "Register" }}</div>
+                    <img
+                      src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646cdd3a1fe350c45874c7ce_primary-button-icon-right-dashflow-webflow-template.svg"
+                      loading="eager"
+                      alt=""
+                      class="link-icon arrow-right"
+                      style="
+                        transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1)
+                          rotateX(0deg) rotateY(0deg) rotateZ(0deg)
+                          skew(0deg, 0deg);
+                        transform-style: preserve-3d;
+                      "
+                    />
                   </div>
                 </button>
               </div>
-              <button
-                type="submit"
-                @click="validateForm"
-                class="btn-primary w-inline-block"
-              >
-                <div class="flex-horizontal gap-column-4px">
-                  <div>{{ isLogin ? "Login" : "Register" }}</div>
-                  <img
-                    src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646cdd3a1fe350c45874c7ce_primary-button-icon-right-dashflow-webflow-template.svg"
-                    loading="eager"
-                    alt=""
-                    class="link-icon arrow-right"
-                    style="
-                      transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1)
-                        rotateX(0deg) rotateY(0deg) rotateZ(0deg)
-                        skew(0deg, 0deg);
-                      transform-style: preserve-3d;
-                    "
-                  />
-                </div>
-              </button>
+            </form>
+            <div class="error-message small" v-show="errorMessage">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">{{ errorMessage }}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -189,6 +199,12 @@
 </template>
 
 <script>
+import api from "../../axios";
+import axios from "axios";
+
+axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.xsrfHeaderName = "X-CSRFToken";
+
 export default {
   data() {
     return {
@@ -203,74 +219,74 @@ export default {
       firstNameError: "",
       lastNameError: "",
       emailError: "",
+      errorMessage: "",
+      csrfToken: null,
     };
   },
   methods: {
-      closeLoginModal(){
-            this.$root.flipLoginModalVisibility()
-      },
-    validateForm() {
-      this.usernameError = "";
-      this.passwordError = "";
-      this.firstNameError = "";
-      this.lastNameError = "";
-      this.emailError = "";
-
-      if (this.isLogin) {
-        if (!this.username.trim()) {
-          this.usernameError = "Username is required.";
-        }
-
-        if (!this.password.trim()) {
-          this.passwordError = "Password is required.";
-        } else {
-          // Password complexity regex pattern
-          const passwordPattern =
-            /^(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
-
-          if (!passwordPattern.test(this.password)) {
-            this.passwordError =
-              "Password must contain at least one uppercase letter, one number, and one special character.";
-          }
-        }
-      } else {
-        if (!this.firstName.trim()) {
-          this.firstNameError = "First Name is required.";
-        }
-        if (!this.lastName.trim()) {
-          this.lastNameError = "Last Name is required.";
-        }
-        if (!this.email.trim()) {
-          this.emailError = "Email is required.";
-        } else {
-          // Regular expression to check for a valid email format
-          const emailPattern =
-            /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-
-          if (!emailPattern.test(this.email)) {
-            this.emailError =
-              "Invalid email format. Please enter a valid email address.";
-          }
-        }
-      }
-
-      // If all fields are valid, you can perform further actions, such as sending a request to the server for authentication.
-      if (
-        !this.usernameError &&
-        !this.passwordError &&
-        !this.firstNameError &&
-        !this.lastNameError &&
-        !this.emailError
-      ) {
-        // Example:
-        // sendLoginRequest(this.username, this.password);
-        // or
-        // sendRegistrationRequest(this.username, this.password, this.firstName, this.lastName, this.email);
-      }
-    },
     toggleForm() {
       this.isLogin = !this.isLogin;
     },
+    async submitForm() {
+      console.log("HEY WORKING")
+      try {
+        const response = await axios.post(
+          "http://127.0.0.1:8000/login_or_register/",
+          {
+            username: this.username,
+            password: this.password,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            isLogin: this.isLogin,
+          },
+          {
+            headers: {
+              "X-CSRFToken": this.csrfToken,
+            },
+            withCredentials: true,
+          }
+        );
+        if (response.data.success) {
+          // Close the login or registration modal and perform any necessary actions
+        } else {
+          this.errorMessage = response.data.message;
+        }
+      } catch (error) {
+        this.errorMessage = "An error occurred while processing your request.";
+      }
+    },
+    getCookie(name) {
+      const cookies = document.cookie.split("; ");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].split("=");
+        if (cookie[0] === name) {
+          return decodeURIComponent(cookie[1]);
+        }
+      }
+      return null;
+    },
+    setCookie(name, value, days) {
+      const expirationDate = new Date();
+      expirationDate.setDate(expirationDate.getDate() + days);
+      const cookieValue =
+        encodeURIComponent(value) +
+        (days ? `; expires=${expirationDate.toUTCString()}` : "");
+      document.cookie = `${name}=${cookieValue}; path=/`;
+    },
+  },
+  created() {
+    // Fetch the CSRF token
+    api
+      .get("get_csrf_token/") // Replace with the correct URL
+      .then((response) => {
+        this.csrfToken = response.data.csrfToken;
+        // this.setCookie("csrftoken", this.csrfToken, 7);
+        // response.set_cookie('csrftokenss', this.csrfToken, httponly=true, samesite='None', secure=true)
+      })
+      .catch((error) => {
+        console.error("Error fetching CSRF token:", error);
+      });
   },
 };
 </script>
