@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isVisible" class="notification-bar" :class="color">
+  <div class="notification-bar" :class="color">
     <div class="notification-bar-main-container">
       <div class="flex align-start gap-column-6px">
         <img :src="icon" loading="eager" alt="" class="notification-bar-icon" :class="color">
@@ -41,12 +41,12 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.isVisible = false;
+      this.$root.isNotificationBarVisible = false;
     }, this.duration);
   },
   methods: {
     close() {
-      this.isVisible = false;
+      this.$root.isNotificationBarVisible = false;
     },
   },
 };

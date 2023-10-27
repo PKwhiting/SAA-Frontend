@@ -41,7 +41,7 @@ export default {
       if (store.getters.isLoggedIn){
         console.log("bid placed")
         const icon = require('@/assets/paper-clip-svg.svg');
-        this.$root.showNotificationBar('Bid Placed Successfuly', 'green', 2500, icon)
+        this.$root.showNotificationBar('Bid Placed Successfuly', 'green', 500, icon)
       } else{
           this.$root.flipLoginModalVisibility()
       }
