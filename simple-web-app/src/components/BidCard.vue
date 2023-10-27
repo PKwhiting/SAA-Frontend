@@ -23,7 +23,13 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+import store from "../main.js";
+
 export default {
+  computed: {
+    // ...mapState(['isLoggedIn']), // Map the isLoggedIn store variable to the isLoggedIn computed property
+  },
   data() {
     return {
       currentBid: 1500, // Initial current bid value
@@ -32,11 +38,11 @@ export default {
   },
   methods: {
     submitBid() {
-      if (this.isLoggedIn){
+      if (store.getters.isLoggedIn){
         console.log("bid placed")
+        const icon = require('@/assets/paper-clip-svg.svg');
+        this.$root.showNotificationBar('Bid Placed Successfuly', 'green', 2500, icon)
       } else{
-          console.log("not logged in")
-          // this.$root.$emit('flipLoginModalVisibility()');
           this.$root.flipLoginModalVisibility()
       }
 

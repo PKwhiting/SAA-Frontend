@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { createApp } from 'vue'
 import App from './App.vue'
 import "../src/assets/styles.css";
@@ -18,16 +17,15 @@ const store = createStore({
       state.isLoggedIn = answer;
     },
     login(state) {
+      console.log("login working")
       state.isLoggedIn = true;
     },
     logout(state) {
       state.isLoggedIn = false;
     },
   },
-  actions: {
-    getAnswer(context) {
-      context.commit('setLoginStatus', answer);
-    },
+  getters: {
+    isLoggedIn: state => state.isLoggedIn, // Define a getter that returns the isLoggedIn variable
   },
 });
 
@@ -43,4 +41,5 @@ app.use(router, store);
 // Mount your app to the DOM
 app.mount('#app');
 
+export default store;
 

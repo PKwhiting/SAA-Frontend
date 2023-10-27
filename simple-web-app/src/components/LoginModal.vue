@@ -201,6 +201,8 @@
 <script>
 import api from "../../axios";
 import axios from "axios";
+import { mapState, mapMutations } from "vuex";
+import store from "../main"
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -224,14 +226,17 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(['setIsLoggedIn']),
+    closeLoginModal() {
+      this.$emit('toggle-login-modal');
+    },
     toggleForm() {
       this.isLogin = !this.isLogin;
     },
     async submitForm() {
-      console.log("HEY WORKING")
       try {
-        const response = await axios.post(
-          "http://127.0.0.1:8000/login_or_register/",
+        const response = await api.post(
+          "/login_or_register/",
           {
             username: this.username,
             password: this.password,
@@ -248,7 +253,10 @@ export default {
           }
         );
         if (response.data.success) {
-          // Close the login or registration modal and perform any necessary actions
+          store.commit('login')
+          const icon = require('@/assets/paper-clip-svg.svg');
+          this.$root.flipLoginModalVisibility();
+          this.$root.showNotificationBar(`${this.isLogin ? 'Login' : 'Registration'} Succesful`, 'green', 2500, icon);
         } else {
           this.errorMessage = response.data.message;
         }
@@ -278,11 +286,9 @@ export default {
   created() {
     // Fetch the CSRF token
     api
-      .get("get_csrf_token/") // Replace with the correct URL
+      .get("get_csrf_token/")
       .then((response) => {
         this.csrfToken = response.data.csrfToken;
-        // this.setCookie("csrftoken", this.csrfToken, 7);
-        // response.set_cookie('csrftokenss', this.csrfToken, httponly=true, samesite='None', secure=true)
       })
       .catch((error) => {
         console.error("Error fetching CSRF token:", error);

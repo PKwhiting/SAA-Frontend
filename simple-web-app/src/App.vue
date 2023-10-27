@@ -18,9 +18,10 @@
           </div>
         </div>
       </div>
+      <notification-bar v-if="this.isNotificationBarVisible" :message="this.notificationMessage" :color="this.notificationColor" :duration="this.notificationDuration" :icon="this.notificationIcon" />
       <Footer></Footer>
     </div>
-    <login-modal v-show="isLoginModalVisible"/>
+    <login-modal v-show="this.isLoginModalVisible"/>
   </body>
 </template>
 
@@ -32,6 +33,8 @@ import Footer from "./components/Footer.vue";
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
 import LoginModal from "./components/LoginModal.vue"
+import NotificationBar from "./components/NotificationBar.vue";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "App",
@@ -41,15 +44,28 @@ export default {
     Toolbar,
     Footer,
     LoginModal,
+    NotificationBar,
   },
   data() {
     return {
       isLoginModalVisible: false,
+      isNotificationBarVisible: false,
+      notificationMessage: '',
+      notificationColor: 'green',
+      notificationDuration: 5000,
     };
   },
   methods: {
+    showNotificationBar(message, color, duration, icon) {
+      console.log(message, color, duration)
+      this.notificationMessage = message;
+      this.notificationColor = color;
+      this.notificationDuration = duration;
+      this.notificationIcon = icon;
+      this.isNotificationBarVisible = true;
+      
+    },
     flipLoginModalVisibility() {
-      console.log("HERE")
       this.isLoginModalVisible = !this.isLoginModalVisible;
     },
   },
