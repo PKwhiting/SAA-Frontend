@@ -21,7 +21,16 @@
             class="max-w-20px"
           />
           <div class="text-100 medium">All Vehicles</div></a
-        ><a href="/changelog" class="sidebar-link w-inline-block" v-show="isLoggedIn"
+        ><a @click="logout()" class="sidebar-link w-inline-block"
+          ><img
+            src="../assets/car-svg.svg"
+            loading="eager"
+            alt="Home - Dashflow X Webflow Template"
+            class="max-w-20px"
+          />
+          <div class="text-100 medium">Sign Out</div></a
+        >
+        <a href="/changelog" class="sidebar-link w-inline-block" v-show="isLoggedIn"
           ><img
             src="../assets/heart-svg.svg"
             loading="eager"
@@ -142,3 +151,13 @@
     </div>
   </div>
 </template>
+
+<script>
+export default({
+  methods: {
+    logout() {
+      this.$root.logout()
+    }
+  },
+})
+</script>

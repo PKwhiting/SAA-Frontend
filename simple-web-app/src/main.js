@@ -17,7 +17,6 @@ const store = createStore({
       state.isLoggedIn = answer;
     },
     login(state) {
-      console.log("login working")
       state.isLoggedIn = true;
     },
     logout(state) {

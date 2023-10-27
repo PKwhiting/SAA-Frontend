@@ -2,16 +2,17 @@ import Vue from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import SingleCarView from '@/views/SingleCarView.vue'
 import Login from '@/views/Login.vue'
+import AllVehicles from '@/views/AllVehicles.vue'
 
 const routes = [
   {
     path: '/',
-    component: SingleCarView,
+    component: AllVehicles,
     name: 'home',
   },
   {
-    path: '/login',
-    component: Login,
+    path: '/single-car-view',
+    component: SingleCarView,
     name: 'login',
   },
 ];

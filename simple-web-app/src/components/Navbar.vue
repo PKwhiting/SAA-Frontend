@@ -22,8 +22,8 @@
               alt="Dashflow X Webflow Template - Logo"
               style="max-width: 200px"
           /></a>
-          <!-- <nav role="navigation" class="header-nav-menu-wrapper w-nav-menu">
-            <ul role="list" class="header-nav-menu-list w-list-unstyled">
+          <nav role="navigation" class="header-nav-menu-wrapper w-nav-menu">
+            <!-- <ul role="list" class="header-nav-menu-list w-list-unstyled">
               <li class="header-nav-list-item">
                 <a
                   href="/"
@@ -144,13 +144,13 @@
                   </nav>
                 </div>
               </li>
-            </ul>
+            </ul> -->
             <div class="header-sidebar-wrapper">
               <div
                 id="w-node-_33df89bc-f82c-cc1e-d5c4-4959632564a9-632564a9"
                 class="sidebar-container"
               >
-                <div class="text-50 medium sidebar-title">Start here</div>
+                <!-- <div class="text-50 medium sidebar-title">Start here</div> -->
                 <div class="grid-1-column sidebar-links-grid mg-bottom-48px">
                   <a
                     href="/"
@@ -163,26 +163,28 @@
                       class="max-w-20px"
                     />
                     <div class="text-100 medium">Home</div> </a
-                  ><a href="/changelog" class="sidebar-link w-inline-block"
+                   >
+                   <a href="/" class="sidebar-link w-inline-block"
                     ><img
                       src="https://assets-global.website-files.com/653028834fc27f7bf2eff1c3/653028834fc27f7bf2eff2f7_changelog-sidebar-link-icon-dashflow-webflow-template.png"
                       loading="eager"
                       alt="Changelog - Dashflow X Webflow Template"
                       class="max-w-20px"
                     />
-                    <div class="text-100 medium">Changelog</div> </a
-                  ><a href="/licenses" class="sidebar-link w-inline-block"
+                    <div class="text-100 medium">All Vehicles</div> 
+                    </a>
+                    <a @click="logout()" class="sidebar-link w-inline-block"
                     ><img
                       src="https://assets-global.website-files.com/653028834fc27f7bf2eff1c3/653028834fc27f7bf2eff2f3_licenses-sidebar-link-icon-dashflow-webflow-template.png"
                       loading="eager"
                       alt="Licenses - Dashflow X Webflow Template"
                       class="max-w-20px"
                     />
-                    <div class="text-100 medium">Licenses</div>
+                    <div class="text-100 medium">Sign Out</div>
                   </a>
                 </div>
-                <div class="text-50 medium sidebar-title">Components</div>
-                <div class="grid-1-column sidebar-links-grid">
+                <!-- <div class="text-50 medium sidebar-title">Components</div> -->
+                <!-- <div class="grid-1-column sidebar-links-grid">
                   <a
                     href="https://dashflowtemplate.webflow.io/components#buttons"
                     class="sidebar-link w-inline-block"
@@ -304,10 +306,10 @@
                     />
                     <div class="text-100 medium">Empty states</div>
                   </a>
-                </div>
+                </div> -->
               </div>
             </div>
-            <div class="hidden-on-desktop show-on-tablet">
+            <!-- <div class="hidden-on-desktop show-on-tablet">
               <div class="buttons-row gap-column-12px">
                 <a
                   data-w-id="dc3b625c-4a68-4ebe-9b74-d3193fa9f32f"
@@ -327,12 +329,12 @@
                   </div>
                 </a>
               </div>
-            </div>
-          </nav> -->
-          <!-- <div class="header-right-side-container">
+            </div> -->
+          </nav>
+          <div class="header-right-side-container">
             <div class="hidden-on-mbl">
               <div class="buttons-row gap-column-12px">
-                <a
+                <!-- <a
                   data-w-id="5228fae3-1046-92bf-afc3-a85185c5a451"
                   href="/components"
                   class="btn-secondary w-inline-block"
@@ -348,16 +350,25 @@
                   <div class="flex-horizontal gap-column-4px">
                     <div>Get template</div>
                   </div>
-                </a>
+                </a> -->
               </div>
             </div>
             <div class="hamburger-menu-wrapper w-nav-button">
               <div class="hamburger-menu-bar top"></div>
               <div class="hamburger-menu-bar bottom"></div>
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+<script>
+export default({
+  methods: {
+    logout() {
+      this.$root.logout()
+    }
+  },
+})
+</script>

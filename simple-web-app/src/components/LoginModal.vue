@@ -229,6 +229,7 @@ export default {
     ...mapMutations(['setIsLoggedIn']),
     closeLoginModal() {
       this.$emit('toggle-login-modal');
+      this.$root.flipLoginModalVisibility();
     },
     toggleForm() {
       this.isLogin = !this.isLogin;

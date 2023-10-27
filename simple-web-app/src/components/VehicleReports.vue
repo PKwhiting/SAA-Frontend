@@ -52,7 +52,6 @@ export default {
         api.get("test/")
         .then((response) => {
           this.responseData = response.data; // Handle the response data
-          console.log(this.responseData)
         })
         .catch((error) => {
           console.error("Error:", error); // Handle errors

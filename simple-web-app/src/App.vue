@@ -35,6 +35,7 @@ import { ref, computed, onMounted } from "vue";
 import LoginModal from "./components/LoginModal.vue"
 import NotificationBar from "./components/NotificationBar.vue";
 import { mapState, mapMutations } from "vuex";
+import store from "./main.js";
 
 export default {
   name: "App",
@@ -57,7 +58,6 @@ export default {
   },
   methods: {
     showNotificationBar(message, color, duration, icon) {
-      console.log(message, color, duration)
       this.notificationMessage = message;
       this.notificationColor = color;
       this.notificationDuration = duration;
@@ -67,6 +67,14 @@ export default {
     },
     flipLoginModalVisibility() {
       this.isLoginModalVisible = !this.isLoginModalVisible;
+    },
+    logout() {
+      if (store.getters.isLoggedIn){
+        store.commit("logout")
+        const icon = require('@/assets/paper-clip-svg.svg');
+        this.$root.showNotificationBar('Logged Out Successfully', 'red', 1500, icon)
+      }
+      ;
     },
   },
   setup() {},
