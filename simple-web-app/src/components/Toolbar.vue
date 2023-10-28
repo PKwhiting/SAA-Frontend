@@ -23,14 +23,14 @@
           <div class="text-100 medium">All Vehicles</div></a
         ><a @click="logout()" class="sidebar-link w-inline-block"
           ><img
-            src="../assets/car-svg.svg"
+            src="../assets/logout.svg"
             loading="eager"
             alt="Home - Dashflow X Webflow Template"
             class="max-w-20px"
           />
           <div class="text-100 medium">Sign Out</div></a
         >
-        <a href="/changelog" class="sidebar-link w-inline-block" v-show="isLoggedIn"
+        <!-- <a href="/changelog" class="sidebar-link w-inline-block" v-show="isLoggedIn"
           ><img
             src="../assets/heart-svg.svg"
             loading="eager"
@@ -46,7 +46,7 @@
             class="max-w-20px"
           />
           <div class="text-100 medium">Paperwork</div></a
-        >
+        > -->
       </div>
       <!-- <div class="text-50 medium sidebar-title">Components</div>
       <div class="grid-1-column sidebar-links-grid">

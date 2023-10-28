@@ -5,6 +5,7 @@ import "../src/assets/index.js"
 import router from './router';
 import { createStore } from 'vuex';
 import axios from 'axios'
+import createPersistedState from 'vuex-persistedstate';
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 axios.defaults.xsrfCookieName = "csrftoken"
 
@@ -26,6 +27,7 @@ const store = createStore({
   getters: {
     isLoggedIn: state => state.isLoggedIn, // Define a getter that returns the isLoggedIn variable
   },
+  plugins: [createPersistedState()],
 });
 
 // Create your Vue app instance

@@ -32,7 +32,8 @@
                     <a :href="getCarUrl(car.id)">{{ car.price }}</a>
                   </div>
                   <div class="hide-tablet">
-                    <a :href="getCarUrl(car.id)">{{ car.bids }}</a>
+                    <!-- <a :href="getCarUrl(car.id)">{{ car.bids }}</a> -->
+                    <bid-card :startingBid="car.starting_bid" style="transform: scale(0.5);margin: -45px -40% -45px -35%;"></bid-card>
                   </div>
                 </div>
               </div>
@@ -46,9 +47,13 @@
 
 <script>
 import api from "../../axios";
+import BidCard from "../components/BidCard.vue";
 
 export default {
   name: "VehicleList",
+  components: {
+    BidCard,
+  },
   data() {
     return {
       cars: [],

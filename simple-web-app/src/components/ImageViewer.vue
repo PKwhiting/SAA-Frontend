@@ -70,6 +70,7 @@ export default {
       for (const image of this.images) {
         this.photos.push({ url: image });
       }
+      this.photos.push({ url: this.images[0] })
       this.selectedPhoto = this.photos[0];
     }
   },
