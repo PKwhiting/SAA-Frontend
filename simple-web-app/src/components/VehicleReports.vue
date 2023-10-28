@@ -60,3 +60,20 @@ export default {
   },
 };
 </script>
+<style scoped>
+.data-table-row.table-header {
+  grid-template-columns: 0.6fr 2fr;
+}
+/* .inner-container._100-tablet {
+  overflow-x: hidden;
+} */
+div.data-table-row {
+  grid-template-columns: 0.6fr 1fr;
+  max-width: 100%;
+  min-width: auto;
+  text-align: left;
+}
+.data-table-row.table-header {
+  grid-template-columns: 2fr auto;
+}
+</style>

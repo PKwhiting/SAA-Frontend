@@ -124,8 +124,8 @@ export default {
 
 
 
-<style>
-.dashboard-main-content {
+<style scoped>
+:global(.dashboard-main-content) {
   text-align: left;
 }
 .data-table-row.table-header {
@@ -140,7 +140,7 @@ div.data-table-row {
   min-width: auto;
   text-align: left;
 }
-.data-table-row {
+:global(.data-table-row) {
   min-width: none;
 }
 .data-table-row.table-header {

@@ -1,27 +1,46 @@
 <template>
   <div class="vehicle-list">
-    <table>
-      <thead>
-        <tr>
-          <th>Image</th>
-          <th>Lot Location</th>
-          <th>Vehicle Info</th>
-          <th class="hide-mobile">Condition</th>
-          <th class="hide-mobile">Sale Info</th>
-          <th class="hide-tablet">Bids</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr v-for="car in cars" :key="car.id">
-              <td><a :href="getCarUrl(car.id)"><img :src="car.images[0]" alt="Vehicle thumbnail" /></a></td>
-              <td><a :href="getCarUrl(car.id)">{{ car.lot_location }}</a></td>
-              <td><a :href="getCarUrl(car.id)">{{ car.make }} {{ car.model }} {{ car.year }}</a></td>
-              <td class="hide-mobile"><a :href="getCarUrl(car.id)">{{ car.condition }}</a></td>
-              <td class="hide-mobile"><a :href="getCarUrl(car.id)">{{ car.price }}</a></td>
-              <td class="hide-tablet"><a :href="getCarUrl(car.id)">{{ car.bids }}</a></td>
-          </tr>
-      </tbody>
-    </table>
+    <div id="data-table" class="mg-bottom-16px">
+      <h2 class="text-500 bold mg-bottom-12px">All Vehicles</h2>
+      <div class="card component-card">
+        <div class="grid-1-column">
+          <div class="card overflow-hidden border-none">
+            <div class="overflow-auto">
+              <div class="data-table-row table-header">
+                <div class="text-50 bold color-neutral-700">Image</div>
+                <div class="text-50 bold color-neutral-700 hide-mobile">Lot Location</div>
+                <div class="text-50 bold color-neutral-700">Vehicle Info</div>
+                <div class="text-50 bold color-neutral-700 hide-mobile">Sale Info</div>
+                <div class="text-50 bold color-neutral-700 hide-tablet">Bid</div>
+              </div>
+              <div class="rows">
+                <div class="data-table-row" v-for="car in cars" :key="car.id">
+                  <div>
+                    <a :href="getCarUrl(car.id)"
+                      ><img :src="car.images[0]" alt="Vehicle thumbnail"
+                    /></a>
+                  </div>
+                  <div class="hide-mobile">
+                    <a :href="getCarUrl(car.id)">{{ car.lot_location }}</a>
+                  </div>
+                  <div>
+                    <a :href="getCarUrl(car.id)"
+                      >{{ car.make }} {{ car.model }} {{ car.year }}</a
+                    >
+                  </div>
+                  <div class="hide-mobile">
+                    <a :href="getCarUrl(car.id)">{{ car.price }}</a>
+                  </div>
+                  <div class="hide-tablet">
+                    <a :href="getCarUrl(car.id)">{{ car.bids }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -57,6 +76,16 @@ export default {
 </script>
 
 <style scoped>
+.data-table-row {
+  max-width: 100%;
+  min-width: auto;
+  text-align: left;
+  padding: 0;
+}
+.table-header.data-table-row {
+  padding:12px;
+  text-align: center;
+}
 .vehicle-list {
   font-family: Arial, sans-serif;
   font-size: 14px;
@@ -90,6 +119,9 @@ img {
 @media (max-width: 767px) {
   .hide-mobile {
     display: none;
+  }
+  .data-table-row {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
