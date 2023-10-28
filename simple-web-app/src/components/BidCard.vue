@@ -27,8 +27,11 @@ import { mapState, mapMutations } from "vuex";
 import store from "../main.js";
 
 export default {
-  computed: {
-    // ...mapState(['isLoggedIn']), // Map the isLoggedIn store variable to the isLoggedIn computed property
+  props: {
+    startingBid: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
@@ -36,10 +39,14 @@ export default {
       userBid: 1500, // Initial user's bid value
     };
   },
+  mounted() {
+    const startingBidNumber = Number(this.startingBid);
+    this.currentBid = startingBidNumber.toFixed(0);
+    this.userBid = startingBidNumber.toFixed(0);
+  },
   methods: {
     submitBid() {
       if (store.getters.isLoggedIn){
-        console.log("bid placed")
         const icon = require('@/assets/paper-clip-svg.svg');
         this.$root.showNotificationBar('Bid Placed Successfuly', 'green', 500, icon)
       } else{
@@ -48,11 +55,13 @@ export default {
 
     },
     incrementBid() {
-      this.userBid += 50; // Increment the user's bid by 100 (adjust as needed)
+      const bid = Number(this.userBid)
+      this.userBid = bid + 50; // Increment the user's bid by 100 (adjust as needed)
     },
     decrementBid() {
       if (this.userBid > this.currentBid) {
-        this.userBid -= 50; // Decrement the user's bid by 100 (adjust as needed)
+        const bid = Number(this.userBid)
+        this.userBid = bid - 50; // Decrement the user's bid by 100 (adjust as needed)
       }
     },
     updateCurrentBid() {

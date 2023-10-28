@@ -11,7 +11,7 @@ const routes = [
     name: 'home',
   },
   {
-    path: '/single-car-view',
+    path: '/single-car-view/:id',
     component: SingleCarView,
     name: 'login',
   },

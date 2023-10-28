@@ -6,20 +6,20 @@
           <th>Image</th>
           <th>Lot Location</th>
           <th>Vehicle Info</th>
-          <th>Condition</th>
-          <th>Sale Info</th>
-          <th>Bids</th>
+          <th class="hide-mobile">Condition</th>
+          <th class="hide-mobile">Sale Info</th>
+          <th class="hide-tablet">Bids</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="car in cars" :key="car.id">
-          <td><img :src="car.image_url" alt="Vehicle thumbnail" /></td>
-          <td>{{ car.lot_location }}</td>
-          <td>{{ car.make }} {{ car.model }} {{ car.year }}</td>
-          <td>{{ car.condition }}</td>
-          <td>{{ car.price }}</td>
-          <td>{{ car.bids }}</td>
-        </tr>
+          <tr v-for="car in cars" :key="car.id">
+              <td><a :href="getCarUrl(car.id)"><img :src="car.images[0]" alt="Vehicle thumbnail" /></a></td>
+              <td><a :href="getCarUrl(car.id)">{{ car.lot_location }}</a></td>
+              <td><a :href="getCarUrl(car.id)">{{ car.make }} {{ car.model }} {{ car.year }}</a></td>
+              <td class="hide-mobile"><a :href="getCarUrl(car.id)">{{ car.condition }}</a></td>
+              <td class="hide-mobile"><a :href="getCarUrl(car.id)">{{ car.price }}</a></td>
+              <td class="hide-tablet"><a :href="getCarUrl(car.id)">{{ car.bids }}</a></td>
+          </tr>
       </tbody>
     </table>
   </div>
@@ -48,6 +48,9 @@ export default {
         .catch((error) => {
           console.error(error);
         });
+    },
+    getCarUrl(carId) {
+      return `/single-car-view/${carId}`;
     },
   },
 };
@@ -81,5 +84,19 @@ th {
 img {
   max-width: 100px;
   max-height: 100px;
+}
+
+/* Hide columns on mobile */
+@media (max-width: 767px) {
+  .hide-mobile {
+    display: none;
+  }
+}
+
+/* Hide columns on tablet */
+@media (max-width: 991px) {
+  .hide-tablet {
+    display: none;
+  }
 }
 </style>
