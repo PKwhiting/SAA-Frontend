@@ -125,6 +125,9 @@ export default {
 
 
 <style scoped>
+.input {
+  background: green;
+}
 :global(.dashboard-main-content) {
   text-align: left;
 }

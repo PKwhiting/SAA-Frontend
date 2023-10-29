@@ -31,7 +31,7 @@
         href="#"
         class="btn-primary w-inline-block"
         @click="incrementBid"
-        style="background: #9eef79; border-color: #9eef79"
+        style="background: #25872A; border-color: #9eef79"
         ><div class="flex-horizontal gap-column-4px">+</div></a
       >
     </div>
@@ -49,7 +49,11 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import api from '../../axios.js';
-import store from "../main.js";
+import store from "../store";
+import axios from "axios";
+
+axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
 export default {
   props: {
@@ -62,7 +66,7 @@ export default {
     return {
       currentBid: 1500, // Initial current bid value
       userBid: 1500, // Initial user's bid value
-    };
+          };
   },
   mounted() {
     const startingBidNumber = Number(this.startingBid);
@@ -70,10 +74,27 @@ export default {
     this.userBid = startingBidNumber.toFixed(0);
   },
   methods: {
-    submitBid() {
-      if (store.getters.isLoggedIn){
+    async submitBid() {
+      if (this.$root.isLoggedIn){
         const icon = require('@/assets/paper-clip-svg.svg');
+        try {
+          const response = await api.post('/update-bid/', {
+            bid: this.userBid,
+            vehicle_id: this.$route.params.id,
+          },
+          {
+            headers: {
+              "X-CSRFToken": store.getters.csrfToken,
+            },
+            withCredentials: true,
+          }
+          )
+          console.log(response)
           this.$root.showNotificationBar('Bid Placed Successfuly', 'green', 500, icon)
+        } catch (error) {
+          console.log(error)
+          this.$root.showNotificationBar('Bid Placed Failed', 'red', 500, icon)
+        }
       } else{
         this.$root.flipLoginModalVisibility()
       }
@@ -97,7 +118,14 @@ export default {
   },
 };
 </script>
-
+<style scoped>
+.input {
+  font-size: 25px
+}
+.btn-primary {
+  font-size: 20px
+}
+</style>
 
 
 

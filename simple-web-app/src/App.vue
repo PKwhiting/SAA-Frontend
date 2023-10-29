@@ -35,7 +35,8 @@ import { ref, computed, onMounted } from "vue";
 import LoginModal from "./components/LoginModal.vue"
 import NotificationBar from "./components/NotificationBar.vue";
 import { mapState, mapMutations } from "vuex";
-import store from "./main.js";
+import store from "./store"
+import api from '../axios';
 
 export default {
   name: "App",
@@ -54,6 +55,7 @@ export default {
       notificationMessage: '',
       notificationColor: 'green',
       notificationDuration: 5000,
+      isLoggedIn: null,
     };
   },
   methods: {
@@ -78,6 +80,16 @@ export default {
     },
   },
   setup() {},
+  mounted() {
+    api
+      .get("get_csrf_token/")
+      .then((response) => {
+        store.commit("setCSRFToken", response.data.csrfToken);
+      })
+      .catch((error) => {
+        console.error("Error fetching CSRF token:", error);
+      });
+  },
 };
 </script>
 

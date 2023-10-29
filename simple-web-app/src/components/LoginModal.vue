@@ -202,7 +202,7 @@
 import api from "../../axios";
 import axios from "axios";
 import { mapState, mapMutations } from "vuex";
-import store from "../main"
+import store from "../store"
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -222,7 +222,6 @@ export default {
       lastNameError: "",
       emailError: "",
       errorMessage: "",
-      csrfToken: null,
     };
   },
   methods: {
@@ -248,16 +247,18 @@ export default {
           },
           {
             headers: {
-              "X-CSRFToken": this.csrfToken,
+              "X-CSRFToken": store.getters.csrfToken,
             },
             withCredentials: true,
           }
         );
         if (response.data.success) {
           store.commit('login')
+          store.commit('setUsername', this.username)
           const icon = require('@/assets/paper-clip-svg.svg');
           this.$root.flipLoginModalVisibility();
           this.$root.showNotificationBar(`${this.isLogin ? 'Login' : 'Registration'} Succesful`, 'green', 2500, icon);
+          this.$forceUpdate();
         } else {
           this.errorMessage = response.data.message;
         }
@@ -284,16 +285,16 @@ export default {
       document.cookie = `${name}=${cookieValue}; path=/`;
     },
   },
-  created() {
-    // Fetch the CSRF token
-    api
-      .get("get_csrf_token/")
-      .then((response) => {
-        this.csrfToken = response.data.csrfToken;
-      })
-      .catch((error) => {
-        console.error("Error fetching CSRF token:", error);
-      });
-  },
+  // created() {
+  //   // Fetch the CSRF token
+  //   api
+  //     .get("get_csrf_token/")
+  //     .then((response) => {
+  //       this.csrfToken = response.data.csrfToken;
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching CSRF token:", error);
+  //     });
+  // },
 };
 </script>

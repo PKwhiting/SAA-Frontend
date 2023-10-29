@@ -8,10 +8,10 @@
       class="sidebar-container"
     >
       <div class="grid-1-column sidebar-links-grid mg-bottom-48px" style="margin-top: 75px">
-        <a href="/user" class="sidebar-link w-inline-block"
+        <a href="" class="sidebar-link w-inline-block"
           >
-          <div class="avatar-name-circle _48px" v-show="isLoggedIn">JC</div>
-          <div class="text-100 medium" v-show="isLoggedIn">Test User</div></a
+          <div class="avatar-name-circle _48px" v-show="isLoggedIn">{{ username[0] }}</div>
+          <div class="text-100 medium" v-show="isLoggedIn">{{ username }}</div></a
         >
         <a href="/" class="sidebar-link w-inline-block"
           ><img
@@ -21,7 +21,7 @@
             class="max-w-20px"
           />
           <div class="text-100 medium">All Vehicles</div></a
-        ><a @click="logout()" class="sidebar-link w-inline-block"
+        ><a v-if="isLoggedIn" @click="logout()" class="sidebar-link w-inline-block"
           ><img
             src="../assets/logout.svg"
             loading="eager"
@@ -153,7 +153,19 @@
 </template>
 
 <script>
+import store from "../store"
+
 export default({
+  name: 'Toolbar',
+  computed: {
+    isLoggedIn() {
+      return store.state.isLoggedIn
+    },
+    username() {
+      console.log(store.state.username)
+      return store.state.username
+    }
+  },
   methods: {
     logout() {
       this.$root.logout()
