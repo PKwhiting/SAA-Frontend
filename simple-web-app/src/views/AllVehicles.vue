@@ -21,19 +21,20 @@
                     /></a>
                   </div>
                   <div class="hide-mobile">
-                    <a :href="getCarUrl(car.id)">{{ car.lot_location }}</a>
+                    <a :href="getCarUrl(car.id)">{{ car.vehicle_location }}</a>
                   </div>
                   <div>
                     <a :href="getCarUrl(car.id)"
-                      >{{ car.make }} {{ car.model }} {{ car.year }}</a
-                    >
+                      >{{ car.year }} {{ car.make }} {{ car.model }}</a
+                    ><br />
+                    <a :href="getCarUrl(car.id)">{{ maskNumber(car.VIN) }}</a>
                   </div>
                   <div class="hide-mobile">
-                    <a :href="getCarUrl(car.id)">{{ car.price }}</a>
+                    <a :href="getCarUrl(car.id)">{{ new Date(car.sale_date).toLocaleString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }) }}</a>
                   </div>
                   <div class="hide-tablet">
                     <!-- <a :href="getCarUrl(car.id)">{{ car.bids }}</a> -->
-                    <bid-card :startingBid="car.starting_bid" style="transform: scale(0.5);margin: -45px -40% -45px -35%;"></bid-card>
+                    <bid-card :startingBid="car.starting_bid" :vehicleVIN="car.VIN" style="transform: scale(0.5);margin: -45px -40% -45px -35%;"></bid-card>
                   </div>
                 </div>
               </div>
@@ -63,11 +64,17 @@ export default {
     this.fetchCars();
   },
   methods: {
+    maskNumber(number) {
+      const lastFourDigits = number.toString().slice(-4); // Extract the last 4 digits of the number
+      const asterisks = "*".repeat(number.toString().length - 4); // Create a string of asterisks with the same length as the original number minus 4
+      return asterisks + lastFourDigits; // Combine the asterisks and last 4 digits to create the masked number
+    },
     fetchCars() {
       api
         .get("all_active_vehicles/")
         .then((response) => {
           this.cars = response.data.cars;
+          console.log(this.cars);
         })
         .catch((error) => {
           console.error(error);
@@ -86,10 +93,11 @@ export default {
   min-width: auto;
   text-align: left;
   padding: 0;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1.25fr;;
 }
 .table-header.data-table-row {
   padding:12px;
-  text-align: center;
+  text-align: left;
 }
 .vehicle-list {
   font-family: Arial, sans-serif;

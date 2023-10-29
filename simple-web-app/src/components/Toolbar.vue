@@ -162,7 +162,6 @@ export default({
       return store.state.isLoggedIn
     },
     username() {
-      console.log(store.state.username)
       return store.state.username
     }
   },

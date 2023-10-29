@@ -61,6 +61,10 @@ export default {
       type: String,
       required: true,
     },
+    vehicleVIN: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
@@ -75,26 +79,31 @@ export default {
   },
   methods: {
     async submitBid() {
-      if (this.$root.isLoggedIn){
+      if (store.state.isLoggedIn){
         const icon = require('@/assets/paper-clip-svg.svg');
-        try {
-          const response = await api.post('/update-bid/', {
-            bid: this.userBid,
-            vehicle_id: this.$route.params.id,
-          },
-          {
-            headers: {
-              "X-CSRFToken": store.getters.csrfToken,
+
+          try {
+            if (this.userBid <= this.currentBid) {
+              this.$root.showNotificationBar('Bid Not Above Current Bid', 'red', 1500, icon)
+              return
+            }
+            const response = await api.post('/update-bid/', {
+              bid: this.userBid,
+              vehicle_vin: this.vehicleVIN,
             },
-            withCredentials: true,
+            {
+              headers: {
+                "X-CSRFToken": store.getters.csrfToken,
+              },
+              withCredentials: true,
+            }
+            )
+            console.log(response)
+            this.$root.showNotificationBar('Bid Placed Successfuly', 'green', 500, icon)
+          } catch (error) {
+            console.log(error)
+            this.$root.showNotificationBar('Bid Placed Failed', 'red', 500, icon)
           }
-          )
-          console.log(response)
-          this.$root.showNotificationBar('Bid Placed Successfuly', 'green', 500, icon)
-        } catch (error) {
-          console.log(error)
-          this.$root.showNotificationBar('Bid Placed Failed', 'red', 500, icon)
-        }
       } else{
         this.$root.flipLoginModalVisibility()
       }
