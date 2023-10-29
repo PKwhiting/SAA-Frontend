@@ -1,8 +1,8 @@
 <template>
   <div class="card pd-24px---18px---28px" style="margin-top: 24px">
     <div class="mg-bottom-8px">
-      <div class="text-300 bold color-neutral-800">
-        Current Bid: ${{ currentBid }}
+      <div class="text-300 bold color-neutral-800" style="text-align: center">
+        CURRENT BID: ${{ currentBid }} USD
       </div>
     </div>
     <div
@@ -31,14 +31,20 @@
         href="#"
         class="btn-primary w-inline-block"
         @click="incrementBid"
-        style="background: #25872A; border-color: #9eef79"
+        style="background: #25872a; border-color: #9eef79"
         ><div class="flex-horizontal gap-column-4px">+</div></a
       >
+    </div>
+    <div
+      class="text-300 bold color-neutral-800"
+      style="text-align: center; color: red; margin-top: 12px"
+    >
+      AUCTION IN: {{  timeRemaining }}
     </div>
     <a
       href="#"
       class="btn-primary w-inline-block"
-      style="margin-top: 24px; width: 100%"
+      style="margin-top: 12px; width: 100%"
       ><div class="flex-horizontal gap-column-4px" @click="submitBid()">
         PLACE BID
       </div></a
@@ -57,7 +63,7 @@ axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
 export default {
   props: {
-    startingBid: {
+    currentBid: {
       type: String,
       required: true,
     },
@@ -65,17 +71,29 @@ export default {
       type: String,
       required: true,
     },
+    saleDate: {
+      type: Date,
+      required: true,
+    }
   },
   data() {
-    return {
-      currentBid: 1500, // Initial current bid value
+    return { // Initial current bid value
       userBid: 1500, // Initial user's bid value
           };
   },
+  computed: {
+    timeRemaining() {
+      const total = Date.parse(this.saleDate) - Date.parse(new Date());
+      const days = Math.floor(total / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((total / 1000 / 60) % 60);
+      const seconds = Math.floor((total / 1000) % 60);
+      return `${days}D   ${hours}H   ${minutes}M`;
+    }
+  },
   mounted() {
-    const startingBidNumber = Number(this.startingBid);
-    this.currentBid = startingBidNumber.toFixed(0);
-    this.userBid = startingBidNumber.toFixed(0);
+    const currentBidNumber = Number(this.currentBid);
+    this.userBid = currentBidNumber.toFixed(0);
   },
   methods: {
     async submitBid() {
@@ -129,10 +147,10 @@ export default {
 </script>
 <style scoped>
 .input {
-  font-size: 25px
+  font-size: 25px;
 }
 .btn-primary {
-  font-size: 20px
+  font-size: 20px;
 }
 </style>
 

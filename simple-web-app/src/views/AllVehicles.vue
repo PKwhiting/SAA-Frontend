@@ -34,7 +34,7 @@
                   </div>
                   <div class="hide-tablet">
                     <!-- <a :href="getCarUrl(car.id)">{{ car.bids }}</a> -->
-                    <bid-card :startingBid="car.starting_bid" :vehicleVIN="car.VIN" style="transform: scale(0.5);margin: -45px -40% -45px -35%;"></bid-card>
+                    <bid-card :currentBid="car.current_bid" :vehicleVIN="car.VIN" :saleDate="new Date(car.sale_date)" style="transform: scale(0.5);margin: -45px -40% -45px -35%;"></bid-card>
                   </div>
                 </div>
               </div>
