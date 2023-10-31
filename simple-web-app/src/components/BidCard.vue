@@ -99,7 +99,6 @@ export default {
     async submitBid() {
       if (store.state.isLoggedIn){
         const icon = require('@/assets/paper-clip-svg.svg');
-
           try {
             if (this.userBid <= this.currentBid) {
               this.$root.showNotificationBar('Bid Not Above Current Bid', 'red', 1500, icon)
@@ -108,6 +107,7 @@ export default {
             const response = await api.post('/update-bid/', {
               bid: this.userBid,
               vehicle_vin: this.vehicleVIN,
+              userID : store.state.userID,
             },
             {
               headers: {
@@ -116,11 +116,10 @@ export default {
               withCredentials: true,
             }
             )
-            console.log(response)
-            this.$root.showNotificationBar('Bid Placed Successfuly', 'green', 500, icon)
+            this.$root.showNotificationBar('Bid Placed Successfuly', 'green', 1500, icon)
           } catch (error) {
             console.log(error)
-            this.$root.showNotificationBar('Bid Placed Failed', 'red', 500, icon)
+            this.$root.showNotificationBar('Bid Placed Failed', 'red', 1500, icon)
           }
       } else{
         this.$root.flipLoginModalVisibility()

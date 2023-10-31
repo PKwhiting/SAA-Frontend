@@ -8,7 +8,6 @@ import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate';
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 axios.defaults.xsrfCookieName = "csrftoken"
-import Vue from 'vue'
 import store from './store'
 
 

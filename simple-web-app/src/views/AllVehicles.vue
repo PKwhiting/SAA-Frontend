@@ -74,7 +74,6 @@ export default {
         .get("all_active_vehicles/")
         .then((response) => {
           this.cars = response.data.cars;
-          console.log(this.cars);
         })
         .catch((error) => {
           console.error(error);

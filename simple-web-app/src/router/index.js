@@ -1,4 +1,4 @@
-import Vue from 'vue';
+
 import { createRouter, createWebHistory } from 'vue-router';
 import SingleCarView from '@/views/SingleCarView.vue'
 import Login from '@/views/Login.vue'

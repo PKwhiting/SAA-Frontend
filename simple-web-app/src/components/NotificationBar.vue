@@ -55,7 +55,7 @@ export default {
 <style scoped>
 .notification-bar {
   position: fixed;
-  bottom: 150px;
+  bottom: 115px;
   left: 30px;
   right: 30px;
   padding: 16px;
