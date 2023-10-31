@@ -137,7 +137,7 @@ img {
   }
 }
 
-/* Hide columns on tablet */
+/* Hide columns on tablet test */
 @media (max-width: 991px) {
   .hide-tablet {
     display: none;
