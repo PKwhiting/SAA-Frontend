@@ -21,7 +21,7 @@
                     /></a>
                   </div>
                   <div class="hide-mobile">
-                    <a :href="getCarUrl(car.id)">{{ car.vehicle_location }}</a>
+                    <a :href="getCarUrl(car.id)">{{ car.vehicle_location.toUpperCase() }}</a>
                   </div>
                   <div>
                     <a :href="getCarUrl(car.id)"
