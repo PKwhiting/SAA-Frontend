@@ -25,7 +25,7 @@
             id="w-node-_269d1d2d-2cb2-3200-d275-6492145f0d8b-145f0d88"
             class="text-100 medium"
           >
-            COPART SELECT NATIONAL AUCTION
+            SAA NATIONAL AUCTION
           </div>
         </div>
         <div class="data-table-row">
@@ -39,7 +39,7 @@
             id="w-node-_269d1d2d-2cb2-3200-d275-6492145f0d8b-145f0d88"
             class="text-100 medium"
           >
-            TN - MEMPHIS
+            {{ vehicle_location.toUpperCase() }}
           </div>
         </div>
         <div class="data-table-row">
@@ -53,7 +53,7 @@
             id="w-node-_269d1d2d-2cb2-3200-d275-6492145f0d8b-145f0d88"
             class="text-100 medium"
           >
-            Thu. Oct 26, 2023 10:00 AM MDT
+            {{ formatDate(sale_date) }}
           </div>
         </div>
         <div class="data-table-row">
@@ -67,13 +67,40 @@
             id="w-node-_269d1d2d-2cb2-3200-d275-6492145f0d8b-145f0d88"
             class="text-100 medium"
           >
-            10/19/2023 3:31 pm
+            {{ formatDate(last_updated) }}
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    sale_name: String,
+    vehicle_location: String,
+    sale_date: String,
+    last_updated: String,
+  },
+  methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        timeZoneName: 'short',
+      };
+      return date.toLocaleDateString('en-US', options);
+    },
+  },
+};
+</script>
+
 <style scoped>
 .data-table-row.table-header {
   grid-template-columns: 0.6fr 2fr;
