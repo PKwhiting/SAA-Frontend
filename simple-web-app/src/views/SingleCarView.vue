@@ -6,7 +6,7 @@
         <div class="grid-2-columns">
           <div class="inner-container _384px _100-tablet">
             <image-viewer v-if="car.images" :images="car.images"></image-viewer>
-            <bid-card :currentBid="car.current_bid" :vehicleVIN="car.VIN" :saleDate="new Date(car.sale_date)"></bid-card>
+            <bid-card :currentBid="car.highest_bid" :vehicleVIN="car.VIN" :saleDate="new Date(car.sale_date)"></bid-card>
             <sale-info :sale_date="car.sale_date" :last_updated="car.last_updated" :vehicle_location="car.vehicle_location"></sale-info>
           </div>
           <div class="inner-container _384px _100-tablet">
