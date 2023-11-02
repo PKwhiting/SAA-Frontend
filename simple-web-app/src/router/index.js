@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import SingleCarView from '@/views/SingleCarView.vue'
 import Login from '@/views/Login.vue'
 import AllVehicles from '@/views/AllVehicles.vue'
+import AboutUs from '@/views/AboutUs.vue'
 
 const routes = [
   {
@@ -15,6 +16,11 @@ const routes = [
     component: SingleCarView,
     name: 'login',
   },
+  {
+    path: '/about-us',
+    component: AboutUs,
+    name: 'about-us',
+  }
 ];
     
 

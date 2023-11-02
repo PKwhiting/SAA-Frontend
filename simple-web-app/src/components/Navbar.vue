@@ -63,17 +63,18 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="hidden-on-desktop show-on-tablet">
+            <div class="hidden-on-desktop show-on-tablet">
               <div class="buttons-row gap-column-12px">
                 <a
                   data-w-id="dc3b625c-4a68-4ebe-9b74-d3193fa9f32f"
-                  href="#"
+                  href="/about-us"
                   class="btn-primary w-inline-block"
                 >
                   <div class="flex-horizontal gap-column-4px">
-                    <div>Get template</div>
+                    <div>About Us</div>
                   </div> </a
-                ><a
+                >
+                <!-- <a
                   data-w-id="5228fae3-1046-92bf-afc3-a85185c5a451"
                   href="#"
                   class="btn-secondary w-inline-block"
@@ -81,22 +82,23 @@
                   <div class="flex-horizontal gap-column-4px">
                     <div>Default</div>
                   </div>
-                </a>
+                </a> -->
               </div>
-            </div> -->
+            </div>
           </nav>
           <div class="header-right-side-container">
             <div class="hidden-on-mbl">
               <div class="buttons-row gap-column-12px">
-                <!-- <a
+                <a
                   data-w-id="5228fae3-1046-92bf-afc3-a85185c5a451"
-                  href="/components"
-                  class="btn-secondary w-inline-block"
+                  href="/about-us"
+                  class="btn-primary w-inline-block"
                 >
                   <div class="flex-horizontal gap-column-4px">
-                    <div>Explore components</div>
+                    <div>About Us</div>
                   </div> </a
-                ><a
+                >
+                <!-- <a
                   data-w-id="dc3b625c-4a68-4ebe-9b74-d3193fa9f32f"
                   href="#"
                   class="btn-primary w-inline-block"
