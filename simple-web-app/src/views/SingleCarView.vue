@@ -80,7 +80,7 @@
                 </div>
               </div>
             </div>
-            <vehicle-reports :reports="car.reports"></vehicle-reports>
+            <!-- <vehicle-reports :reports="car.reports"></vehicle-reports> -->
           </div>
         </div>
       </div>

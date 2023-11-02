@@ -49,7 +49,16 @@
                       alt="Changelog - Dashflow X Webflow Template"
                       class="max-w-20px"
                     />
-                    <div class="text-100 medium">All Vehicles</div> 
+                    <div class="text-100 medium">Live Vehicles</div> 
+                    </a>
+                    <a href="/sold" class="sidebar-link w-inline-block"
+                    ><img
+                      src="https://assets-global.website-files.com/653028834fc27f7bf2eff1c3/653028834fc27f7bf2eff2f7_changelog-sidebar-link-icon-dashflow-webflow-template.png"
+                      loading="eager"
+                      alt="Changelog - Dashflow X Webflow Template"
+                      class="max-w-20px"
+                    />
+                    <div class="text-100 medium">Sold Vehicles</div> 
                     </a>
                     <a v-if="isLoggedIn" @click="logout()" class="sidebar-link w-inline-block"
                     ><img

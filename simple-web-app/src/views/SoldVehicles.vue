@@ -1,7 +1,7 @@
 <template>
   <div class="vehicle-list">
     <div id="data-table" class="mg-bottom-16px">
-      <h2 class="text-500 bold mg-bottom-12px">Live Vehicles</h2>
+      <h2 class="text-500 bold mg-bottom-12px">Sold Vehicles</h2>
       <div class="filter-container" style="display: grid; grid-template-columns: auto auto auto auto auto; column-gap: 12px">
         <div class="hide-tablet hide-mobile">
           <label for="sale-date-filter">Sale Date</label>
@@ -259,7 +259,7 @@ export default {
   computed: {
     filteredCars() {
       let filtered = this.cars.filter((car) => {
-        return new Date(car.sale_date) >= new Date();
+        return new Date(car.sale_date) < new Date();
       });
       if (this.filters.year) {
         filtered = filtered.filter((car) => {

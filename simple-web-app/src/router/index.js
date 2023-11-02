@@ -4,6 +4,7 @@ import SingleCarView from '@/views/SingleCarView.vue'
 import Login from '@/views/Login.vue'
 import AllVehicles from '@/views/AllVehicles.vue'
 import AboutUs from '@/views/AboutUs.vue'
+import SoldVehicles from '@/views/SoldVehicles.vue'
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
     path: '/about-us',
     component: AboutUs,
     name: 'about-us',
+  },
+  {
+    path: '/sold',
+    component: SoldVehicles,
+    name: 'sold',
   }
 ];
     
