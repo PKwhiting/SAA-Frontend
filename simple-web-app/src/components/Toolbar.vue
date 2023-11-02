@@ -20,8 +20,18 @@
             alt="Home - Dashflow X Webflow Template"
             class="max-w-20px"
           />
-          <div class="text-100 medium">All Vehicles</div></a
-        ><a v-if="isLoggedIn" @click="logout()" class="sidebar-link w-inline-block"
+          <div class="text-100 medium">Live Vehicles</div>
+        </a>
+        <a href="/sold" class="sidebar-link w-inline-block"
+          ><img
+            src="../assets/car-svg.svg"
+            loading="eager"
+            alt="Home - Dashflow X Webflow Template"
+            class="max-w-20px"
+          />
+          <div class="text-100 medium">Sold Vehicles</div>
+        </a>
+          <a v-if="isLoggedIn" @click="logout()" class="sidebar-link w-inline-block"
           ><img
             src="../assets/logout.svg"
             loading="eager"

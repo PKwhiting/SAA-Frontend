@@ -25,7 +25,7 @@
               ><a href="/licenses" class="text-decoration-none">Licenses</a>
             </div>
           </div>
-          <div class="footer-bottom-section">
+          <!-- <div class="footer-bottom-section">
             <div
               data-w-id="bdf375e4-f372-ad95-cceb-78bd47bb7454"
               style="opacity: 1"
@@ -69,7 +69,7 @@
                 ></a
               >
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
