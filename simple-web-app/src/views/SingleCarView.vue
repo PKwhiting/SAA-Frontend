@@ -7,7 +7,7 @@
           <div class="inner-container _384px _100-tablet">
             <image-viewer v-if="car.images" :images="car.images"></image-viewer>
             <bid-card :currentBid="car.current_bid" :vehicleVIN="car.VIN" :saleDate="new Date(car.sale_date)"></bid-card>
-            <available-parts :parts="car.parts"></available-parts>
+            <sale-info :sale_date="car.sale_date" :last_updated="car.last_updated" :vehicle_location="car.vehicle_location"></sale-info>
           </div>
           <div class="inner-container _384px _100-tablet">
             <div class="card border-none">
@@ -91,12 +91,12 @@
 <script>
 import ImageViewer from "../components/ImageViewer.vue";
 import BidCard from "../components/BidCard.vue";
-import AvailableParts from "../components/SaleInfo.vue";
+import SaleInfo from "../components/SaleInfo.vue";
 import VehicleReports from "../components/VehicleReports.vue";
 import api from "../../axios";
 
 export default {
-  components: { ImageViewer, BidCard, AvailableParts, VehicleReports },
+  components: { ImageViewer, BidCard, SaleInfo, VehicleReports },
   data() {
     return {
       car: null,
