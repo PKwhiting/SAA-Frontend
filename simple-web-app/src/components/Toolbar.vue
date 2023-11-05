@@ -187,6 +187,7 @@ export default({
   methods: {
     logout() {
       this.$root.logout()
+      this.$router.push('/')
     }
   },
 })

@@ -86,21 +86,23 @@
                 <a
                   data-w-id="dc3b625c-4a68-4ebe-9b74-d3193fa9f32f"
                   href="/about-us"
-                  class="btn-primary w-inline-block"
+                  class="btn-secondary w-inline-block"
                 >
                   <div class="flex-horizontal gap-column-4px">
                     <div>About Us</div>
                   </div> </a
                 >
-                <!-- <a
+                <a
                   data-w-id="5228fae3-1046-92bf-afc3-a85185c5a451"
                   href="#"
                   class="btn-secondary w-inline-block"
+                  @click="login()"
+                  v-if="!isLoggedIn"
                 >
                   <div class="flex-horizontal gap-column-4px">
-                    <div>Default</div>
+                    <div>Login</div>
                   </div>
-                </a> -->
+                </a>
               </div>
             </div>
           </nav>
@@ -110,21 +112,23 @@
                 <a
                   data-w-id="5228fae3-1046-92bf-afc3-a85185c5a451"
                   href="/about-us"
-                  class="btn-primary w-inline-block"
+                  class="btn-secondary w-inline-block"
                 >
                   <div class="flex-horizontal gap-column-4px">
                     <div>About Us</div>
                   </div> </a
                 >
-                <!-- <a
+                <a
                   data-w-id="dc3b625c-4a68-4ebe-9b74-d3193fa9f32f"
                   href="#"
                   class="btn-primary w-inline-block"
+                  @click="login()"
+                  v-if="!isLoggedIn"
                 >
                   <div class="flex-horizontal gap-column-4px">
-                    <div>Get template</div>
+                    <div>Login</div>
                   </div>
-                </a> -->
+                </a>
               </div>
             </div>
             <div class="hamburger-menu-wrapper w-nav-button">
@@ -152,6 +156,10 @@ export default({
     logout() {
       this.$root.logout()
       this.$forceUpdate()
+      this.$router.push('/')
+    },
+    login() {
+      this.$root.flipLoginModalVisibility();
     }
   },
 })
