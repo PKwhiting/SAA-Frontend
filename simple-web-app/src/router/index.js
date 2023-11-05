@@ -5,6 +5,16 @@ import Login from '@/views/Login.vue'
 import AllVehicles from '@/views/AllVehicles.vue'
 import AboutUs from '@/views/AboutUs.vue'
 import SoldVehicles from '@/views/SoldVehicles.vue'
+import AddVehicle from '@/views/AddVehicle.vue'
+import store from '@/store'
+
+const requireAuth = (to, from, next) => {
+  if (store.state.isLoggedIn) {
+    next();
+  } else {
+    next({ name: "home" });
+  }
+};
 
 const routes = [
   {
@@ -26,7 +36,14 @@ const routes = [
     path: '/sold',
     component: SoldVehicles,
     name: 'sold',
-  }
+  },
+  {
+    path: '/add-vehicle',
+    component: AddVehicle,
+    name: 'add-vehicle',
+    beforeEnter: requireAuth
+  },
+
 ];
     
 
