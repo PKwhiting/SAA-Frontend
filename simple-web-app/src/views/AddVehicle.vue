@@ -1,16 +1,26 @@
 <template>
-  <div class="card component-card">
-    <div class="mg-bottom-0 w-form">
-      <form
-        id="vehicle-form"
-        name="vehicle-form"
-        data-name="Vehicle Form"
-        method="get"
-        aria-label="Vehicle Form"
-        @submit.prevent="submitForm"
-        v-bind:action="submitForm"
-        ref="vehicleForm"
-      >
+  <form
+    id="vehicle-form"
+    name="vehicle-form"
+    data-name="Vehicle Form"
+    method="get"
+    aria-label="Vehicle Form"
+    @submit.prevent="submitForm"
+    v-bind:action="submitForm"
+    ref="vehicleForm"
+  >
+    <div class="card component-card">
+      <div class="mg-bottom-0 w-form">
+        <!-- <form
+                id="vehicle-form"
+                name="vehicle-form"
+                data-name="Vehicle Form"
+                method="get"
+                aria-label="Vehicle Form"
+                @submit.prevent="submitForm"
+                v-bind:action="submitForm"
+                ref="vehicleForm"
+            > -->
         <div class="grid-3-columns _1-col-tablet">
           <div>
             <label for="vin">VIN</label>
@@ -28,11 +38,11 @@
                 v-model="vin"
               />
               <!-- <img
-                src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646d22faaddd674071e73457_input-search-icon-dashflow-webflow-template.svg"
-                loading="eager"
-                alt=""
-                class="icon-inside-input-left"
-              /> -->
+                        src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646d22faaddd674071e73457_input-search-icon-dashflow-webflow-template.svg"
+                        loading="eager"
+                        alt=""
+                        class="icon-inside-input-left"
+                    /> -->
               <a
                 data-w-id="5228fae3-1046-92bf-afc3-a85185c5a451"
                 href="#"
@@ -66,7 +76,7 @@
                   {{ make }}
                 </option>
               </select>
-              <!-- <div class="error-message small">
+              <div v-if="!make && submitted" class="error-message small">
                 <div class="flex align-center gap-column-4px">
                   <img
                     src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
@@ -76,7 +86,7 @@
                   />
                   <div class="text-50 medium">This field is required.</div>
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
           <div>
@@ -93,11 +103,22 @@
                 v-model="model"
               />
               <!-- <img
-                src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646d22faaddd674071e73457_input-search-icon-dashflow-webflow-template.svg"
-                loading="eager"
-                alt=""
-                class="icon-inside-input-left"
-              /> -->
+                        src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646d22faaddd674071e73457_input-search-icon-dashflow-webflow-template.svg"
+                        loading="eager"
+                        alt=""
+                        class="icon-inside-input-left"
+                    /> -->
+            </div>
+            <div v-if="!model && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
             </div>
           </div>
           <div>
@@ -116,6 +137,17 @@
                 </option>
               </select>
             </div>
+            <div v-if="!year && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
+            </div>
           </div>
           <div>
             <label for="color">Color</label>
@@ -133,6 +165,17 @@
                 </option>
               </select>
             </div>
+            <div v-if="!color && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
+            </div>
           </div>
           <div>
             <label for="odometer">Odometer</label>
@@ -148,11 +191,22 @@
                 v-model="odometer"
               />
               <!-- <img
-                src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646d22faaddd674071e73457_input-search-icon-dashflow-webflow-template.svg"
-                loading="eager"
-                alt=""
-                class="icon-inside-input-left"
-              /> -->
+                        src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646d22faaddd674071e73457_input-search-icon-dashflow-webflow-template.svg"
+                        loading="eager"
+                        alt=""
+                        class="icon-inside-input-left"
+                    /> -->
+            </div>
+            <div v-if="!odometer && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
             </div>
           </div>
           <div>
@@ -170,6 +224,17 @@
                   {{ fuel }}
                 </option>
               </select>
+            </div>
+            <div v-if="!fuel && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
             </div>
           </div>
           <div>
@@ -192,6 +257,17 @@
                 </option>
               </select>
             </div>
+            <div v-if="!transmission && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
+            </div>
           </div>
           <div>
             <label for="drive">Drive</label>
@@ -209,6 +285,17 @@
                 </option>
                 <option value="4 wheel drive">4 wheel drive</option>
               </select>
+            </div>
+            <div v-if="!drive && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
             </div>
           </div>
           <div>
@@ -248,6 +335,7 @@
                 v-model="engineType"
               >
                 <option value="">Select engine type</option>
+                <option value="Electric">Electric</option>
                 <option value="I4">I4</option>
                 <option value="I4 Turbo">I4 Turbo</option>
                 <option value="I6">I6</option>
@@ -261,6 +349,17 @@
                 <option value="V12">V12</option>
                 <option value="V12 Turbo">V12 Turbo</option>
               </select>
+            </div>
+            <div v-if="!engineType && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
             </div>
           </div>
           <div>
@@ -280,6 +379,17 @@
                 <option value="export">Export</option>
               </select>
             </div>
+            <div v-if="!titleStatus && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
+            </div>
           </div>
           <div>
             <label for="numKeys">Number of Keys</label>
@@ -293,6 +403,17 @@
                 v-model="numKeys"
               />
             </div>
+            <div v-if="!numKeys && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
+            </div>
           </div>
           <div>
             <label for="location">Vehicle Location (Zip)</label>
@@ -305,6 +426,17 @@
                 id="location"
                 v-model="location"
               />
+            </div>
+            <div v-if="!location && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
             </div>
           </div>
           <div>
@@ -330,6 +462,17 @@
                 <option value="luxury car">Luxury Car</option>
               </select>
             </div>
+            <div v-if="!vehicleType && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
+            </div>
           </div>
           <div>
             <label for="reservePrice">Reserve Price</label>
@@ -351,6 +494,32 @@
               />
             </div>
           </div>
+          <div style="margin: auto">
+            <div style="display: flex">
+              <input
+                type="checkbox"
+                :id="vehicleRuns"
+                :name="vehicleRuns"
+                class="checkbox-input"
+                v-model="vehicleRuns"
+              />
+              <label :for="vehicleRuns" class="checkbox-label"
+                >Vehicle Runs</label
+              >
+            </div>
+            <div style="display: flex">
+              <input
+                type="checkbox"
+                :id="vehicleDrives"
+                :name="vehicleDrives"
+                class="checkbox-input"
+                v-model="vehicleDrives"
+              />
+              <label :for="vehicleDrives" class="checkbox-label"
+                >Vehicle Drives</label
+              >
+            </div>
+          </div>
           <div>
             <label for="images">Images</label>
             <div>
@@ -362,6 +531,28 @@
                 multiple
                 @change="handleImageUpload"
               />
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 24px">
+          <h3>Damage Fields</h3>
+          <p>Select all panels that have damage.</p>
+          <div class="damage-fields-container">
+            <div
+              v-for="(field, index) in damageFields"
+              :key="index"
+              class="checkbox-and-label-container"
+            >
+              <input
+                type="checkbox"
+                :id="field.id"
+                :name="field.name"
+                class="checkbox-input"
+                v-model="field.value"
+              />
+              <label :for="field.id" class="checkbox-label">{{
+                field.label
+              }}</label>
             </div>
           </div>
         </div>
@@ -386,25 +577,26 @@
               /></div
           ></a>
         </div>
-      </form>
-      <div
-        class="success-message w-form-done"
-        tabindex="-1"
-        role="region"
-        aria-label="Vehicle Form success"
-      >
-        <div>Thank you! Your submission has been received!</div>
-      </div>
-      <div
-        class="error-message w-form-fail"
-        tabindex="-1"
-        role="region"
-        aria-label="Vehicle Form failure"
-      >
-        <div>Oops! Something went wrong while submitting the form.</div>
+
+        <div
+          class="success-message w-form-done"
+          tabindex="-1"
+          role="region"
+          aria-label="Vehicle Form success"
+        >
+          <div>Thank you! Your submission has been received!</div>
+        </div>
+        <div
+          class="error-message w-form-fail"
+          tabindex="-1"
+          role="region"
+          aria-label="Vehicle Form failure"
+        >
+          <div>Oops! Something went wrong while submitting the form.</div>
+        </div>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 <script>
 import api from "../../axios";
@@ -414,6 +606,7 @@ export default {
   name: "AddVehicle",
   data() {
     return {
+      submitted: false,
       vin: "",
       make: "",
       model: "",
@@ -430,6 +623,8 @@ export default {
       vehicleType: "",
       location: "",
       numKeys: "",
+      vehicleRuns: "",
+      vehicleDrives: "",
       years: Array.from({ length: 44 }, (_, i) => 2023 - i),
       makes: [
         "ACURA",
@@ -489,6 +684,178 @@ export default {
       transmissions: ["AUTOMATIC", "MANUAL", "CVT"],
       drives: ["Two-Wheel Drive", "All-Wheel Drive", "Four-Wheel Drive"],
       images: [],
+      damageFields: [
+        {
+          id: "bumper_damage",
+          name: "bumper_damage",
+          label: "Bumper",
+          value: false,
+        },
+        {
+          id: "driver_headlight_damage",
+          name: "driver_headlight_damage",
+          label: "Driver Headlight",
+          value: false,
+        },
+        {
+          id: "passenger_headlight_damage",
+          name: "passenger_headlight_damage",
+          label: "Passenger Headlight",
+          value: false,
+        },
+        { id: "hood_damage", name: "hood_damage", label: "Hood", value: false },
+        { id: "roof_damage", name: "roof_damage", label: "Roof", value: false },
+        {
+          id: "driver_fender_damage",
+          name: "driver_fender_damage",
+          label: "Driver Fender",
+          value: false,
+        },
+        {
+          id: "passenger_fender_damage",
+          name: "passenger_fender_damage",
+          label: "Passenger Fender",
+          value: false,
+        },
+        {
+          id: "driver_door_damage",
+          name: "driver_door_damage",
+          label: "Driver Door",
+          value: false,
+        },
+        {
+          id: "passenger_door_damage",
+          name: "passenger_door_damage",
+          label: "Passenger Door",
+          value: false,
+        },
+        {
+          id: "driver_rear_door_damage",
+          name: "driver_rear_door_damage",
+          label: "Driver Rear Door",
+          value: false,
+        },
+        {
+          id: "passenger_rear_door_damage",
+          name: "passenger_rear_door_damage",
+          label: "Passenger Rear Door",
+          value: false,
+        },
+        {
+          id: "driver_rocker_damage",
+          name: "driver_rocker_damage",
+          label: "Driver Rocker",
+          value: false,
+        },
+        {
+          id: "passenger_rocker_damage",
+          name: "passenger_rocker_damage",
+          label: "Passenger Rocker",
+          value: false,
+        },
+        {
+          id: "driver_rear_wheel_arch_damage",
+          name: "driver_rear_wheel_arch_damage",
+          label: "Driver Rear Wheel Arch",
+          value: false,
+        },
+        {
+          id: "passenger_rear_wheel_arch_damage",
+          name: "passenger_rear_wheel_arch_damage",
+          label: "Passenger Rear Wheel Arch",
+          value: false,
+        },
+        {
+          id: "driver_rear_quarter_damage",
+          name: "driver_rear_quarter_damage",
+          label: "Driver Rear Quarter",
+          value: false,
+        },
+        {
+          id: "passenger_rear_quarter_damage",
+          name: "passenger_rear_quarter_damage",
+          label: "Passenger Rear Quarter",
+          value: false,
+        },
+        {
+          id: "trunk_damage",
+          name: "trunk_damage",
+          label: "Trunk",
+          value: false,
+        },
+        {
+          id: "rear_bumper_damage",
+          name: "rear_bumper_damage",
+          label: "Rear Bumper",
+          value: false,
+        },
+        {
+          id: "driver_tail_light_damage",
+          name: "driver_tail_light_damage",
+          label: "Driver Tail Light",
+          value: false,
+        },
+        {
+          id: "passenger_tail_light_damage",
+          name: "passenger_tail_light_damage",
+          label: "Passenger Tail Light",
+          value: false,
+        },
+        {
+          id: "driver_mirror_damage",
+          name: "driver_mirror_damage",
+          label: "Driver Mirror",
+          value: false,
+        },
+        {
+          id: "passenger_mirror_damage",
+          name: "passenger_mirror_damage",
+          label: "Passenger Mirror",
+          value: false,
+        },
+        {
+          id: "windshield_damage",
+          name: "windshield_damage",
+          label: "Windshield",
+          value: false,
+        },
+        {
+          id: "driver_window_damage",
+          name: "driver_window_damage",
+          label: "Driver Window",
+          value: false,
+        },
+        {
+          id: "passenger_window_damage",
+          name: "passenger_window_damage",
+          label: "Passenger Window",
+          value: false,
+        },
+        {
+          id: "driver_rear_window_damage",
+          name: "driver_rear_window_damage",
+          label: "Driver Rear Window",
+          value: false,
+        },
+        {
+          id: "passenger_rear_window_damage",
+          name: "passenger_rear_window_damage",
+          label: "Passenger Rear Window",
+          value: false,
+        },
+        {
+          id: "back_glass_damage",
+          name: "back_glass_damage",
+          label: "Back Glass",
+          value: false,
+        },
+        {
+          id: "truck_bed_damage",
+          name: "truck_bed_damage",
+          label: "Truck Bed",
+          value: false,
+        },
+      ],
     };
   },
   methods: {
@@ -556,74 +923,114 @@ export default {
       }
     },
     handleImageUpload(event) {
-    const files = event.target.files;
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            this.images.push(file);
-        }
+      const files = event.target.files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        this.images.push(file);
+      }
     },
     async submitForm() {
-        const formData = new FormData();
-        for (let i = 0; i < this.images.length; i++) {
-            formData.append("images", this.images[i]);
-        }
-        formData.append("vin", this.vin);
-        formData.append("make", this.make);
-        formData.append("model", this.model);
-        formData.append("year", this.year);
-        formData.append("color", this.color);
-        formData.append("odometer", this.odometer);
-        formData.append("fuel", this.fuel);
-        formData.append("transmission", this.transmission);
-        formData.append("drive", this.drive);
-        formData.append("cylinders", this.cylinders);
-        formData.append("displacement", this.displacement);
-        formData.append("engineType", this.engineType);
-        formData.append("titleStatus", this.titleStatus);
-        formData.append("vehicleType", this.vehicleType);
-        formData.append("location", this.location);
-        formData.append("numKeys", this.numKeys);
-        formData.append("userID", store.state.userID)
-      try {
-        const response = await api.post(
-          "/list-vehicle/", 
-          formData,
-          {
+      this.submitted = true;
+      const formData = new FormData();
+      for (let i = 0; i < this.images.length; i++) {
+        formData.append("images", this.images[i]);
+      }
+      formData.append("vin", this.vin);
+      formData.append("make", this.make);
+      formData.append("model", this.model);
+      formData.append("year", this.year);
+      formData.append("color", this.color);
+      formData.append("odometer", this.odometer);
+      formData.append("fuel", this.fuel);
+      formData.append("transmission", this.transmission);
+      formData.append("drive", this.drive);
+      formData.append("cylinders", this.cylinders);
+      formData.append("displacement", this.displacement);
+      formData.append("engineType", this.engineType);
+      formData.append("titleStatus", this.titleStatus);
+      formData.append("vehicleType", this.vehicleType);
+      formData.append("location", this.location);
+      formData.append("numKeys", this.numKeys);
+      formData.append("userID", store.state.userID);
+      formData.append("vehicleRuns", this.vehicleRuns);
+      formData.append("vehicleDrives", this.vehicleDrives);
+      for (let i = 0; i < this.damageFields.length; i++) {
+        formData.append(this.damageFields[i].name, this.damageFields[i].value);
+      }
+      if (
+        !this.vin ||
+        !this.make ||
+        !this.model ||
+        !this.year ||
+        !this.color ||
+        !this.odometer ||
+        !this.fuel ||
+        !this.transmission ||
+        !this.drive ||
+        !this.engineType ||
+        !this.titleStatus ||
+        !this.vehicleType ||
+        !this.location ||
+        !this.numKeys ||
+        !this.vehicleRuns ||
+        !this.vehicleDrives ||
+        this.images.length < 1
+      ) {
+        const icon = require("@/assets/paper-clip-svg.svg");
+        this.$root.showNotificationBar(
+          "Vehicle Form Missing Fields",
+          "red",
+          3000,
+          icon
+        );
+      } else {
+        try {
+          this.submitted = false;
+          const response = await api.post("/list-vehicle/", formData, {
             headers: {
               "X-CSRFToken": store.getters.csrfToken,
               "Content-Type": "multipart/form-data",
             },
             withCredentials: true,
+          });
+          console.log(response.data);
+          if (response.status === 200) {
+            this.$refs.vehicleForm.reset();
+            this.vin = "";
+            this.make = "";
+            this.model = "";
+            this.year = "";
+            this.color = "";
+            this.odometer = "";
+            this.fuel = "";
+            this.transmission = "";
+            this.drive = "";
+            this.cylinders = "";
+            this.displacement = "";
+            this.engineType = "";
+            this.titleStatus = "";
+            this.numKeys = "";
+            this.location = "";
+            this.vehicleType = "";
+            this.images = [];
+            const icon = require("@/assets/paper-clip-svg.svg");
+            this.$root.showNotificationBar(
+              "Vehicle Under Review",
+              "green",
+              3000,
+              icon
+            );
+          } else {
+            // Handle error response
+            const icon = require("@/assets/paper-clip-svg.svg");
+            this.$root.showNotificationBar(
+              "Error adding vehicle. Please Contact Admin.",
+              "green",
+              3000,
+              icon
+            );
           }
-        );
-        if (response.status === 200) {
-          this.$refs.vehicleForm.reset();
-          this.vin = "";
-          this.make = "";
-          this.model = "";
-          this.year = "";
-          this.color = "";
-          this.odometer = "";
-          this.fuel = "";
-          this.transmission = "";
-          this.drive = "";
-          this.cylinders = "";
-          this.displacement = "";
-          this.engineType = "";
-          this.titleStatus = "";
-          this.numKeys = "";
-          this.location = "";
-          this.vehicleType = "";
-          this.images = [];
-          const icon = require("@/assets/paper-clip-svg.svg");
-          this.$root.showNotificationBar(
-            "Vehicle Under Review",
-            "green",
-            3000,
-            icon
-          );
-        } else {
-          // Handle error response
+        } catch (error) {
           const icon = require("@/assets/paper-clip-svg.svg");
           this.$root.showNotificationBar(
             "Error adding vehicle. Please Contact Admin.",
@@ -632,14 +1039,6 @@ export default {
             icon
           );
         }
-      } catch (error) {
-        const icon = require("@/assets/paper-clip-svg.svg");
-          this.$root.showNotificationBar(
-            "Error adding vehicle. Please Contact Admin.",
-            "green",
-            3000,
-            icon
-          );
       }
     },
   },
@@ -652,5 +1051,25 @@ export default {
 }
 .w-input {
   min-height: 50px;
+}
+.damage-fields-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.checkbox-and-label-container {
+  display: flex;
+  align-items: center;
+  width: calc(33.33% - 8px);
+  margin-top: 12px;
+}
+
+.checkbox-input {
+  margin-right: 8px;
+}
+
+.checkbox-label {
+  margin-bottom: 0px;
 }
 </style>
