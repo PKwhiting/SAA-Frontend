@@ -133,8 +133,8 @@
                       :vehicleVIN="car.VIN"
                       :saleDate="new Date(car.sale_date)"
                       style="
-                        transform: scale(0.5);
-                        margin: -45px -40% -45px -35%;
+                        transform: scale(0.65);
+                        margin: -35px -25% -35px -30%;
                       "
                     ></bid-card>
                   </div>
@@ -346,8 +346,8 @@ th {
 }
 
 img {
-  max-width: 100px;
-  max-height: 100px;
+  max-width: 150;
+  max-height: 200px;
 }
 
 /* Hide columns on mobile */

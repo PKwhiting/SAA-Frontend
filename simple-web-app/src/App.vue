@@ -2,9 +2,9 @@
   <body>
     <div class="page-wrapper">
       <Navbar></Navbar>
-      <div class="main-section wf-section">
+      <div class="main-section wf-section" style="padding-top: 48">
         <div class="container-default w-container">
-          <div class="grid-2-columns main-dashboard-grid">
+          <div class="grid-2-columns main-dashboard-grid" style="grid-gap: 12px">
             <div style="width: 200px">
               <toolbar></toolbar>
             </div>

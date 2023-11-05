@@ -162,7 +162,6 @@ export default {
             }
           }
         } catch (error) {
-          console.log(error);
           this.$root.showNotificationBar(
             "Bid Placed Failed",
             "red",
@@ -214,11 +213,9 @@ export default {
           this.ws = new WebSocket(`ws://${route}/bidding/`);
         }
         this.ws.onopen = (event) => {
-          console.log("WebSocket connection opened");
+          // console.log("WebSocket connection opened");
         };
         this.ws.onmessage = (event) => {
-          console.log("INSIDE HERE")
-          console.log(event)
           const data = JSON.parse(event.data);
           if (data.type === "update") {
             const saleDate = data.sale_date;
