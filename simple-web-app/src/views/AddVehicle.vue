@@ -972,8 +972,6 @@ export default {
         !this.vehicleType ||
         !this.location ||
         !this.numKeys ||
-        !this.vehicleRuns ||
-        !this.vehicleDrives ||
         this.images.length < 1
       ) {
         const icon = require("@/assets/paper-clip-svg.svg");
