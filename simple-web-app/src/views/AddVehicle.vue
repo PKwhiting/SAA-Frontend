@@ -623,8 +623,8 @@ export default {
       vehicleType: "",
       location: "",
       numKeys: "",
-      vehicleRuns: "",
-      vehicleDrives: "",
+      vehicleRuns: false,
+      vehicleDrives: false,
       years: Array.from({ length: 44 }, (_, i) => 2023 - i),
       makes: [
         "ACURA",
