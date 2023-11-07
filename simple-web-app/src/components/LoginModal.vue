@@ -224,6 +224,7 @@ export default {
       errorMessage: "",
     };
   },
+  
   methods: {
     ...mapMutations(['setIsLoggedIn']),
     closeLoginModal() {
