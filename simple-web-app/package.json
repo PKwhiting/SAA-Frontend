@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && npm run sentry:sourcemaps",
-    "sentry:sourcemaps": "sentry-cli releases files `git rev-parse --short HEAD` upload-sourcemaps dist/js --url-prefix '~/js' --ext js.map:js.map --project simplicars"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "@sentry/vue": "^7.77.0",
