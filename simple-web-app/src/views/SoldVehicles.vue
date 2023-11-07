@@ -55,7 +55,7 @@
                   </div>
                   <div class="hide-tablet">
                     <bid-card
-                      :currentBid="car.highest_bid"
+                      :currentBid="car.highest_bid !== null ? car.highest_bid : '0'"
                       :vehicleVIN="car.VIN"
                       :saleDate="new Date(car.sale_date)"
                       style="

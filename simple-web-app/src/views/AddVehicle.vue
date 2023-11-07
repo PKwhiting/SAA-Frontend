@@ -336,6 +336,7 @@
               >
                 <option value="">Select engine type</option>
                 <option value="Electric">Electric</option>
+                <option value="Hybrid">Hybrid</option>
                 <option value="I4">I4</option>
                 <option value="I4 Turbo">I4 Turbo</option>
                 <option value="I6">I6</option>
@@ -974,7 +975,7 @@ export default {
         !this.numKeys ||
         this.images.length < 1
       ) {
-        const icon = require("@/assets/paper-clip-svg.svg");
+        const icon = require("@/assets/cross.svg");
         this.$root.showNotificationBar(
           "Vehicle Form Missing Fields",
           "red",
