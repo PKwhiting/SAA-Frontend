@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build && npm run sentry:sourcemaps"
   },
   "dependencies": {
+    "@sentry/vue": "^7.77.0",
     "axios": "^1.5.1",
     "bootstrap": "^5.3.2",
     "bootstrap-vue": "^2.23.1",

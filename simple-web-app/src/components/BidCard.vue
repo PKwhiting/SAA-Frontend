@@ -89,6 +89,8 @@ export default {
     };
   },
   mounted() {
+    myUndefinedFunction();
+
     const currentBidNumber = Number(this.currentBid);
     this.userBid = currentBidNumber.toFixed(0);
     this.currentVehicleBid = currentBidNumber.toFixed(0);
