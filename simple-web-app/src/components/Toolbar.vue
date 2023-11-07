@@ -10,12 +10,12 @@
       <div class="grid-1-column sidebar-links-grid mg-bottom-48px" style="margin-top: 75px">
         <a href="" class="sidebar-link w-inline-block"
           >
-          <div class="avatar-name-circle _48px" v-show="isLoggedIn">{{ username[0] }}</div>
+          <div class="avatar-name-circle _48px" v-show="isLoggedIn">{{ username[0].toUpperCase() }}</div>
           <div class="text-100 medium" v-show="isLoggedIn">{{ username }}</div></a
         >
         <a href="/" class="sidebar-link w-inline-block"
           ><img
-            src="../assets/car-svg.svg"
+            src="../assets/gavel.svg"
             loading="eager"
             alt="Home - Dashflow X Webflow Template"
             class="max-w-20px"
@@ -33,7 +33,7 @@
         </a>
         <a v-if="isLoggedIn" href="/add-vehicle" class="sidebar-link w-inline-block"
           ><img
-            src="../assets/car-svg.svg"
+            src="../assets/plus.svg"
             loading="eager"
             alt="Home - Dashflow X Webflow Template"
             class="max-w-20px"
