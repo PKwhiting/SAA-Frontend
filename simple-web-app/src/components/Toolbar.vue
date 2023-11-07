@@ -20,7 +20,7 @@
             alt="Home - Dashflow X Webflow Template"
             class="max-w-20px"
           />
-          <div class="text-100 medium">Live Vehicles</div>
+          <div class="text-100 medium">Vehicles</div>
         </a>
         <a href="/sold" class="sidebar-link w-inline-block"
           ><img
@@ -39,6 +39,15 @@
             class="max-w-20px"
           />
           <div class="text-100 medium">List Vehicle</div>
+        </a>
+        <a v-if="isLoggedIn" href="/saved-vehicles" class="sidebar-link w-inline-block"
+          ><img
+            src="@/assets/heart-svg.svg"
+            loading="eager"
+            alt="Home - Dashflow X Webflow Template"
+            class="max-w-20px"
+          />
+          <div class="text-100 medium">Saved Vehicles</div>
         </a>
           <a v-if="isLoggedIn" @click="logout()" class="sidebar-link w-inline-block"
           ><img

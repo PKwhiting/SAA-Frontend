@@ -102,7 +102,7 @@ export default {
   methods: {
     async submitBid() {
       if (store.state.isLoggedIn) {
-        const icon = require("@/assets/paper-clip-svg.svg");
+        let icon = require("@/assets/cross.svg");
         try {
           if (this.userBid <= this.currentBid) {
             this.$root.showNotificationBar(
@@ -121,6 +121,7 @@ export default {
               user_id: store.state.userID,
             };
             this.ws.send(JSON.stringify(message));
+            let icon = require("@/assets/paper-clip-svg.svg");
             this.$root.showNotificationBar(
                 "Bid Placed Successfuly",
                 "green",
@@ -146,6 +147,7 @@ export default {
               this.currentVehicleBid = Math.round(
                 response.data.car.highest_bid
               );
+              let icon = require("@/assets/paper-clip-svg.svg");
               this.$root.showNotificationBar(
                 "Bid Placed Successfuly",
                 "green",
@@ -153,6 +155,7 @@ export default {
                 icon
               );
             } else {
+              let icon = require("@/assets/cross.svg");
               this.$root.showNotificationBar(
                 "Bid Placed Failed",
                 "red",
@@ -162,6 +165,7 @@ export default {
             }
           }
         } catch (error) {
+          let icon = require("@/assets/cross.svg");
           this.$root.showNotificationBar(
             "Bid Placed Failed",
             "red",
@@ -236,6 +240,7 @@ export default {
           console.error("WebSocket error:", event);
         };
         this.ws.onclose = (event) => {
+          let icon = require("@/assets/paper-clip-svg.svg");
           this.$root.showNotificationBar(
             "Auction Is Over. Thank you for participating!",
             "yellow",

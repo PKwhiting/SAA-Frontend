@@ -35,11 +35,7 @@
                 </div>
               </div>
               <div class="rows">
-                <div
-                  class="data-table-row"
-                  v-for="car in filteredCars"
-                  :key="car.id"
-                >
+                <div class="data-table-row" v-for="car in cars" :key="car.id">
                   <div>
                     <a :href="getCarUrl(car.id)"
                       ><img :src="car.images[0]" alt="Vehicle thumbnail"
@@ -53,17 +49,10 @@
                     <br />
                     <button
                       class="btn-secondary w-inline-block"
-                      @click="saveCar(car.VIN)"
-                      style="margin-bottom: 10px; margin-top: 10px; height: 39px"
+                      @click="unsaveCar(car.VIN)"
+                      style="margin-top: 10px; margin-bottom: 10px; height: 39px"
                     >
-                      <img
-                        src="@/assets/heart-svg.svg"
-                        loading="eager"
-                        alt="Changelog - Dashflow X Webflow Template"
-                        class="max-w-20px"
-                        style="margin-bottom: 5px"
-                      />
-                      Save
+                      Unsave
                     </button>
                   </div>
                   <div class="hide-mobile">
@@ -223,259 +212,43 @@ export default {
   },
   data() {
     return {
-      showDropdown: false,
       cars: [],
       filters: {
         saleDate: "",
         year: "",
         make: "",
         bidAmount: "",
-        parts: [],
       },
       showFiltersModal: false,
-      damageFields: [
-        {
-          id: "vehicle_drives",
-          name: "vehicle_drives",
-          label: "Vehicle Drives",
-          value: false,
-        },
-        {
-          id: "vehicle_starts",
-          name: "vehicle_starts",
-          label: "Vehicle Starts",
-          value: false,
-        },
-        {
-          id: "bumper_damage",
-          name: "bumper_damage",
-          label: "Bumper",
-          value: false,
-        },
-        {
-          id: "driver_headlight_damage",
-          name: "driver_headlight_damage",
-          label: "Driver Headlight",
-          value: false,
-        },
-        {
-          id: "passenger_headlight_damage",
-          name: "passenger_headlight_damage",
-          label: "Passenger Headlight",
-          value: false,
-        },
-        { id: "hood_damage", name: "hood_damage", label: "Hood", value: false },
-        { id: "roof_damage", name: "roof_damage", label: "Roof", value: false },
-        {
-          id: "driver_fender_damage",
-          name: "driver_fender_damage",
-          label: "Driver Fender",
-          value: false,
-        },
-        {
-          id: "passenger_fender_damage",
-          name: "passenger_fender_damage",
-          label: "Passenger Fender",
-          value: false,
-        },
-        {
-          id: "driver_door_damage",
-          name: "driver_door_damage",
-          label: "Driver Door",
-          value: false,
-        },
-        {
-          id: "passenger_door_damage",
-          name: "passenger_door_damage",
-          label: "Passenger Door",
-          value: false,
-        },
-        {
-          id: "driver_rear_door_damage",
-          name: "driver_rear_door_damage",
-          label: "Driver Rear Door",
-          value: false,
-        },
-        {
-          id: "passenger_rear_door_damage",
-          name: "passenger_rear_door_damage",
-          label: "Passenger Rear Door",
-          value: false,
-        },
-        {
-          id: "driver_rocker_damage",
-          name: "driver_rocker_damage",
-          label: "Driver Rocker",
-          value: false,
-        },
-        {
-          id: "passenger_rocker_damage",
-          name: "passenger_rocker_damage",
-          label: "Passenger Rocker",
-          value: false,
-        },
-        {
-          id: "driver_rear_wheel_arch_damage",
-          name: "driver_rear_wheel_arch_damage",
-          label: "Driver Rear Wheel Arch",
-          value: false,
-        },
-        {
-          id: "passenger_rear_wheel_arch_damage",
-          name: "passenger_rear_wheel_arch_damage",
-          label: "Passenger Rear Wheel Arch",
-          value: false,
-        },
-        {
-          id: "driver_rear_quarter_damage",
-          name: "driver_rear_quarter_damage",
-          label: "Driver Rear Quarter",
-          value: false,
-        },
-        {
-          id: "passenger_rear_quarter_damage",
-          name: "passenger_rear_quarter_damage",
-          label: "Passenger Rear Quarter",
-          value: false,
-        },
-        {
-          id: "trunk_damage",
-          name: "trunk_damage",
-          label: "Trunk",
-          value: false,
-        },
-        {
-          id: "rear_bumper_damage",
-          name: "rear_bumper_damage",
-          label: "Rear Bumper",
-          value: false,
-        },
-        {
-          id: "driver_tail_light_damage",
-          name: "driver_tail_light_damage",
-          label: "Driver Tail Light",
-          value: false,
-        },
-        {
-          id: "passenger_tail_light_damage",
-          name: "passenger_tail_light_damage",
-          label: "Passenger Tail Light",
-          value: false,
-        },
-        {
-          id: "driver_mirror_damage",
-          name: "driver_mirror_damage",
-          label: "Driver Mirror",
-          value: false,
-        },
-        {
-          id: "passenger_mirror_damage",
-          name: "passenger_mirror_damage",
-          label: "Passenger Mirror",
-          value: false,
-        },
-        {
-          id: "windshield_damage",
-          name: "windshield_damage",
-          label: "Windshield",
-          value: false,
-        },
-        {
-          id: "driver_window_damage",
-          name: "driver_window_damage",
-          label: "Driver Window",
-          value: false,
-        },
-        {
-          id: "passenger_window_damage",
-          name: "passenger_window_damage",
-          label: "Passenger Window",
-          value: false,
-        },
-        {
-          id: "driver_rear_window_damage",
-          name: "driver_rear_window_damage",
-          label: "Driver Rear Window",
-          value: false,
-        },
-        {
-          id: "passenger_rear_window_damage",
-          name: "passenger_rear_window_damage",
-          label: "Passenger Rear Window",
-          value: false,
-        },
-        {
-          id: "back_glass_damage",
-          name: "back_glass_damage",
-          label: "Back Glass",
-          value: false,
-        },
-        {
-          id: "truck_bed_damage",
-          name: "truck_bed_damage",
-          label: "Truck Bed",
-          value: false,
-        },
-      ],
     };
   },
   mounted() {
     this.fetchCars();
   },
   computed: {
-    filteredCars() {
-      let filtered = this.cars.filter((car) => {
-        return new Date(car.sale_date) >= new Date();
-      });
-      if (this.filters.year) {
-        filtered = filtered.filter((car) => {
-          return car.year.toString().includes(this.filters.year);
-        });
-      }
-      if (this.filters.make) {
-        filtered = filtered.filter((car) => {
-          return car.make
-            .toLowerCase()
-            .includes(this.filters.make.toLowerCase());
-        });
-      }
-      if (this.filters.bidAmount) {
-        filtered = filtered.filter((car) => {
-          return car.highest_bid >= this.filters.bidAmount;
-        });
-      }
-      if (this.damageFields) {
-        const checkedParts = [];
-        this.damageFields.forEach((field) => {
-          if (field.fields) {
-            field.fields.forEach((subfield) => {
-              if (subfield.value) {
-                checkedParts.push(subfield.name);
-              }
-            });
-          } else if (field.value) {
-            checkedParts.push(field.name);
-          }
-        });
-        if (checkedParts.length > 0) {
-          this.filters.parts = checkedParts;
-        } else {
-          this.filters.parts = [];
-        }
-      }
-      if (this.filters.parts) {
-        filtered = filtered.filter((car) => {
-          return this.filters.parts.every((part) => {
-            if (part === "vehicle_drives" || part === "vehicle_starts") {
-              return car[part];
-            } else {
-              return !car[part];
-            }
-          });
-        });
-      }
-      return filtered;
-    },
+    // filteredCars() {
+    //   let filtered = this.cars.filter((car) => {
+    //     return new Date(car.sale_date) < new Date();
+    //   });
+    //   if (this.filters.year) {
+    //     filtered = filtered.filter((car) => {
+    //       return car.year.toString().includes(this.filters.year);
+    //     });
+    //   }
+    //   if (this.filters.make) {
+    //     filtered = filtered.filter((car) => {
+    //       return car.make
+    //         .toLowerCase()
+    //         .includes(this.filters.make.toLowerCase());
+    //     });
+    //   }
+    //   if (this.filters.bidAmount) {
+    //     filtered = filtered.filter((car) => {
+    //       return car.highest_bid >= this.filters.bidAmount;
+    //     });
+    //   }
+    //   return filtered;
+    // },
   },
   methods: {
     maskNumber(number) {
@@ -485,26 +258,31 @@ export default {
     },
     fetchCars() {
       api
-        .get("all_active_vehicles/")
+        .get(`saved-vehicles/${store.state.userID}`)
         .then((response) => {
-          this.cars = response.data.cars;
+          this.cars = response.data.saved_cars;
         })
         .catch((error) => {
-          console.error(error);
+          const icon = require("@/assets/cross.svg");
+          this.$root.showNotificationBar(
+            "Issue loading saved vehicles. Contact Admin for help.",
+            "red",
+            3000,
+            icon
+          );
         });
     },
     getCarUrl(carId) {
       return `/single-car-view/${carId}`;
     },
     applyFilters() {
-      // Fetch the cars again to ensure that we have the latest data
       this.fetchCars();
       this.showFiltersModal = false;
     },
-    saveCar(vin) {
+    unsaveCar(vin) {
       api
         .post(
-          `add-saved-vehicle/${store.state.userID}`,
+          `remove-saved-vehicle/${store.state.userID}`,
           {
             vehicle_vin: vin,
           },
@@ -518,16 +296,17 @@ export default {
         .then((response) => {
           const icon = require("@/assets/heart-svg.svg");
           this.$root.showNotificationBar(
-            "Vehicle Saved Successfully",
+            "Saved Vehicle Removed Successfully",
             "green",
-            1500,
+            2000,
             icon
           );
+          this.cars = this.cars.filter((car) => car.VIN !== vin);
         })
         .catch((error) => {
           const icon = require("@/assets/cross.svg");
           this.$root.showNotificationBar(
-            "Issue adding vehicle to saved vehicles. Contact Admin for help.",
+            "Issue removing saved vehicle to saved vehicles. Contact Admin for help.",
             "red",
             3000,
             icon
@@ -575,8 +354,8 @@ th {
 }
 
 img {
-  max-width: 150;
-  max-height: 200px;
+  max-width: 100px;
+  max-height: 100px;
 }
 
 /* Hide columns on mobile */
@@ -704,58 +483,5 @@ img {
 
 .modal-body {
   padding: 1em;
-}
-.input-fields-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.input-fields-container > div {
-  width: calc(33.33% - 12px);
-  margin-bottom: 24px;
-}
-
-.checkboxes-container {
-  margin-top: 24px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.checkbox-and-label-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-  width: calc(33.33% - 12px);
-}
-
-.checkbox-input {
-  margin-right: 8px;
-}
-.damage-fields-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-.damage-fields-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.checkbox-and-label-container {
-  display: flex;
-  align-items: center;
-  width: calc(33.33% - 8px);
-  margin-top: 12px;
-}
-
-.checkbox-input {
-  margin-right: 8px;
-}
-
-.checkbox-label {
-  margin-bottom: 0px;
 }
 </style>

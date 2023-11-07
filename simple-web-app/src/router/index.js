@@ -6,6 +6,7 @@ import AllVehicles from '@/views/AllVehicles.vue'
 import AboutUs from '@/views/AboutUs.vue'
 import SoldVehicles from '@/views/SoldVehicles.vue'
 import AddVehicle from '@/views/AddVehicle.vue'
+import SavedVehicles from '@/views/SavedVehicles.vue'
 import store from '@/store'
 
 const requireAuth = (to, from, next) => {
@@ -43,7 +44,12 @@ const routes = [
     name: 'add-vehicle',
     beforeEnter: requireAuth
   },
-
+  {
+    path: '/saved-vehicles',
+    component: SavedVehicles,
+    name: 'saved-vehicles',
+    beforeEnter: requireAuth
+  },
 ];
     
 
