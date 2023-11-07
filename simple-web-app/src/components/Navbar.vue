@@ -44,7 +44,7 @@
                    >
                    <a href="/" class="sidebar-link w-inline-block"
                     ><img
-                      src="https://assets-global.website-files.com/653028834fc27f7bf2eff1c3/653028834fc27f7bf2eff2f7_changelog-sidebar-link-icon-dashflow-webflow-template.png"
+                      src="@/assets/gavel.svg"
                       loading="eager"
                       alt="Changelog - Dashflow X Webflow Template"
                       class="max-w-20px"
@@ -62,7 +62,7 @@
                     </a>
                     <a v-if="isLoggedIn" href="/add-vehicle" class="sidebar-link w-inline-block"
                     ><img
-                      src="https://assets-global.website-files.com/653028834fc27f7bf2eff1c3/653028834fc27f7bf2eff2f7_changelog-sidebar-link-icon-dashflow-webflow-template.png"
+                      src="@/assets/plus.svg"
                       loading="eager"
                       alt="Changelog - Dashflow X Webflow Template"
                       class="max-w-20px"
@@ -80,7 +80,7 @@
                     </a>
                     <a v-if="isLoggedIn" @click="logout()" class="sidebar-link w-inline-block"
                     ><img
-                      src="https://assets-global.website-files.com/653028834fc27f7bf2eff1c3/653028834fc27f7bf2eff2f3_licenses-sidebar-link-icon-dashflow-webflow-template.png"
+                      src="@/assets/logout.svg"
                       loading="eager"
                       alt="Licenses - Dashflow X Webflow Template"
                       class="max-w-20px"
