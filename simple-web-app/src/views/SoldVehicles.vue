@@ -8,10 +8,10 @@
             <div class="overflow-auto">
               <div class="data-table-row table-header">
                 <div class="text-50 bold color-neutral-700">Image</div>
+                <div class="text-50 bold color-neutral-700">Vehicle Info</div>
                 <div class="text-50 bold color-neutral-700 hide-mobile">
                   Lot Location
                 </div>
-                <div class="text-50 bold color-neutral-700">Vehicle Info</div>
                 <div class="text-50 bold color-neutral-700 hide-mobile">
                   Sale Info
                 </div>
@@ -22,7 +22,7 @@
               <div class="rows">
                 <div
                   class="data-table-row"
-                  v-for="car in filteredCars"
+                  v-for="car in displayedCars"
                   :key="car.id"
                 >
                   <div>
@@ -30,16 +30,16 @@
                       ><img :src="car.images[0]" alt="Vehicle thumbnail"
                     /></a>
                   </div>
-                  <div class="hide-mobile">
-                    <a :href="getCarUrl(car.id)">{{
-                      car.vehicle_location.toUpperCase()
-                    }}</a>
-                  </div>
                   <div>
                     <a :href="getCarUrl(car.id)"
                       >{{ car.year }} {{ car.make }} {{ car.model }}</a
                     ><br />
                     <a :href="getCarUrl(car.id)">{{ maskNumber(car.VIN) }}</a>
+                  </div>
+                  <div class="hide-mobile">
+                    <a :href="getCarUrl(car.id)">{{
+                      car.vehicle_location.toUpperCase()
+                    }}</a>
                   </div>
                   <div class="hide-mobile">
                     <a :href="getCarUrl(car.id)">{{
@@ -55,12 +55,14 @@
                   </div>
                   <div class="hide-tablet">
                     <bid-card
-                      :currentBid="car.highest_bid !== null ? car.highest_bid : '0'"
+                      :currentBid="
+                        car.highest_bid !== null ? car.highest_bid : '0'
+                      "
                       :vehicleVIN="car.VIN"
                       :saleDate="new Date(car.sale_date)"
                       style="
                         transform: scale(0.5);
-                        margin: -45px -40% -45px -35%;
+                        margin: -35px -40% -35px -50%;
                       "
                     ></bid-card>
                   </div>
@@ -68,6 +70,20 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="pagination">
+          <span>Page {{ currentPage }} of {{ totalPages }}</span>
+          <ul>
+            <li>
+              <button @click="changePage('prev')">&lt;</button>
+            </li>
+            <li v-for="pageNumber in pageNumbers" :key="pageNumber" style="padding-left: 0px">
+              <button @click="changePage(pageNumber)">{{ pageNumber }}</button>
+            </li>
+            <li v-if="currentPage + 5 <= totalPages">
+              <button @click="changePage('next')">&gt;</button>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -93,6 +109,8 @@ export default {
         bidAmount: "",
       },
       showFiltersModal: false,
+      currentPage: 1,
+      pageSize: 20,
     };
   },
   mounted() {
@@ -122,18 +140,48 @@ export default {
       }
       return filtered;
     },
+    displayedCars() {
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      return this.filteredCars.slice(startIndex, endIndex);
+    },
+    totalPages() {
+      return Math.ceil(this.filteredCars.length / this.pageSize);
+    },
+    pageNumbers() {
+      const pageNumbers = [];
+      const maxPagesToShow = 5;
+      let startPage = Math.max(
+        1,
+        this.currentPage - Math.floor(maxPagesToShow / 2)
+      );
+      let endPage = Math.min(startPage + maxPagesToShow - 1, this.totalPages);
+      if (endPage - startPage < maxPagesToShow - 1) {
+        startPage = Math.max(1, endPage - maxPagesToShow + 1);
+      }
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+      return pageNumbers;
+    },
   },
   methods: {
     maskNumber(number) {
-      const lastFourDigits = number.toString().slice(-4); // Extract the last 4 digits of the number
-      const asterisks = "*".repeat(number.toString().length - 4); // Create a string of asterisks with the same length as the original number minus 4
-      return asterisks + lastFourDigits; // Combine the asterisks and last 4 digits to create the masked number
+      if (number.toString().includes("*")) {
+        // If the number already contains asterisks, return it as-is
+        return number;
+      } else {
+        const lastFourDigits = number.toString().slice(-4); // Extract the last 4 digits of the number
+        const asterisks = "*".repeat(number.toString().length - 4); // Create a string of asterisks with the same length as the original number minus 4
+        return asterisks + lastFourDigits; // Combine the asterisks and last 4 digits to create the masked number
+      }
     },
     fetchCars() {
       api
         .get("all_active_vehicles/")
         .then((response) => {
           this.cars = response.data.cars;
+          console.log(response.data);
         })
         .catch((error) => {
           console.error(error);
@@ -146,6 +194,15 @@ export default {
       // Fetch the cars again to ensure that we have the latest data
       this.fetchCars();
       this.showFiltersModal = false;
+    },
+    changePage(pageNumber) {
+      if (pageNumber === "next") {
+        this.currentPage = Math.min(this.currentPage + 1, this.totalPages);
+      } else if (pageNumber === "prev") {
+        this.currentPage = Math.max(1, this.currentPage - 1);
+      } else {
+        this.currentPage = Math.max(1, Math.min(pageNumber, this.totalPages));
+      }
     },
   },
 };
@@ -217,7 +274,6 @@ img {
     display: none;
   }
 }
-
 
 /* Filter styles */
 .filter-container {
@@ -318,5 +374,42 @@ img {
 
 .modal-body {
   padding: 1em;
+}
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.pagination span {
+  font-size: 0.8em;
+}
+
+.pagination ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pagination li {
+  margin-right: 0.5em;
+}
+
+.pagination button {
+  border-radius: 0.25em;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #0069d9;
+}
+
+.pagination button:active {
+  background-color: #005cbf;
 }
 </style>

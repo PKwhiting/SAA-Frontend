@@ -20,7 +20,7 @@
             alt="Home - Dashflow X Webflow Template"
             class="max-w-20px"
           />
-          <div class="text-100 medium">Vehicles</div>
+          <div class="text-100 medium">SAA Auction</div>
         </a>
         <a href="/sold" class="sidebar-link w-inline-block"
           ><img

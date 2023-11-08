@@ -37,7 +37,7 @@
               <div class="rows">
                 <div
                   class="data-table-row"
-                  v-for="car in filteredCars"
+                  v-for="car in displayedCars"
                   :key="car.id"
                 >
                   <div>
@@ -47,14 +47,20 @@
                   </div>
                   <div>
                     <a :href="getCarUrl(car.id)"
-                      >{{ car.year }} {{ car.make }} {{ car.model }}</a
+                      ><div class="primary-badge light">{{ car.year }}</div><br>
+                      <div class="primary-badge">{{ car.make }}</div><br>
+                      <div class="primary-badge white">{{ car.model }}</div><br></a
                     ><br />
-                    <a :href="getCarUrl(car.id)">{{ maskNumber(car.VIN) }}</a>
+                    <a :href="getCarUrl(car.id)"><div class="color-badge green">{{ maskNumber(car.VIN) }}</div></a>
                     <br />
-                    <button
-                      class="btn-secondary w-inline-block"
-                      @click="saveCar(car.VIN)"
-                      style="margin-bottom: 10px; margin-top: 10px; height: 39px"
+                    <button 
+                      @click="saveCar(car.id)"
+                      style="
+                        margin-bottom: 10px;
+                        margin-top: 10px;
+                        height: 39px;
+                        background: white;
+                      "
                     >
                       <img
                         src="@/assets/heart-svg.svg"
@@ -63,7 +69,6 @@
                         class="max-w-20px"
                         style="margin-bottom: 5px"
                       />
-                      Save
                     </button>
                   </div>
                   <div class="hide-mobile">
@@ -85,6 +90,7 @@
                   </div>
                   <div class="hide-tablet">
                     <bid-card
+                      v-if="car.auction != 'COPART'"
                       :currentBid="
                         car.highest_bid !== null ? car.highest_bid : '0'
                       "
@@ -95,11 +101,50 @@
                         margin: -35px -25% -35px -30%;
                       "
                     ></bid-card>
+                    <a
+                      data-w-id="dc3b625c-4a68-4ebe-9b74-d3193fa9f32f"
+                      v-bind:href="car.vehicle_auction_link"
+                      target="_blank"
+                      class="btn-primary w-inline-block"
+                      style="margin-left: 10px"
+                      ><div class="flex-horizontal gap-column-4px">
+                        <div>Go to Copart</div>
+                        <img
+                          src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646cdd3a1fe350c45874c7ce_primary-button-icon-right-dashflow-webflow-template.svg"
+                          loading="eager"
+                          alt=""
+                          class="link-icon arrow-right"
+                          style="
+                            transform: translate3d(0px, 0px, 0px)
+                              scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg)
+                              rotateZ(0deg) skew(0deg, 0deg);
+                            transform-style: preserve-3d;
+                          "
+                        /></div
+                    ></a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div class="pagination">
+          <span>Page {{ currentPage }} of {{ totalPages }}</span>
+          <ul>
+            <li>
+              <button @click="changePage('prev')">&lt;</button>
+            </li>
+            <li
+              v-for="pageNumber in pageNumbers"
+              :key="pageNumber"
+              style="padding-left: 0px"
+            >
+              <button @click="changePage(pageNumber)">{{ pageNumber }}</button>
+            </li>
+            <li v-if="currentPage + 5 <= totalPages">
+              <button @click="changePage('next')">&gt;</button>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="modal" v-if="showFiltersModal">
@@ -417,6 +462,8 @@ export default {
           value: false,
         },
       ],
+      currentPage: 1,
+      pageSize: 20,
     };
   },
   mounted() {
@@ -476,12 +523,41 @@ export default {
       }
       return filtered;
     },
+    displayedCars() {
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      return this.filteredCars.slice(startIndex, endIndex);
+    },
+    totalPages() {
+      return Math.ceil(this.filteredCars.length / this.pageSize);
+    },
+    pageNumbers() {
+      const pageNumbers = [];
+      const maxPagesToShow = 5;
+      let startPage = Math.max(
+        1,
+        this.currentPage - Math.floor(maxPagesToShow / 2)
+      );
+      let endPage = Math.min(startPage + maxPagesToShow - 1, this.totalPages);
+      if (endPage - startPage < maxPagesToShow - 1) {
+        startPage = Math.max(1, endPage - maxPagesToShow + 1);
+      }
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+      return pageNumbers;
+    },
   },
   methods: {
     maskNumber(number) {
-      const lastFourDigits = number.toString().slice(-4); // Extract the last 4 digits of the number
-      const asterisks = "*".repeat(number.toString().length - 4); // Create a string of asterisks with the same length as the original number minus 4
-      return asterisks + lastFourDigits; // Combine the asterisks and last 4 digits to create the masked number
+      if (number.toString().includes("*")) {
+        // If the number already contains asterisks, return it as-is
+        return number;
+      } else {
+        const lastFourDigits = number.toString().slice(-4); // Extract the last 4 digits of the number
+        const asterisks = "*".repeat(number.toString().length - 4); // Create a string of asterisks with the same length as the original number minus 4
+        return asterisks + lastFourDigits; // Combine the asterisks and last 4 digits to create the masked number
+      }
     },
     fetchCars() {
       api
@@ -501,12 +577,12 @@ export default {
       this.fetchCars();
       this.showFiltersModal = false;
     },
-    saveCar(vin) {
+    saveCar(carID) {
       api
         .post(
           `add-saved-vehicle/${store.state.userID}`,
           {
-            vehicle_vin: vin,
+            carID: carID,
           },
           {
             headers: {
@@ -533,6 +609,15 @@ export default {
             icon
           );
         });
+    },
+    changePage(pageNumber) {
+      if (pageNumber === "next") {
+        this.currentPage = Math.min(this.currentPage + 1, this.totalPages);
+      } else if (pageNumber === "prev") {
+        this.currentPage = Math.max(1, this.currentPage - 1);
+      } else {
+        this.currentPage = Math.max(1, Math.min(pageNumber, this.totalPages));
+      }
     },
   },
 };
@@ -757,5 +842,42 @@ img {
 
 .checkbox-label {
   margin-bottom: 0px;
+}
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.pagination span {
+  font-size: 0.8em;
+}
+
+.pagination ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pagination li {
+  margin-right: 0.5em;
+}
+
+.pagination button {
+  border-radius: 0.25em;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #0069d9;
+}
+
+.pagination button:active {
+  background-color: #005cbf;
 }
 </style>
