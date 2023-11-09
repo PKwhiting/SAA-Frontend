@@ -55,6 +55,7 @@
                   </div>
                   <div class="hide-tablet">
                     <bid-card
+                      :car="car"
                       :currentBid="
                         car.highest_bid !== null ? car.highest_bid : '0'
                       "

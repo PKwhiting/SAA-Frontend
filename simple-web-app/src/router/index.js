@@ -16,6 +16,13 @@ const requireAuth = (to, from, next) => {
     next({ name: "home" });
   }
 };
+function requireStaff(to, from, next) {
+  if (!store.getters.isStaff) {
+    next();
+  } else if (!store.getters.isStaff) {
+    next('/home');
+  }
+}
 
 const routes = [
   {
@@ -42,7 +49,7 @@ const routes = [
     path: '/add-vehicle',
     component: AddVehicle,
     name: 'add-vehicle',
-    beforeEnter: requireAuth
+    beforeEnter: requireAuth, requireStaff
   },
   {
     path: '/saved-vehicles',

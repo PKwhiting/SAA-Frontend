@@ -25,9 +25,6 @@
                 <div class="text-50 bold color-neutral-700">Image</div>
                 <div class="text-50 bold color-neutral-700">Vehicle Info</div>
                 <div class="text-50 bold color-neutral-700 hide-mobile">
-                  Lot Location
-                </div>
-                <div class="text-50 bold color-neutral-700 hide-mobile">
                   Sale Info
                 </div>
                 <div class="text-50 bold color-neutral-700 hide-tablet">
@@ -45,52 +42,53 @@
                       ><img :src="car.images[0]" alt="Vehicle thumbnail"
                     /></a>
                   </div>
-                  <div>
+                  <div style="display: flex; flex-wrap: wrap">
                     <a :href="getCarUrl(car.id)"
-                      ><div class="primary-badge light">{{ car.year }}</div><br>
-                      <div class="primary-badge">{{ car.make }}</div><br>
-                      <div class="primary-badge white">{{ car.model }}</div><br></a
+                      >{{ car.year }}
+                      {{ car.make }}
+                      {{ car.model }}<br></a
                     ><br />
-                    <a :href="getCarUrl(car.id)"><div class="color-badge green">{{ maskNumber(car.VIN) }}</div></a>
+                    <div style="flex-basis: 100%; margin-top: 5px">
+                      <a :href="getCarUrl(car.id)"><div class="color-badge green">{{ maskNumber(car.VIN) }}</div></a>
+                    </div>
+                    <div style="flex-basis: 100%; margin-top: 5px">
+                      <a :href="getCarUrl(car.id)"><div class="neutral-badge neutral-300">ODO: {{ car.mileage.toLocaleString() }}</div></a>
+                    </div>
                     <br />
-                    <button 
-                      @click="saveCar(car.id)"
-                      style="
-                        margin-bottom: 10px;
-                        margin-top: 10px;
-                        height: 39px;
-                        background: white;
-                      "
-                    >
-                      <img
-                        src="@/assets/heart-svg.svg"
-                        loading="eager"
-                        alt="Changelog - Dashflow X Webflow Template"
-                        class="max-w-20px"
-                        style="margin-bottom: 5px"
-                      />
-                    </button>
+                    <div style="display: block; flex-basis: 100%; margin-top: 5px">
+                        <img
+                          @click="saveCar(car.id)"
+                          src="@/assets/heart-svg.svg"
+                          loading="eager"
+                          alt="Changelog - Dashflow X Webflow Template"
+                          class="max-w-20px"
+                          style="margin-bottom: 5px"
+                        />
+                        <a class="hide-desktop hide-tablet" v-bind:href="car.vehicle_auction_link" target="_blank" style="margin-left: 5px"><div class="primary-badge">Go to {{ car.auction }}</div></a>
+                    </div>
+                   
                   </div>
                   <div class="hide-mobile">
-                    <a :href="getCarUrl(car.id)">{{
-                      car.vehicle_location.toUpperCase()
-                    }}</a>
-                  </div>
-                  <div class="hide-mobile">
+                    <div style="flex-basis: 100%; margin-top: 5px" class="hide-desktop hide-mobile">
+                      <a v-bind:href="car.vehicle_auction_link" target="_blank"><div class="primary-badge">Go to {{ car.auction }}</div></a>
+                    </div>
                     <a :href="getCarUrl(car.id)">{{
                       new Date(car.sale_date).toLocaleString("en-US", {
                         month: "2-digit",
                         day: "2-digit",
                         year: "numeric",
                         hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit",
+                        minute: "2-digit"
                       })
                     }}</a>
+                    <br>
+                    <a :href="getCarUrl(car.id)">{{
+                      car.vehicle_location.toUpperCase()
+                    }}</a>
                   </div>
-                  <div class="hide-tablet">
+                  <div class="hide-tablet hide-mobile">
                     <bid-card
-                      v-if="car.auction != 'COPART'"
+                      :car="car"
                       :currentBid="
                         car.highest_bid !== null ? car.highest_bid : '0'
                       "
@@ -101,7 +99,7 @@
                         margin: -35px -25% -35px -30%;
                       "
                     ></bid-card>
-                    <a
+                    <!-- <a
                       data-w-id="dc3b625c-4a68-4ebe-9b74-d3193fa9f32f"
                       v-bind:href="car.vehicle_auction_link"
                       target="_blank"
@@ -121,7 +119,7 @@
                             transform-style: preserve-3d;
                           "
                         /></div
-                    ></a>
+                    ></a> -->
                   </div>
                 </div>
               </div>
@@ -629,7 +627,7 @@ export default {
   min-width: auto;
   text-align: left;
   padding: 0;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1.25fr;
+  grid-template-columns: 1fr 1.25fr 1fr 1.25fr;
 }
 .table-header.data-table-row {
   padding: 12px;
@@ -672,13 +670,10 @@ img {
   .data-table-row {
     grid-template-columns: 1fr 1fr;
   }
-  .hide-desktop {
-    display: block;
-  }
-}
+} 
 
 /* Hide columns on tablet test */
-@media (max-width: 991px) {
+@media (min-width: 767px) and (max-width: 991px){
   .hide-tablet {
     display: none;
   }

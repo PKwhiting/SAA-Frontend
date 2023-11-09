@@ -258,6 +258,7 @@ export default {
           store.commit('login')
           store.commit('setUsername', this.username)
           store.commit('setUserID', response.data.userID)
+          store.commit('setIsStaff', response.data.isStaff)
           const icon = require('@/assets/paper-clip-svg.svg');
           this.$root.flipLoginModalVisibility();
           this.$root.showNotificationBar(`${this.isLogin ? 'Login' : 'Registration'} Succesful`, 'green', 2500, icon);
