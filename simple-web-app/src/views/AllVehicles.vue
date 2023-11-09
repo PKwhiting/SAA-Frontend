@@ -46,31 +46,55 @@
                     <a :href="getCarUrl(car.id)"
                       >{{ car.year }}
                       {{ car.make }}
-                      {{ car.model }}<br></a
+                      {{ car.model }}<br /></a
                     ><br />
                     <div style="flex-basis: 100%; margin-top: 5px">
-                      <a :href="getCarUrl(car.id)"><div class="color-badge green">{{ maskNumber(car.VIN) }}</div></a>
+                      <a :href="getCarUrl(car.id)"
+                        ><div class="color-badge green">
+                          {{ maskNumber(car.VIN) }}
+                        </div></a
+                      >
                     </div>
                     <div style="flex-basis: 100%; margin-top: 5px">
-                      <a :href="getCarUrl(car.id)"><div class="neutral-badge neutral-300">ODO: {{ car.mileage.toLocaleString() }}</div></a>
+                      <a :href="getCarUrl(car.id)"
+                        ><div class="neutral-badge neutral-300">
+                          ODO: {{ car.mileage.toLocaleString() }}
+                        </div></a
+                      >
                     </div>
                     <br />
-                    <div style="display: block; flex-basis: 100%; margin-top: 5px">
-                        <img
-                          @click="saveCar(car.id)"
-                          src="@/assets/heart-svg.svg"
-                          loading="eager"
-                          alt="Changelog - Dashflow X Webflow Template"
-                          class="max-w-20px"
-                          style="margin-bottom: 5px"
-                        />
-                        <a class="hide-desktop hide-tablet" v-bind:href="car.vehicle_auction_link" target="_blank" style="margin-left: 5px"><div class="primary-badge">Go to {{ car.auction }}</div></a>
+                    <div
+                      style="display: block; flex-basis: 100%; margin-top: 5px"
+                    >
+                      <img
+                        @click="saveCar(car.id)"
+                        src="@/assets/heart-svg.svg"
+                        loading="eager"
+                        alt="Changelog - Dashflow X Webflow Template"
+                        class="max-w-20px"
+                        style="margin-bottom: 5px"
+                      />
+                      <a
+                        class="hide-desktop hide-tablet"
+                        v-bind:href="car.vehicle_auction_link"
+                        target="_blank"
+                        style="margin-left: 5px"
+                        ><div class="primary-badge">
+                          Go to {{ car.auction }}
+                        </div></a
+                      >
                     </div>
-                   
                   </div>
                   <div class="hide-mobile">
-                    <div style="flex-basis: 100%; margin-top: 5px" class="hide-desktop hide-mobile">
-                      <a v-bind:href="car.vehicle_auction_link" target="_blank"><div class="primary-badge">Go to {{ car.auction }}</div></a>
+                    <div
+                      style="flex-basis: 100%; margin-top: 5px"
+                      class="hide-desktop hide-mobile"
+                    >
+                      <a v-bind:href="car.vehicle_auction_link" target="_blank"
+                        ><div class="primary-badge">
+                          Go to {{ car.auction }}
+                        </div></a
+                      >
                     </div>
                     <a :href="getCarUrl(car.id)">{{
                       new Date(car.sale_date).toLocaleString("en-US", {
@@ -78,10 +102,10 @@
                         day: "2-digit",
                         year: "numeric",
                         hour: "2-digit",
-                        minute: "2-digit"
+                        minute: "2-digit",
                       })
                     }}</a>
-                    <br>
+                    <br />
                     <a :href="getCarUrl(car.id)">{{
                       car.vehicle_location.toUpperCase()
                     }}</a>
@@ -198,6 +222,21 @@
                     placeholder="Placeholder"
                     id="make-filter"
                     v-model="filters.make"
+                  />
+                </div>
+              </div>
+              <div>
+                <label for="model-filter">Model</label>
+                <div>
+                  <input
+                    type="text"
+                    class="input w-input"
+                    maxlength="256"
+                    name="Name"
+                    data-name="Name"
+                    placeholder="Placeholder"
+                    id="model-filter"
+                    v-model="filters.model"
                   />
                 </div>
               </div>
@@ -484,6 +523,13 @@ export default {
             .includes(this.filters.make.toLowerCase());
         });
       }
+      if (this.filters.model) {
+        filtered = filtered.filter((car) => {
+          return car.model
+            .toLowerCase()
+            .includes(this.filters.model.toLowerCase());
+        });
+      }
       if (this.filters.bidAmount) {
         filtered = filtered.filter((car) => {
           return car.highest_bid >= this.filters.bidAmount;
@@ -670,10 +716,10 @@ img {
   .data-table-row {
     grid-template-columns: 1fr 1fr;
   }
-} 
+}
 
 /* Hide columns on tablet test */
-@media (min-width: 767px) and (max-width: 991px){
+@media (min-width: 767px) and (max-width: 991px) {
   .hide-tablet {
     display: none;
   }

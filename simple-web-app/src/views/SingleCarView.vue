@@ -1,13 +1,24 @@
 <template>
   <div v-if="this.car" id="cards" class="pd-top-24px">
-    <h2 class="text-500 bold mg-bottom-12px">{{ car.year  }} {{ car.make }} {{ car.model }}</h2>
+    <h2 class="text-500 bold mg-bottom-12px">
+      {{ car.year }} {{ car.make }} {{ car.model }}
+    </h2>
     <div id="text-cards" class="mg-bottom-16px">
       <div class="card component-card">
         <div class="grid-2-columns">
           <div class="inner-container _384px _100-tablet">
             <image-viewer v-if="car.images" :images="car.images"></image-viewer>
-            <bid-card :car="car" :currentBid="car.highest_bid !== null ? car.highest_bid : '0'" :vehicleVIN="car.VIN" :saleDate="new Date(car.sale_date)"></bid-card>
-            <sale-info :sale_date="car.sale_date" :last_updated="car.last_updated" :vehicle_location="car.vehicle_location"></sale-info>
+            <bid-card
+              :car="car"
+              :currentBid="car.highest_bid !== null ? car.highest_bid : '0'"
+              :vehicleVIN="car.VIN"
+              :saleDate="new Date(car.sale_date)"
+            ></bid-card>
+            <sale-info
+              :sale_date="car.sale_date"
+              :last_updated="car.last_updated"
+              :vehicle_location="car.vehicle_location"
+            ></sale-info>
           </div>
           <div class="inner-container _384px _100-tablet">
             <div class="card border-none">
@@ -77,10 +88,32 @@
                     <div class="text-100 bold color-neutral-800">Keys</div>
                     <div class="text-100 medium">{{ car.keys }}</div>
                   </div>
+                  <div class="data-table-row">
+                    <div class="text-100 bold color-neutral-800">Vehicle Starts</div>
+                    <div class="text-100 medium">{{ car.vehicle_starts ? 'Starts' : 'No Start' }}</div>
+                  </div>
                 </div>
               </div>
             </div>
             <!-- <vehicle-reports :reports="car.reports"></vehicle-reports> -->
+            <div class="card border-none" style="margin-top: 12px">
+              <div>
+                <div class="data-table-row table-header">
+                  <div class="text-50 bold color-neutral-700">Parts</div>
+                  <div class="text-50 bold color-neutral-700"></div>
+                </div>
+                <div class="rows">
+                  <template v-for="field in damageFields">
+                    <div class="data-table-row">
+                      <div class="text-100 bold color-neutral-800">
+                        {{ field.label }}
+                      </div>
+                      <div class="text-100 medium">{{ car[field] ? 'Damaged' : 'Undamaged' }}</div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -100,10 +133,182 @@ export default {
   data() {
     return {
       car: null,
+      damageFields: [
+        {
+          id: "bumper_damage",
+          name: "bumper_damage",
+          label: "Bumper",
+          value: false,
+        },
+        {
+          id: "driver_headlight_damage",
+          name: "driver_headlight_damage",
+          label: "Driver Headlight",
+          value: false,
+        },
+        {
+          id: "passenger_headlight_damage",
+          name: "passenger_headlight_damage",
+          label: "Passenger Headlight",
+          value: false,
+        },
+        { id: "hood_damage", name: "hood_damage", label: "Hood", value: false },
+        { id: "roof_damage", name: "roof_damage", label: "Roof", value: false },
+        {
+          id: "driver_fender_damage",
+          name: "driver_fender_damage",
+          label: "Driver Fender",
+          value: false,
+        },
+        {
+          id: "passenger_fender_damage",
+          name: "passenger_fender_damage",
+          label: "Passenger Fender",
+          value: false,
+        },
+        {
+          id: "driver_door_damage",
+          name: "driver_door_damage",
+          label: "Driver Door",
+          value: false,
+        },
+        {
+          id: "passenger_door_damage",
+          name: "passenger_door_damage",
+          label: "Passenger Door",
+          value: false,
+        },
+        {
+          id: "driver_rear_door_damage",
+          name: "driver_rear_door_damage",
+          label: "Driver Rear Door",
+          value: false,
+        },
+        {
+          id: "passenger_rear_door_damage",
+          name: "passenger_rear_door_damage",
+          label: "Passenger Rear Door",
+          value: false,
+        },
+        {
+          id: "driver_rocker_damage",
+          name: "driver_rocker_damage",
+          label: "Driver Rocker",
+          value: false,
+        },
+        {
+          id: "passenger_rocker_damage",
+          name: "passenger_rocker_damage",
+          label: "Passenger Rocker",
+          value: false,
+        },
+        {
+          id: "driver_rear_wheel_arch_damage",
+          name: "driver_rear_wheel_arch_damage",
+          label: "Driver Rear Wheel Arch",
+          value: false,
+        },
+        {
+          id: "passenger_rear_wheel_arch_damage",
+          name: "passenger_rear_wheel_arch_damage",
+          label: "Passenger Rear Wheel Arch",
+          value: false,
+        },
+        {
+          id: "driver_rear_quarter_damage",
+          name: "driver_rear_quarter_damage",
+          label: "Driver Rear Quarter",
+          value: false,
+        },
+        {
+          id: "passenger_rear_quarter_damage",
+          name: "passenger_rear_quarter_damage",
+          label: "Passenger Rear Quarter",
+          value: false,
+        },
+        {
+          id: "trunk_damage",
+          name: "trunk_damage",
+          label: "Trunk",
+          value: false,
+        },
+        {
+          id: "rear_bumper_damage",
+          name: "rear_bumper_damage",
+          label: "Rear Bumper",
+          value: false,
+        },
+        {
+          id: "driver_tail_light_damage",
+          name: "driver_tail_light_damage",
+          label: "Driver Tail Light",
+          value: false,
+        },
+        {
+          id: "passenger_tail_light_damage",
+          name: "passenger_tail_light_damage",
+          label: "Passenger Tail Light",
+          value: false,
+        },
+        {
+          id: "driver_mirror_damage",
+          name: "driver_mirror_damage",
+          label: "Driver Mirror",
+          value: false,
+        },
+        {
+          id: "passenger_mirror_damage",
+          name: "passenger_mirror_damage",
+          label: "Passenger Mirror",
+          value: false,
+        },
+        {
+          id: "windshield_damage",
+          name: "windshield_damage",
+          label: "Windshield",
+          value: false,
+        },
+        {
+          id: "driver_window_damage",
+          name: "driver_window_damage",
+          label: "Driver Window",
+          value: false,
+        },
+        {
+          id: "passenger_window_damage",
+          name: "passenger_window_damage",
+          label: "Passenger Window",
+          value: false,
+        },
+        {
+          id: "driver_rear_window_damage",
+          name: "driver_rear_window_damage",
+          label: "Driver Rear Window",
+          value: false,
+        },
+        {
+          id: "passenger_rear_window_damage",
+          name: "passenger_rear_window_damage",
+          label: "Passenger Rear Window",
+          value: false,
+        },
+        {
+          id: "back_glass_damage",
+          name: "back_glass_damage",
+          label: "Back Glass",
+          value: false,
+        },
+        {
+          id: "truck_bed_damage",
+          name: "truck_bed_damage",
+          label: "Truck Bed",
+          value: false,
+        },
+      ],
     };
   },
   mounted() {
-    this.fetchCar()
+    this.fetchCar();
   },
   methods: {
     fetchCar() {
@@ -117,7 +322,6 @@ export default {
           console.error(error);
         });
     },
-    
   },
 };
 </script>
