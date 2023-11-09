@@ -49,7 +49,7 @@
                     <br />
                     <button
                       class="btn-secondary w-inline-block"
-                      @click="unsaveCar(car.VIN)"
+                      @click="unsaveCar(car.id)"
                       style="margin-top: 10px; margin-bottom: 10px; height: 39px"
                     >
                       Unsave
@@ -74,6 +74,7 @@
                   </div>
                   <div class="hide-tablet">
                     <bid-card
+                      :car="car"
                       :currentBid="
                         car.highest_bid !== null ? car.highest_bid : '0'
                       "
@@ -279,12 +280,12 @@ export default {
       this.fetchCars();
       this.showFiltersModal = false;
     },
-    unsaveCar(vin) {
+    unsaveCar(carID) {
       api
         .post(
           `remove-saved-vehicle/${store.state.userID}`,
           {
-            vehicle_vin: vin,
+            carID: carID,
           },
           {
             headers: {
@@ -301,9 +302,10 @@ export default {
             2000,
             icon
           );
-          this.cars = this.cars.filter((car) => car.VIN !== vin);
+          this.cars = this.cars.filter((car) => car.id !== carID);
         })
         .catch((error) => {
+          console.log(error)
           const icon = require("@/assets/cross.svg");
           this.$root.showNotificationBar(
             "Issue removing saved vehicle to saved vehicles. Contact Admin for help.",

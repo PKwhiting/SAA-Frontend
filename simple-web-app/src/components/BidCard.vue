@@ -11,6 +11,7 @@
       v-show="this.auctionLive"
     >
       <a
+        v-if="this.auctionType === 'SAA'"
         href="#"
         class="btn-primary w-inline-block"
         @click="decrementBid"
@@ -26,9 +27,12 @@
           data-name="Name"
           v-model="currentVehicleBid"
           @input="updateCurrentBid"
+          readonly
+          style="text-align: center"
         />
       </div>
       <a
+        v-if="this.auctionType === 'SAA'"
         href="#"
         class="btn-primary w-inline-block"
         @click="incrementBid"
@@ -43,6 +47,7 @@
       {{ formattedTimeRemaining }}
     </div>
     <a
+      v-if="this.auctionType === 'SAA'"
       href="#"
       class="btn-primary w-inline-block"
       style="margin-top: 12px; width: 100%"
@@ -50,6 +55,27 @@
         PLACE BID
       </div></a
     >
+    <a
+      v-if="this.auctionType != 'SAA'"
+      data-w-id="dc3b625c-4a68-4ebe-9b74-d3193fa9f32f"
+      v-bind:href="car.vehicle_auction_link"
+      target="_blank"
+      class="btn-primary w-inline-block"
+      style="min-width: 100%"
+      ><div class="flex-horizontal gap-column-4px">
+        <div>Go to {{ this.auctionType }}</div>
+        <img
+          src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646cdd3a1fe350c45874c7ce_primary-button-icon-right-dashflow-webflow-template.svg"
+          loading="eager"
+          alt=""
+          class="link-icon arrow-right"
+          style="
+            transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+              rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+            transform-style: preserve-3d;
+          "
+        /></div
+    ></a>
   </div>
 </template>
 
@@ -76,20 +102,25 @@ export default {
       type: Date,
       required: true,
     },
+    car: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
       // Initial current bid value
-      userBid: 1500, // Initial user's bid value
+      userBid: 0, // Initial user's bid value
       currentVehicleBid: null,
       currentSaleDate: this.saleDate,
       ws: null,
       formattedTimeRemaining: "Calculating...",
       auctionLive: true,
+      auctionType: this.car.auction,
     };
   },
   mounted() {
-    const currentBidNumber = Number(this.currentBid);
+    const currentBidNumber = Number(this.car.current_bid);
     this.userBid = currentBidNumber.toFixed(0);
     this.currentVehicleBid = currentBidNumber.toFixed(0);
     setInterval(this.updateTimeRemaining, 1000);
@@ -123,11 +154,11 @@ export default {
             this.ws.send(JSON.stringify(message));
             let icon = require("@/assets/paper-clip-svg.svg");
             this.$root.showNotificationBar(
-                "Bid Placed Successfuly",
-                "green",
-                1500,
-                icon
-              );
+              "Bid Placed Successfuly",
+              "green",
+              1500,
+              icon
+            );
           } else {
             const response = await api.post(
               "/update-bid/",
@@ -202,7 +233,7 @@ export default {
       const minutes = Math.floor((total / 1000 / 60) % 60);
       const seconds = Math.floor((total / 1000) % 60);
       if (minutes <= 0 && days <= 0 && hours <= 0 && seconds <= 0) {
-        this.formattedTimeRemaining = 'Auction is over!';
+        this.formattedTimeRemaining = "Auction is over!";
         this.auctionLive = false;
       } else {
         this.auctionLive = true;

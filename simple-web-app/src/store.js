@@ -7,6 +7,7 @@ const store = createStore({
       csrfToken: null,
       username: null,
       userID: null,
+      isStaff: null,
     },
     mutations: {
       setLoginStatus(state, answer) {
@@ -26,12 +27,16 @@ const store = createStore({
       },
       setUserID(state, userID) {
         state.userID = userID;
+      },
+      setIsStaff(state, isStaff) {
+        state.isStaff = isStaff;
       }
     },
     getters: {
       isLoggedIn: state => state.isLoggedIn, // Define a getter that returns the isLoggedIn variable
       csrfToken: state => state.csrfToken,
       userID: state => state.userID,
+      isStaff: state => state.isStaff,
     },
     plugins: [createPersistedState()],
   });

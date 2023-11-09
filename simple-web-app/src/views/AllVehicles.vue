@@ -25,9 +25,6 @@
                 <div class="text-50 bold color-neutral-700">Image</div>
                 <div class="text-50 bold color-neutral-700">Vehicle Info</div>
                 <div class="text-50 bold color-neutral-700 hide-mobile">
-                  Lot Location
-                </div>
-                <div class="text-50 bold color-neutral-700 hide-mobile">
                   Sale Info
                 </div>
                 <div class="text-50 bold color-neutral-700 hide-tablet">
@@ -37,7 +34,7 @@
               <div class="rows">
                 <div
                   class="data-table-row"
-                  v-for="car in filteredCars"
+                  v-for="car in displayedCars"
                   :key="car.id"
                 >
                   <div>
@@ -45,46 +42,53 @@
                       ><img :src="car.images[0]" alt="Vehicle thumbnail"
                     /></a>
                   </div>
-                  <div>
+                  <div style="display: flex; flex-wrap: wrap">
                     <a :href="getCarUrl(car.id)"
-                      >{{ car.year }} {{ car.make }} {{ car.model }}</a
+                      >{{ car.year }}
+                      {{ car.make }}
+                      {{ car.model }}<br></a
                     ><br />
-                    <a :href="getCarUrl(car.id)">{{ maskNumber(car.VIN) }}</a>
+                    <div style="flex-basis: 100%; margin-top: 5px">
+                      <a :href="getCarUrl(car.id)"><div class="color-badge green">{{ maskNumber(car.VIN) }}</div></a>
+                    </div>
+                    <div style="flex-basis: 100%; margin-top: 5px">
+                      <a :href="getCarUrl(car.id)"><div class="neutral-badge neutral-300">ODO: {{ car.mileage.toLocaleString() }}</div></a>
+                    </div>
                     <br />
-                    <button
-                      class="btn-secondary w-inline-block"
-                      @click="saveCar(car.VIN)"
-                      style="margin-bottom: 10px; margin-top: 10px; height: 39px"
-                    >
-                      <img
-                        src="@/assets/heart-svg.svg"
-                        loading="eager"
-                        alt="Changelog - Dashflow X Webflow Template"
-                        class="max-w-20px"
-                        style="margin-bottom: 5px"
-                      />
-                      Save
-                    </button>
+                    <div style="display: block; flex-basis: 100%; margin-top: 5px">
+                        <img
+                          @click="saveCar(car.id)"
+                          src="@/assets/heart-svg.svg"
+                          loading="eager"
+                          alt="Changelog - Dashflow X Webflow Template"
+                          class="max-w-20px"
+                          style="margin-bottom: 5px"
+                        />
+                        <a class="hide-desktop hide-tablet" v-bind:href="car.vehicle_auction_link" target="_blank" style="margin-left: 5px"><div class="primary-badge">Go to {{ car.auction }}</div></a>
+                    </div>
+                   
                   </div>
                   <div class="hide-mobile">
-                    <a :href="getCarUrl(car.id)">{{
-                      car.vehicle_location.toUpperCase()
-                    }}</a>
-                  </div>
-                  <div class="hide-mobile">
+                    <div style="flex-basis: 100%; margin-top: 5px" class="hide-desktop hide-mobile">
+                      <a v-bind:href="car.vehicle_auction_link" target="_blank"><div class="primary-badge">Go to {{ car.auction }}</div></a>
+                    </div>
                     <a :href="getCarUrl(car.id)">{{
                       new Date(car.sale_date).toLocaleString("en-US", {
                         month: "2-digit",
                         day: "2-digit",
                         year: "numeric",
                         hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit",
+                        minute: "2-digit"
                       })
                     }}</a>
+                    <br>
+                    <a :href="getCarUrl(car.id)">{{
+                      car.vehicle_location.toUpperCase()
+                    }}</a>
                   </div>
-                  <div class="hide-tablet">
+                  <div class="hide-tablet hide-mobile">
                     <bid-card
+                      :car="car"
                       :currentBid="
                         car.highest_bid !== null ? car.highest_bid : '0'
                       "
@@ -95,11 +99,50 @@
                         margin: -35px -25% -35px -30%;
                       "
                     ></bid-card>
+                    <!-- <a
+                      data-w-id="dc3b625c-4a68-4ebe-9b74-d3193fa9f32f"
+                      v-bind:href="car.vehicle_auction_link"
+                      target="_blank"
+                      class="btn-primary w-inline-block"
+                      style="margin-left: 10px"
+                      ><div class="flex-horizontal gap-column-4px">
+                        <div>Go to Copart</div>
+                        <img
+                          src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646cdd3a1fe350c45874c7ce_primary-button-icon-right-dashflow-webflow-template.svg"
+                          loading="eager"
+                          alt=""
+                          class="link-icon arrow-right"
+                          style="
+                            transform: translate3d(0px, 0px, 0px)
+                              scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg)
+                              rotateZ(0deg) skew(0deg, 0deg);
+                            transform-style: preserve-3d;
+                          "
+                        /></div
+                    ></a> -->
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div class="pagination">
+          <span>Page {{ currentPage }} of {{ totalPages }}</span>
+          <ul>
+            <li>
+              <button @click="changePage('prev')">&lt;</button>
+            </li>
+            <li
+              v-for="pageNumber in pageNumbers"
+              :key="pageNumber"
+              style="padding-left: 0px"
+            >
+              <button @click="changePage(pageNumber)">{{ pageNumber }}</button>
+            </li>
+            <li v-if="currentPage + 5 <= totalPages">
+              <button @click="changePage('next')">&gt;</button>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="modal" v-if="showFiltersModal">
@@ -417,6 +460,8 @@ export default {
           value: false,
         },
       ],
+      currentPage: 1,
+      pageSize: 20,
     };
   },
   mounted() {
@@ -476,12 +521,41 @@ export default {
       }
       return filtered;
     },
+    displayedCars() {
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      return this.filteredCars.slice(startIndex, endIndex);
+    },
+    totalPages() {
+      return Math.ceil(this.filteredCars.length / this.pageSize);
+    },
+    pageNumbers() {
+      const pageNumbers = [];
+      const maxPagesToShow = 5;
+      let startPage = Math.max(
+        1,
+        this.currentPage - Math.floor(maxPagesToShow / 2)
+      );
+      let endPage = Math.min(startPage + maxPagesToShow - 1, this.totalPages);
+      if (endPage - startPage < maxPagesToShow - 1) {
+        startPage = Math.max(1, endPage - maxPagesToShow + 1);
+      }
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+      return pageNumbers;
+    },
   },
   methods: {
     maskNumber(number) {
-      const lastFourDigits = number.toString().slice(-4); // Extract the last 4 digits of the number
-      const asterisks = "*".repeat(number.toString().length - 4); // Create a string of asterisks with the same length as the original number minus 4
-      return asterisks + lastFourDigits; // Combine the asterisks and last 4 digits to create the masked number
+      if (number.toString().includes("*")) {
+        // If the number already contains asterisks, return it as-is
+        return number;
+      } else {
+        const lastFourDigits = number.toString().slice(-4); // Extract the last 4 digits of the number
+        const asterisks = "*".repeat(number.toString().length - 4); // Create a string of asterisks with the same length as the original number minus 4
+        return asterisks + lastFourDigits; // Combine the asterisks and last 4 digits to create the masked number
+      }
     },
     fetchCars() {
       api
@@ -501,12 +575,12 @@ export default {
       this.fetchCars();
       this.showFiltersModal = false;
     },
-    saveCar(vin) {
+    saveCar(carID) {
       api
         .post(
           `add-saved-vehicle/${store.state.userID}`,
           {
-            vehicle_vin: vin,
+            carID: carID,
           },
           {
             headers: {
@@ -534,6 +608,15 @@ export default {
           );
         });
     },
+    changePage(pageNumber) {
+      if (pageNumber === "next") {
+        this.currentPage = Math.min(this.currentPage + 1, this.totalPages);
+      } else if (pageNumber === "prev") {
+        this.currentPage = Math.max(1, this.currentPage - 1);
+      } else {
+        this.currentPage = Math.max(1, Math.min(pageNumber, this.totalPages));
+      }
+    },
   },
 };
 </script>
@@ -544,7 +627,7 @@ export default {
   min-width: auto;
   text-align: left;
   padding: 0;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1.25fr;
+  grid-template-columns: 1fr 1.25fr 1fr 1.25fr;
 }
 .table-header.data-table-row {
   padding: 12px;
@@ -587,13 +670,10 @@ img {
   .data-table-row {
     grid-template-columns: 1fr 1fr;
   }
-  .hide-desktop {
-    display: block;
-  }
-}
+} 
 
 /* Hide columns on tablet test */
-@media (max-width: 991px) {
+@media (min-width: 767px) and (max-width: 991px){
   .hide-tablet {
     display: none;
   }
@@ -757,5 +837,42 @@ img {
 
 .checkbox-label {
   margin-bottom: 0px;
+}
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.pagination span {
+  font-size: 0.8em;
+}
+
+.pagination ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pagination li {
+  margin-right: 0.5em;
+}
+
+.pagination button {
+  border-radius: 0.25em;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #0069d9;
+}
+
+.pagination button:active {
+  background-color: #005cbf;
 }
 </style>

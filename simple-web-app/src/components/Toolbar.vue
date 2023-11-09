@@ -20,7 +20,7 @@
             alt="Home - Dashflow X Webflow Template"
             class="max-w-20px"
           />
-          <div class="text-100 medium">Vehicles</div>
+          <div class="text-100 medium">Auction Inventory</div>
         </a>
         <a href="/sold" class="sidebar-link w-inline-block"
           ><img
@@ -31,7 +31,7 @@
           />
           <div class="text-100 medium">Sold Vehicles</div>
         </a>
-        <a v-if="isLoggedIn" href="/add-vehicle" class="sidebar-link w-inline-block"
+        <a v-if="isLoggedIn && isStaff" href="/add-vehicle" class="sidebar-link w-inline-block"
           ><img
             src="../assets/plus.svg"
             loading="eager"
@@ -191,6 +191,9 @@ export default({
     },
     username() {
       return store.state.username
+    },
+    isStaff() {
+      return store.state.isStaff
     }
   },
   methods: {
