@@ -1,22 +1,12 @@
 <template>
   <div class="vehicle-list">
     <div id="data-table" class="mg-bottom-16px">
-      <h2 class="text-500 bold mg-bottom-12px" style="display: inline-block">
-        Vehicles
-      </h2>
-      <button
-        class="btn-primary w-inline-block"
-        @click="showFiltersModal = true"
-        style="
-          position: relative;
-          top: -5px;
-          right: 10px;
-          height: 39px;
-          float: right;
-        "
-      >
-        Filters
-      </button>
+      <div class="header-container">
+        <h2 class="text-500 bold">Vehicle Listings</h2>
+        <button class="btn-primary btn-filter" @click="showFiltersModal = true">
+          <i class="fas fa-filter"></i> Start Filtering Here
+        </button>
+      </div>
       <div class="card component-card">
         <div class="grid-1-column">
           <div class="card overflow-hidden border-none">
@@ -271,12 +261,33 @@
                 </div>
               </div>
 
-              <div class="buttons-row gap-column-12">
-                <button
-                  class="btn-primary w-inline-block"
-                  @click="applyFilters"
-                  style="margin-top: 28px; height: 39px"
+              <div class="filter-actions">
+                <input
+                  type="text"
+                  placeholder="Filter name"
+                  v-model="filterName"
+                  class="filter-name-input"
+                />
+                <button class="btn-secondary" @click="saveFilter">
+                  Save Filter
+                </button>
+                <select
+                  v-model="selectedFilter"
+                  @change="loadFilter"
+                  class="filter-select"
                 >
+                  <option disabled value="">Select a filter</option>
+                  <option
+                    v-for="filter in savedFilters"
+                    :key="filter.id"
+                    :value="filter"
+                  >
+                    {{ filter.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="buttons-row">
+                <button class="btn-primary" @click="applyFilters">
                   Apply Filters
                 </button>
               </div>
@@ -983,4 +994,95 @@ img {
 .checkbox-label {
   white-space: nowrap; /* Keep labels on a single line */
 }
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* Allows items to wrap to the next line on small screens */
+}
+
+.text-500.bold {
+  font-size: 24px;
+  margin: 0;
+  flex: 1 1 100%; /* On small screens, the title takes full width */
+}
+
+.btn-primary {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.btn-primary i {
+  margin-right: 8px;
+}
+
+.btn-primary:hover {
+  background-color: #003d82;
+}
+
+.btn-filter {
+  font-size: 18px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease-in-out;
+  margin-top: 10px;
+}
+
+.btn-filter:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+@media (max-width: 767px) {
+  .text-500.bold {
+    font-size: 20px; /* Smaller font size for the title on small screens */
+  }
+
+  .btn-filter {
+    width: 100%; /* Full width button on small screens */
+    padding: 12px; /* Adjust padding to suit full width button */
+    margin-top: 15px; /* Increase space between the title and the button */
+  }
+
+  .header-container {
+    flex-direction: column; /* Stack the elements vertically on small screens */
+  }
+}
+.filter-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-name-input, .filter-select {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.filter-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
 </style>

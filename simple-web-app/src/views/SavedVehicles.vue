@@ -93,7 +93,7 @@
         </div>
       </div>
       <div class="modal" v-if="showFiltersModal">
-        <div class="modal-overlay" @click="showFiltersModal = false"></div>
+        <!-- <div class="modal-overlay" @click="showFiltersModal = false"></div> -->
         <div class="modal-container">
           <div class="modal-header">
             <h3 class="modal-title">Filters</h3>
