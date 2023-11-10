@@ -293,27 +293,27 @@
     </div>
   </div>
 </template>
+
 <script>
 import api from "../../axios";
 import BidCard from "../components/BidCard.vue";
 import store from "../store";
 
 export default {
-  name: "VehicleList",
   components: {
     BidCard,
   },
   data() {
     return {
-      showDropdown: false,
-      cars: [],
+      cars: null,
       filters: {
-        saleDate: "",
-        year: "",
         make: "",
-        bidAmount: "",
-        parts: [],
+        model: "",
+        year: "",
       },
+      currentPage: 1,
+      pageSize: 10,
+      totalPages: 0,
       showFiltersModal: false,
       damageFields: [
         {
@@ -503,78 +503,30 @@ export default {
       pageSize: 20,
     };
   },
-  mounted() {
-    this.fetchCars();
-  },
   computed: {
     filteredCars() {
-      let filtered = this.cars.filter((car) => {
-        return new Date(car.sale_date) >= new Date();
-      });
-      if (this.filters.year) {
-        filtered = filtered.filter((car) => {
-          return car.year.toString().includes(this.filters.year);
-        });
-      }
-      if (this.filters.make) {
-        filtered = filtered.filter((car) => {
-          return car.make
-            .toLowerCase()
-            .includes(this.filters.make.toLowerCase());
-        });
-      }
-      if (this.filters.model) {
-        filtered = filtered.filter((car) => {
-          return car.model
-            .toLowerCase()
-            .includes(this.filters.model.toLowerCase());
-        });
-      }
-      if (this.filters.bidAmount) {
-        filtered = filtered.filter((car) => {
-          return car.highest_bid >= this.filters.bidAmount;
-        });
-      }
-      if (this.damageFields) {
-        const checkedParts = [];
-        this.damageFields.forEach((field) => {
-          if (field.fields) {
-            field.fields.forEach((subfield) => {
-              if (subfield.value) {
-                checkedParts.push(subfield.name);
-              }
-            });
-          } else if (field.value) {
-            checkedParts.push(field.name);
-          }
-        });
-        if (checkedParts.length > 0) {
-          this.filters.parts = checkedParts;
-        } else {
-          this.filters.parts = [];
+      let filtered = this.cars;
+      if (this.cars){
+          if (this.filters.make) {
+            console.log(this.filters.make)
+          filtered = filtered.filter((car) =>
+            car.make.toLowerCase().includes(this.filters.make.toLowerCase())
+          );
         }
+        if (this.filters.model) {
+          filtered = filtered.filter((car) =>
+            car.model.toLowerCase().includes(this.filters.model.toLowerCase())
+          );
+        }
+        if (this.filters.year) {
+          filtered = filtered.filter(
+            (car) => car.year.toString() === this.filters.year
+          );
+        }
+        return filtered
       }
-      if (this.filters.parts) {
-        filtered = filtered.filter((car) => {
-          return this.filters.parts.every((part) => {
-            if (part === "vehicle_drives" || part === "vehicle_starts") {
-              return car[part];
-            } else {
-              return !car[part];
-            }
-          });
-        });
-      }
-      return filtered;
     },
-    displayedCars() {
-      const startIndex = (this.currentPage - 1) * this.pageSize;
-      const endIndex = startIndex + this.pageSize;
-      return this.filteredCars.slice(startIndex, endIndex);
-    },
-    totalPages() {
-      return Math.ceil(this.filteredCars.length / this.pageSize);
-    },
+
     pageNumbers() {
       const pageNumbers = [];
       const maxPagesToShow = 5;
@@ -591,35 +543,37 @@ export default {
       }
       return pageNumbers;
     },
-  },
-  methods: {
-    maskNumber(number) {
-      if (number.toString().includes("*")) {
-        // If the number already contains asterisks, return it as-is
-        return number;
+    displayedCars() {
+      if (this.filteredCars) {
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+        return this.filteredCars;
       } else {
-        const lastFourDigits = number.toString().slice(-4); // Extract the last 4 digits of the number
-        const asterisks = "*".repeat(number.toString().length - 4); // Create a string of asterisks with the same length as the original number minus 4
-        return asterisks + lastFourDigits; // Combine the asterisks and last 4 digits to create the masked number
+        return [];
       }
     },
-    fetchCars() {
+  },
+  methods: {
+    fetchCars(pageNumber = 1) {
       api
-        .get("all_active_vehicles/")
+        .get(`all_active_vehicles/?page=${pageNumber}`)
         .then((response) => {
           this.cars = response.data.cars;
+          this.currentPage = pageNumber;
+          this.totalPages = response.data.num_pages;
         })
         .catch((error) => {
           console.error(error);
         });
     },
-    getCarUrl(carId) {
-      return `/single-car-view/${carId}`;
-    },
-    applyFilters() {
-      // Fetch the cars again to ensure that we have the latest data
-      this.fetchCars();
-      this.showFiltersModal = false;
+    changePage(page) {
+      if (page === "prev") {
+        this.fetchCars(this.currentPage - 1);
+      } else if (page === "next") {
+        this.fetchCars(this.currentPage + 1);
+      } else {
+        this.fetchCars(page);
+      }
     },
     saveCar(carID) {
       api
@@ -654,18 +608,29 @@ export default {
           );
         });
     },
-    changePage(pageNumber) {
-      if (pageNumber === "next") {
-        this.currentPage = Math.min(this.currentPage + 1, this.totalPages);
-      } else if (pageNumber === "prev") {
-        this.currentPage = Math.max(1, this.currentPage - 1);
+    maskNumber(number) {
+      if (number.toString().includes("*")) {
+        return number;
       } else {
-        this.currentPage = Math.max(1, Math.min(pageNumber, this.totalPages));
+        const lastFourDigits = number.toString().slice(-4); // Extract the last 4 digits of the number
+        const asterisks = "*".repeat(number.toString().length - 4); // Create a string of asterisks with the same length as the original number minus 4
+        return asterisks + lastFourDigits; // Combine the asterisks and last 4 digits to create the masked number
       }
     },
+    applyFilters() {
+      this.fetchCars();
+      this.showFiltersModal = false;
+    },
+    getCarUrl(carId) {
+      return `/single-car-view/${carId}`;
+    },
+  },
+  mounted() {
+    this.fetchCars();
   },
 };
 </script>
+
 
 <style scoped>
 .data-table-row {
