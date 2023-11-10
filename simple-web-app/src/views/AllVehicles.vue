@@ -196,7 +196,7 @@
                 </div>
               </div>
               <div>
-                <label for="year-filter">Year</label>
+                <label for="year-start-filter">Year Start</label>
                 <div>
                   <input
                     type="text"
@@ -205,8 +205,23 @@
                     name="Name"
                     data-name="Name"
                     placeholder="Placeholder"
-                    id="year-filter"
-                    v-model="filters.year"
+                    id="year-start-filter"
+                    v-model="filters.year.start"
+                  />
+                </div>
+              </div>
+              <div>
+                <label for="year-end-filter">Year End</label>
+                <div>
+                  <input
+                    type="text"
+                    class="input w-input"
+                    maxlength="256"
+                    name="Name"
+                    data-name="Name"
+                    placeholder="Placeholder"
+                    id="year-end-filter"
+                    v-model="filters.year.end"
                   />
                 </div>
               </div>
@@ -255,6 +270,7 @@
                   />
                 </div>
               </div>
+
               <div class="buttons-row gap-column-12">
                 <button
                   class="btn-primary w-inline-block"
@@ -267,22 +283,45 @@
               <div style="margin-top: 24px">
                 <h4>Unused/Undamaged Parts</h4>
                 <p>Select the parts you need on the car you are looking for</p>
-                <div class="damage-fields-container">
-                  <div
-                    v-for="field in damageFields"
-                    :key="field.id"
-                    class="checkbox-and-label-container"
-                  >
+                <div>
+                  <div class="standalone-checkbox">
                     <input
                       type="checkbox"
-                      :id="field.id"
-                      :name="field.name"
+                      id="vehicle_starts"
+                      name="vehicle_starts"
                       class="checkbox-input"
-                      v-model="field.value"
+                      v-model="vehicleStarts"
                     />
-                    <label :for="field.id" class="checkbox-label">{{
-                      field.label
-                    }}</label>
+                    <label for="vehicle_starts" class="checkbox-label"
+                      >Vehicle Starts</label
+                    >
+                  </div>
+                </div>
+                <div class="checkbox-sections">
+                  <div
+                    class="checkbox-section"
+                    v-for="(items, section) in damageFields"
+                    :key="section"
+                  >
+                    <h5 class="checkbox-section-title">{{ section }}</h5>
+                    <div class="checkbox-group">
+                      <div
+                        class="checkbox-and-label-container"
+                        v-for="field in items"
+                        :key="field.id"
+                      >
+                        <input
+                          type="checkbox"
+                          :id="field.id"
+                          :name="field.name"
+                          class="checkbox-input"
+                          v-model="field.value"
+                        />
+                        <label :for="field.id" class="checkbox-label">{{
+                          field.label
+                        }}</label>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -309,221 +348,183 @@ export default {
       filters: {
         make: "",
         model: "",
-        year: "",
+        year: {
+          start: "",
+          end: "",
+        },
       },
       currentPage: 1,
       pageSize: 10,
       totalPages: 0,
       showFiltersModal: false,
-      damageFields: [
-        {
-          id: "vehicle_drives",
-          name: "vehicle_drives",
-          label: "Vehicle Drives",
-          value: false,
-        },
-        {
-          id: "vehicle_starts",
-          name: "vehicle_starts",
-          label: "Vehicle Starts",
-          value: false,
-        },
-        {
-          id: "bumper_damage",
-          name: "bumper_damage",
-          label: "Bumper",
-          value: false,
-        },
-        {
-          id: "driver_headlight_damage",
-          name: "driver_headlight_damage",
-          label: "Driver Headlight",
-          value: false,
-        },
-        {
-          id: "passenger_headlight_damage",
-          name: "passenger_headlight_damage",
-          label: "Passenger Headlight",
-          value: false,
-        },
-        { id: "hood_damage", name: "hood_damage", label: "Hood", value: false },
-        { id: "roof_damage", name: "roof_damage", label: "Roof", value: false },
-        {
-          id: "driver_fender_damage",
-          name: "driver_fender_damage",
-          label: "Driver Fender",
-          value: false,
-        },
-        {
-          id: "passenger_fender_damage",
-          name: "passenger_fender_damage",
-          label: "Passenger Fender",
-          value: false,
-        },
-        {
-          id: "driver_door_damage",
-          name: "driver_door_damage",
-          label: "Driver Door",
-          value: false,
-        },
-        {
-          id: "passenger_door_damage",
-          name: "passenger_door_damage",
-          label: "Passenger Door",
-          value: false,
-        },
-        {
-          id: "driver_rear_door_damage",
-          name: "driver_rear_door_damage",
-          label: "Driver Rear Door",
-          value: false,
-        },
-        {
-          id: "passenger_rear_door_damage",
-          name: "passenger_rear_door_damage",
-          label: "Passenger Rear Door",
-          value: false,
-        },
-        {
-          id: "driver_rocker_damage",
-          name: "driver_rocker_damage",
-          label: "Driver Rocker",
-          value: false,
-        },
-        {
-          id: "passenger_rocker_damage",
-          name: "passenger_rocker_damage",
-          label: "Passenger Rocker",
-          value: false,
-        },
-        {
-          id: "driver_rear_wheel_arch_damage",
-          name: "driver_rear_wheel_arch_damage",
-          label: "Driver Rear Wheel Arch",
-          value: false,
-        },
-        {
-          id: "passenger_rear_wheel_arch_damage",
-          name: "passenger_rear_wheel_arch_damage",
-          label: "Passenger Rear Wheel Arch",
-          value: false,
-        },
-        {
-          id: "driver_rear_quarter_damage",
-          name: "driver_rear_quarter_damage",
-          label: "Driver Rear Quarter",
-          value: false,
-        },
-        {
-          id: "passenger_rear_quarter_damage",
-          name: "passenger_rear_quarter_damage",
-          label: "Passenger Rear Quarter",
-          value: false,
-        },
-        {
-          id: "trunk_damage",
-          name: "trunk_damage",
-          label: "Trunk",
-          value: false,
-        },
-        {
-          id: "rear_bumper_damage",
-          name: "rear_bumper_damage",
-          label: "Rear Bumper",
-          value: false,
-        },
-        {
-          id: "driver_tail_light_damage",
-          name: "driver_tail_light_damage",
-          label: "Driver Tail Light",
-          value: false,
-        },
-        {
-          id: "passenger_tail_light_damage",
-          name: "passenger_tail_light_damage",
-          label: "Passenger Tail Light",
-          value: false,
-        },
-        {
-          id: "driver_mirror_damage",
-          name: "driver_mirror_damage",
-          label: "Driver Mirror",
-          value: false,
-        },
-        {
-          id: "passenger_mirror_damage",
-          name: "passenger_mirror_damage",
-          label: "Passenger Mirror",
-          value: false,
-        },
-        {
-          id: "windshield_damage",
-          name: "windshield_damage",
-          label: "Windshield",
-          value: false,
-        },
-        {
-          id: "driver_window_damage",
-          name: "driver_window_damage",
-          label: "Driver Window",
-          value: false,
-        },
-        {
-          id: "passenger_window_damage",
-          name: "passenger_window_damage",
-          label: "Passenger Window",
-          value: false,
-        },
-        {
-          id: "driver_rear_window_damage",
-          name: "driver_rear_window_damage",
-          label: "Driver Rear Window",
-          value: false,
-        },
-        {
-          id: "passenger_rear_window_damage",
-          name: "passenger_rear_window_damage",
-          label: "Passenger Rear Window",
-          value: false,
-        },
-        {
-          id: "back_glass_damage",
-          name: "back_glass_damage",
-          label: "Back Glass",
-          value: false,
-        },
-        {
-          id: "truck_bed_damage",
-          name: "truck_bed_damage",
-          label: "Truck Bed",
-          value: false,
-        },
-      ],
-      currentPage: 1,
-      pageSize: 20,
+      damageFields: {
+        Doors: [
+          {
+            id: "driver_door_damage",
+            name: "driver_door_damage",
+            label: "Driver Door",
+            value: false,
+          },
+          {
+            id: "passenger_door_damage",
+            name: "passenger_door_damage",
+            label: "Passenger Door",
+            value: false,
+          },
+          {
+            id: "driver_rear_door_damage",
+            name: "driver_rear_door_damage",
+            label: "Driver Rear Door",
+            value: false,
+          },
+          {
+            id: "passenger_rear_door_damage",
+            name: "passenger_rear_door_damage",
+            label: "Passenger Rear Door",
+            value: false,
+          },
+        ],
+        Lights: [
+          {
+            id: "driver_headlight_damage",
+            name: "driver_headlight_damage",
+            label: "Driver Headlight",
+            value: false,
+          },
+          {
+            id: "passenger_headlight_damage",
+            name: "passenger_headlight_damage",
+            label: "Passenger Headlight",
+            value: false,
+          },
+          {
+            id: "driver_tail_light_damage",
+            name: "driver_tail_light_damage",
+            label: "Driver Tail Light",
+            value: false,
+          },
+          {
+            id: "passenger_tail_light_damage",
+            name: "passenger_tail_light_damage",
+            label: "Passenger Tail Light",
+            value: false,
+          },
+        ],
+        Panels: [
+          {
+            id: "hood_damage",
+            name: "hood_damage",
+            label: "Hood",
+            value: false,
+          },
+          {
+            id: "roof_damage",
+            name: "roof_damage",
+            label: "Roof",
+            value: false,
+          },
+          {
+            id: "driver_fender_damage",
+            name: "driver_fender_damage",
+            label: "Driver Fender",
+            value: false,
+          },
+          {
+            id: "passenger_fender_damage",
+            name: "passenger_fender_damage",
+            label: "Passenger Fender",
+            value: false,
+          },
+          {
+            id: "driver_rear_quarter_damage",
+            name: "driver_rear_quarter_damage",
+            label: "Driver Rear Quarter",
+            value: false,
+          },
+          {
+            id: "passenger_rear_quarter_damage",
+            name: "passenger_rear_quarter_damage",
+            label: "Passenger Rear Quarter",
+            value: false,
+          },
+          {
+            id: "trunk_damage",
+            name: "trunk_damage",
+            label: "Trunk",
+            value: false,
+          },
+          {
+            id: "rear_bumper_damage",
+            name: "rear_bumper_damage",
+            label: "Rear Bumper",
+            value: false,
+          },
+          {
+            id: "driver_mirror_damage",
+            name: "driver_mirror_damage",
+            label: "Driver Mirror",
+            value: false,
+          },
+          {
+            id: "passenger_mirror_damage",
+            name: "passenger_mirror_damage",
+            label: "Passenger Mirror",
+            value: false,
+          },
+          {
+            id: "truck_bed_damage",
+            name: "truck_bed_damage",
+            label: "Truck Bed",
+            value: false,
+          },
+        ],
+        Glass: [
+          {
+            id: "windshield_damage",
+            name: "windshield_damage",
+            label: "Windshield",
+            value: false,
+          },
+          {
+            id: "driver_window_damage",
+            name: "driver_window_damage",
+            label: "Driver Window",
+            value: false,
+          },
+          {
+            id: "passenger_window_damage",
+            name: "passenger_window_damage",
+            label: "Passenger Window",
+            value: false,
+          },
+          {
+            id: "driver_rear_window_damage",
+            name: "driver_rear_window_damage",
+            label: "Driver Rear Window",
+            value: false,
+          },
+          {
+            id: "passenger_rear_window_damage",
+            name: "passenger_rear_window_damage",
+            label: "Passenger Rear Window",
+            value: false,
+          },
+          {
+            id: "back_glass_damage",
+            name: "back_glass_damage",
+            label: "Back Glass",
+            value: false,
+          },
+        ],
+      },
+      vehicleStarts: false,
     };
   },
   computed: {
     filteredCars() {
       let filtered = this.cars;
-      if (this.cars){
-          if (this.filters.make) {
-            console.log(this.filters.make)
-          filtered = filtered.filter((car) =>
-            car.make.toLowerCase().includes(this.filters.make.toLowerCase())
-          );
-        }
-        if (this.filters.model) {
-          filtered = filtered.filter((car) =>
-            car.model.toLowerCase().includes(this.filters.model.toLowerCase())
-          );
-        }
-        if (this.filters.year) {
-          filtered = filtered.filter(
-            (car) => car.year.toString() === this.filters.year
-          );
-        }
-        return filtered
+      if (this.cars) {
+        return filtered;
       }
     },
 
@@ -556,7 +557,21 @@ export default {
   methods: {
     fetchCars(pageNumber = 1) {
       api
-        .get(`all_active_vehicles/?page=${pageNumber}`)
+        .post(
+          `all_active_vehicles/?page=${pageNumber}`,
+          {
+            makes: this.filters.make,
+            models: this.filters.model,
+            years: this.filters.year,
+            sold: false,
+          },
+          {
+            headers: {
+              "X-CSRFToken": store.getters.csrfToken,
+            },
+            withCredentials: true,
+          }
+        )
         .then((response) => {
           this.cars = response.data.cars;
           this.currentPage = pageNumber;
@@ -701,6 +716,8 @@ img {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 1em;
+  flex-direction: column; /* Stack the filters vertically */
+  margin-bottom: 20px;
 }
 
 .filter-container > div {
@@ -822,7 +839,8 @@ img {
 }
 
 .checkbox-input {
-  margin-right: 8px;
+  margin-left: 10px;
+  margin-right: 5px;
 }
 .damage-fields-container {
   display: flex;
@@ -840,10 +858,6 @@ img {
   align-items: center;
   width: calc(33.33% - 8px);
   margin-top: 12px;
-}
-
-.checkbox-input {
-  margin-right: 8px;
 }
 
 .checkbox-label {
@@ -885,5 +899,88 @@ img {
 
 .pagination button:active {
   background-color: #005cbf;
+}
+.vehicle-list {
+  font-family: "Open Sans", sans-serif;
+}
+
+/* Improve button styles */
+.btn-primary {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #003d82;
+}
+
+/* Style form inputs */
+.input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 100%;
+}
+
+/* Grid layout for checkboxes */
+.damage-fields-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-gap: 10px;
+}
+
+/* Icon for closing modal */
+.modal-close {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.modal-close:before {
+  content: "\00d7"; /* Unicode character for "X" */
+}
+
+.checkbox-sections {
+  display: block; /* Default block display */
+}
+
+.checkbox-section {
+  margin-bottom: 20px; /* Add space between sections */
+}
+
+.checkbox-section-title {
+  font-size: 18px; /* Larger section titles */
+  border-bottom: 1px solid #ccc; /* Add a line below the title */
+  padding-bottom: 10px; /* Spacing between title and line */
+  margin-bottom: 10px; /* Spacing between line and checkboxes */
+}
+
+/* Checkbox groups */
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(150px, 1fr)
+  ); /* Adapt number of columns based on the modal size */
+  grid-gap: 10px;
+}
+
+.checkbox-and-label-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Adjust space between each checkbox */
+}
+
+.checkbox-label {
+  white-space: nowrap; /* Keep labels on a single line */
 }
 </style>
