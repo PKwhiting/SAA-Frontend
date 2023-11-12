@@ -165,7 +165,6 @@
           <div class="modal-header">
             <h3 class="modal-title">Filters</h3>
             <button class="modal-close" @click="showFiltersModal = false">
-              &times;
             </button>
           </div>
           <div class="modal-body">
@@ -266,15 +265,15 @@
                   type="text"
                   placeholder="Filter name"
                   v-model="filterName"
-                  class="filter-name-input"
+                  class="filter-name-input input"
                 />
-                <button class="btn-secondary" @click="saveFilter">
+                <button class="btn-primary" @click="saveFilter">
                   Save Filter
                 </button>
                 <select
                   v-model="selectedFilter"
                   @change="loadFilter"
-                  class="filter-select"
+                  class="filter-select input"
                 >
                   <option disabled value="">Select a filter</option>
                   <option
@@ -286,6 +285,7 @@
                   </option>
                 </select>
               </div>
+
               <div class="buttons-row">
                 <button class="btn-primary" @click="applyFilters">
                   Apply Filters
@@ -1063,7 +1063,8 @@ img {
   margin-bottom: 20px;
 }
 
-.filter-name-input, .filter-select {
+.filter-name-input,
+.filter-select {
   flex-grow: 1;
   padding: 10px;
   border-radius: 4px;
@@ -1085,4 +1086,51 @@ img {
   cursor: pointer;
 }
 
+.filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-name-input,
+.filter-select {
+  flex-grow: 1;
+  margin-bottom: 10px; /* Add margin for wrapping */
+}
+
+.filter-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+  background-size: 12px;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 10px 20px;
+  font-size: 16px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-transform: uppercase;
+  align-self: center; /* Align button to center if the items wrap */
+}
+
+.btn-primary:not(:last-child) {
+  margin-right: 10px; /* Add margin between buttons */
+}
+@media (max-width: 767px) {
+  .filter-actions {
+    flex-direction: column;
+  }
+
+  .btn-primary {
+    width: 100%;
+    margin-top: 10px; /* Add top margin for mobile view */
+  }
+}
 </style>
