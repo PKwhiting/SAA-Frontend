@@ -62,7 +62,14 @@
                         loading="eager"
                         alt="Changelog - Dashflow X Webflow Template"
                         class="max-w-20px"
-                        style="margin-bottom: 5px"
+                        style="margin-top: 0px"
+                      />
+                       <img
+                        v-if="car.vehicle_starts"
+                        src="@/assets/green-checkmark.svg"
+                        alt="Green checkmark"
+                        class="max-w-20px"
+                        style="margin-left: 5px; margin-top: 0px; margin-right: 5px"
                       />
                       <a
                         class="hide-desktop hide-tablet"
@@ -164,26 +171,13 @@
         <div class="modal-container">
           <div class="modal-header">
             <h3 class="modal-title">Filters</h3>
-            <button class="modal-close" @click="showFiltersModal = false">
-            </button>
+            <button
+              class="modal-close"
+              @click="showFiltersModal = false"
+            ></button>
           </div>
           <div class="modal-body">
             <div class="filter-container">
-              <div>
-                <label for="sale-date-filter">Sale Date</label>
-                <div>
-                  <input
-                    type="date"
-                    class="input w-input"
-                    maxlength="256"
-                    name="Name"
-                    data-name="Name"
-                    placeholder="Placeholder"
-                    id="sale-date-filter"
-                    v-model="filters.saleDate"
-                  />
-                </div>
-              </div>
               <div>
                 <label for="year-start-filter">Year Start</label>
                 <div>
@@ -193,7 +187,6 @@
                     maxlength="256"
                     name="Name"
                     data-name="Name"
-                    placeholder="Placeholder"
                     id="year-start-filter"
                     v-model="filters.year.start"
                   />
@@ -208,7 +201,6 @@
                     maxlength="256"
                     name="Name"
                     data-name="Name"
-                    placeholder="Placeholder"
                     id="year-end-filter"
                     v-model="filters.year.end"
                   />
@@ -223,7 +215,6 @@
                     maxlength="256"
                     name="Name"
                     data-name="Name"
-                    placeholder="Placeholder"
                     id="make-filter"
                     v-model="filters.make"
                   />
@@ -238,29 +229,13 @@
                     maxlength="256"
                     name="Name"
                     data-name="Name"
-                    placeholder="Placeholder"
                     id="model-filter"
                     v-model="filters.model"
                   />
                 </div>
               </div>
-              <div>
-                <label for="bid-amount-filter">Bid Amount</label>
-                <div>
-                  <input
-                    type="number"
-                    class="input w-input"
-                    maxlength="256"
-                    name="Name"
-                    data-name="Name"
-                    placeholder="Placeholder"
-                    id="bid-amount-filter"
-                    v-model="filters.bidAmount"
-                  />
-                </div>
-              </div>
 
-              <div class="filter-actions">
+              <div class="filter-actions" style="margin-right: 1em; margin-top: 3em">
                 <input
                   type="text"
                   placeholder="Filter name"
@@ -272,7 +247,7 @@
                 </button>
                 <select
                   v-model="selectedFilter"
-                  @change="loadFilter"
+                  @change="loadFilter(selectedFilter)"
                   class="filter-select input"
                 >
                   <option disabled value="">Select a filter</option>
@@ -280,6 +255,7 @@
                     v-for="filter in savedFilters"
                     :key="filter.id"
                     :value="filter"
+                    @click="loadFilter()"
                   >
                     {{ filter.name }}
                   </option>
@@ -364,6 +340,7 @@ export default {
           end: "",
         },
       },
+      savedFilters: [],
       currentPage: 1,
       pageSize: 10,
       totalPages: 0,
@@ -529,6 +506,8 @@ export default {
         ],
       },
       vehicleStarts: false,
+      filterName: "",
+      selectedFilter: "",
     };
   },
   computed: {
@@ -650,15 +629,77 @@ export default {
     getCarUrl(carId) {
       return `/single-car-view/${carId}`;
     },
+    saveFilter() {
+      api
+        .post(
+          `save-filter/${store.state.userID}`,
+          {
+            name: this.filterName,
+            filters: this.filters,
+          },
+          {
+            headers: {
+              "X-CSRFToken": store.getters.csrfToken,
+            },
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+          const icon = require("@/assets/heart-svg.svg");
+          this.$root.showNotificationBar(
+            "Filter Saved Successfully",
+            "green",
+            1500,
+            icon
+          );
+          this.filters = {
+            make: "",
+            model: "",
+            year: {
+              start: "",
+              end: "",
+            },
+          };
+          this.filterName = "";
+          this.showFiltersModal = false;
+        })
+        .catch((error) => {
+          const icon = require("@/assets/cross.svg");
+          this.$root.showNotificationBar(
+            "Issue saving filter. Contact Admin for help.",
+            "red",
+            3000,
+            icon
+          );
+        });
+    },
+    getSavedFilters() {
+      api
+        .get(`get-saved-filters/${store.state.userID}`)
+        .then((response) => {
+          this.savedFilters = response.data.filters;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    loadFilter() {
+      this.filters.make = this.selectedFilter.make ? this.selectedFilter.make : "";
+      this.filters.model = this.selectedFilter.model ? this.selectedFilter.model : "";
+      this.filters.year.start = this.selectedFilter.start ? this.selectedFilter.start : "";
+      this.filters.year.end = this.selectedFilter.end ? this.selectedFilter.end : "";
+    },
   },
   mounted() {
     this.fetchCars();
+    this.getSavedFilters();
   },
 };
 </script>
 
 
 <style scoped>
+/* Table styles */
 .data-table-row {
   max-width: 100%;
   min-width: auto;
@@ -666,10 +707,12 @@ export default {
   padding: 0;
   grid-template-columns: 1fr 1.25fr 1fr 1.25fr;
 }
+
 .table-header.data-table-row {
   padding: 12px;
   text-align: left;
 }
+
 .vehicle-list {
   font-family: Arial, sans-serif;
   font-size: 14px;
@@ -699,7 +742,7 @@ img {
   max-height: 200px;
 }
 
-/* Hide columns on mobile */
+/* Hide columns based on screen size */
 @media (max-width: 767px) {
   .hide-mobile {
     display: none;
@@ -709,13 +752,12 @@ img {
   }
 }
 
-/* Hide columns on tablet test */
 @media (min-width: 767px) and (max-width: 991px) {
   .hide-tablet {
     display: none;
   }
 }
-/* Hide columns on desktop test */
+
 @media (min-width: 992px) {
   .hide-desktop {
     display: none;
@@ -726,9 +768,8 @@ img {
 .filter-container {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 1em;
-  flex-direction: column; /* Stack the filters vertically */
   margin-bottom: 20px;
+  flex-direction: column;
 }
 
 .filter-container > div {
@@ -824,6 +865,8 @@ img {
 .modal-body {
   padding: 1em;
 }
+
+/* Form styles */
 .input-fields-container {
   display: flex;
   flex-wrap: wrap;
@@ -853,11 +896,8 @@ img {
   margin-left: 10px;
   margin-right: 5px;
 }
-.damage-fields-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
+
+/* Damage fields */
 .damage-fields-container {
   display: flex;
   flex-wrap: wrap;
@@ -874,6 +914,8 @@ img {
 .checkbox-label {
   margin-bottom: 0px;
 }
+
+/* Pagination styles */
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -911,6 +953,7 @@ img {
 .pagination button:active {
   background-color: #005cbf;
 }
+
 .vehicle-list {
   font-family: "Open Sans", sans-serif;
 }
@@ -920,16 +963,35 @@ img {
   background-color: #0056b3;
   color: white;
   border: none;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
+  padding: 12px 25px;
   font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.btn-primary i {
+  margin-right: 8px;
 }
 
 .btn-primary:hover {
   background-color: #003d82;
+}
+
+.btn-filter {
+  font-size: 18px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease-in-out;
+  margin-top: 10px;
+}
+
+.btn-filter:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* Style form inputs */
@@ -994,6 +1056,7 @@ img {
 .checkbox-label {
   white-space: nowrap; /* Keep labels on a single line */
 }
+
 .header-container {
   display: flex;
   align-items: center;
@@ -1008,40 +1071,6 @@ img {
   flex: 1 1 100%; /* On small screens, the title takes full width */
 }
 
-.btn-primary {
-  background-color: #0056b3;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  font-size: 16px;
-  font-weight: bold;
-  text-transform: uppercase;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
-  flex-shrink: 0;
-}
-
-.btn-primary i {
-  margin-right: 8px;
-}
-
-.btn-primary:hover {
-  background-color: #003d82;
-}
-
-.btn-filter {
-  font-size: 18px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.3s ease-in-out;
-  margin-top: 10px;
-}
-
-.btn-filter:hover {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-}
 @media (max-width: 767px) {
   .text-500.bold {
     font-size: 20px; /* Smaller font size for the title on small screens */
@@ -1059,35 +1088,6 @@ img {
 }
 .filter-actions {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.filter-name-input,
-.filter-select {
-  flex-grow: 1;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-.filter-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-}
-
-.filter-actions {
-  display: flex;
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
@@ -1097,14 +1097,18 @@ img {
 .filter-name-input,
 .filter-select {
   flex-grow: 1;
-  margin-bottom: 10px; /* Add margin for wrapping */
-}
-
-.filter-select {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+}
+
+.filter-select {
+  background: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')
+    no-repeat right 10px center;
   background-size: 12px;
 }
 
@@ -1117,12 +1121,20 @@ img {
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-transform: uppercase;
-  align-self: center; /* Align button to center if the items wrap */
+  align-self: center;
+  border-radius: 4px;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
 }
 
 .btn-primary:not(:last-child) {
-  margin-right: 10px; /* Add margin between buttons */
+  margin-right: 10px;
 }
+
 @media (max-width: 767px) {
   .filter-actions {
     flex-direction: column;
@@ -1130,7 +1142,7 @@ img {
 
   .btn-primary {
     width: 100%;
-    margin-top: 10px; /* Add top margin for mobile view */
+    margin-top: 10px;
   }
 }
 </style>
