@@ -235,12 +235,12 @@
                 </div>
               </div>
 
-              <div class="filter-actions" style="margin-right: 1em; margin-top: 3em">
+              <div class="filter-container" style="margin-right: 1em; margin-top: 3em">
                 <input
                   type="text"
                   placeholder="Filter name"
                   v-model="filterName"
-                  class="filter-name-input input"
+                  class="filter-name-input input input w-input"
                 />
                 <button class="btn-primary" @click="saveFilter">
                   Save Filter
@@ -249,6 +249,7 @@
                   v-model="selectedFilter"
                   @change="loadFilter(selectedFilter)"
                   class="filter-select input"
+                  style="margin-top: 1em"
                 >
                   <option disabled value="">Select a filter</option>
                   <option
