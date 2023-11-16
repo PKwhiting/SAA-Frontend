@@ -40,45 +40,62 @@
                       alt="Home - Dashflow X Webflow Template"
                       class="max-w-20px"
                     />
-                    <div class="text-100 medium">Home</div> </a
-                   >
-                   <a href="/" class="sidebar-link w-inline-block"
+                    <div class="text-100 medium">Home</div>
+                  </a>
+                  <a href="/account" class="sidebar-link w-inline-block">
+                    <div class="avatar-name-circle _24px" v-show="isLoggedIn">
+                      {{ username[0].toUpperCase() }}
+                    </div>
+                    <div class="text-100 medium" v-show="isLoggedIn">
+                      Account
+                    </div></a
+                  >
+                  <a href="/" class="sidebar-link w-inline-block"
                     ><img
                       src="@/assets/gavel.svg"
                       loading="eager"
                       alt="Changelog - Dashflow X Webflow Template"
                       class="max-w-20px"
                     />
-                    <div class="text-100 medium">Auction Inventory</div> 
-                    </a>
-                    <a href="/sold" class="sidebar-link w-inline-block"
+                    <div class="text-100 medium">Auction Inventory</div>
+                  </a>
+                  <a href="/sold" class="sidebar-link w-inline-block"
                     ><img
                       src="https://assets-global.website-files.com/653028834fc27f7bf2eff1c3/653028834fc27f7bf2eff2f7_changelog-sidebar-link-icon-dashflow-webflow-template.png"
                       loading="eager"
                       alt="Changelog - Dashflow X Webflow Template"
                       class="max-w-20px"
                     />
-                    <div class="text-100 medium">Sold Vehicles</div> 
-                    </a>
-                    <a v-if="isLoggedIn && isStaff" href="/add-vehicle" class="sidebar-link w-inline-block"
+                    <div class="text-100 medium">Sold Vehicles</div>
+                  </a>
+                  <a
+                    v-if="isLoggedIn && isStaff"
+                    href="/add-vehicle"
+                    class="sidebar-link w-inline-block"
                     ><img
                       src="@/assets/plus.svg"
                       loading="eager"
                       alt="Changelog - Dashflow X Webflow Template"
                       class="max-w-20px"
                     />
-                    <div class="text-100 medium">List Vehicle</div> 
-                    </a>
-                    <a v-if="isLoggedIn" href="/saved-vehicles" class="sidebar-link w-inline-block"
+                    <div class="text-100 medium">List Vehicle</div>
+                  </a>
+                  <a
+                    v-if="isLoggedIn"
+                    href="/saved-vehicles"
+                    class="sidebar-link w-inline-block"
                     ><img
                       src="@/assets/heart-svg.svg"
                       loading="eager"
                       alt="Changelog - Dashflow X Webflow Template"
                       class="max-w-20px"
                     />
-                    <div class="text-100 medium">Saved Vehicles</div> 
-                    </a>
-                    <a v-if="isLoggedIn" @click="logout()" class="sidebar-link w-inline-block"
+                    <div class="text-100 medium">Saved Vehicles</div>
+                  </a>
+                  <a
+                    v-if="isLoggedIn"
+                    @click="logout()"
+                    class="sidebar-link w-inline-block"
                     ><img
                       src="@/assets/logout.svg"
                       loading="eager"
@@ -99,8 +116,8 @@
                 >
                   <div class="flex-horizontal gap-column-4px">
                     <div>About Us</div>
-                  </div> </a
-                >
+                  </div>
+                </a>
                 <a
                   data-w-id="5228fae3-1046-92bf-afc3-a85185c5a451"
                   href="#"
@@ -125,8 +142,8 @@
                 >
                   <div class="flex-horizontal gap-column-4px">
                     <div>About Us</div>
-                  </div> </a
-                >
+                  </div>
+                </a>
                 <a
                   data-w-id="dc3b625c-4a68-4ebe-9b74-d3193fa9f32f"
                   href="#"
@@ -154,25 +171,28 @@
 import { mapState, mapMutations } from "vuex";
 import store from "../store";
 
-export default({
+export default {
   nsame: "Navbar",
   computed: {
     isLoggedIn() {
-      return store.state.isLoggedIn
+      return store.state.isLoggedIn;
     },
     isStaff() {
-      return store.state.isStaff
-    }
+      return store.state.isStaff;
+    },
+    username() {
+      return store.state.username
+    },
   },
   methods: {
     logout() {
-      this.$root.logout()
-      this.$forceUpdate()
-      this.$router.push('/')
+      this.$root.logout();
+      this.$forceUpdate();
+      this.$router.push("/");
     },
     login() {
       this.$root.flipLoginModalVisibility();
-    }
+    },
   },
-})
+};
 </script>
