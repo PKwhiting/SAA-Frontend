@@ -64,12 +64,16 @@
                         class="max-w-20px"
                         style="margin-top: 0px"
                       />
-                       <img
+                      <img
                         v-if="car.vehicle_starts"
                         src="@/assets/green-checkmark.svg"
                         alt="Green checkmark"
                         class="max-w-20px"
-                        style="margin-left: 5px; margin-top: 0px; margin-right: 5px"
+                        style="
+                          margin-left: 5px;
+                          margin-top: 0px;
+                          margin-right: 5px;
+                        "
                       />
                       <a
                         class="hide-desktop hide-tablet"
@@ -235,7 +239,10 @@
                 </div>
               </div>
 
-              <div class="filter-container" style="margin-right: 1em; margin-top: 3em">
+              <div
+                class="filter-container"
+                style="margin-right: 1em; margin-top: 3em"
+              >
                 <input
                   type="text"
                   placeholder="Filter name"
@@ -582,6 +589,17 @@ export default {
       }
     },
     saveCar(carID) {
+      if (!store.getters.isLoggedIn) {
+        const icon = require("@/assets/cross.svg");
+        this.$root.showNotificationBar(
+          "Please log in to save vehicles",
+          "red",
+          3000,
+          icon
+        );
+        return;
+      }
+
       api
         .post(
           `add-saved-vehicle/${store.state.userID}`,
@@ -685,10 +703,18 @@ export default {
         });
     },
     loadFilter() {
-      this.filters.make = this.selectedFilter.make ? this.selectedFilter.make : "";
-      this.filters.model = this.selectedFilter.model ? this.selectedFilter.model : "";
-      this.filters.year.start = this.selectedFilter.start ? this.selectedFilter.start : "";
-      this.filters.year.end = this.selectedFilter.end ? this.selectedFilter.end : "";
+      this.filters.make = this.selectedFilter.make
+        ? this.selectedFilter.make
+        : "";
+      this.filters.model = this.selectedFilter.model
+        ? this.selectedFilter.model
+        : "";
+      this.filters.year.start = this.selectedFilter.start
+        ? this.selectedFilter.start
+        : "";
+      this.filters.year.end = this.selectedFilter.end
+        ? this.selectedFilter.end
+        : "";
     },
   },
   mounted() {
