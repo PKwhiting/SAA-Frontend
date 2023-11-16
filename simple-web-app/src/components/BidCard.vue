@@ -120,7 +120,7 @@ export default {
     };
   },
   mounted() {
-    const currentBidNumber = Number(this.car.current_bid);
+    const currentBidNumber = Number(this.car.highest_bid);
     this.userBid = currentBidNumber.toFixed(0);
     this.currentVehicleBid = currentBidNumber.toFixed(0);
     setInterval(this.updateTimeRemaining, 1000);
@@ -211,6 +211,12 @@ export default {
     incrementBid() {
       const bid = Number(this.userBid);
       this.userBid = bid + 50; // Increment the user's bid by 100 (adjust as needed)
+      if (this.userBid < this.currentVehicleBid) {
+          this.currentVehicleBid = this.userBid;
+        }
+      else{
+        this.currentVehicleBid = this.userBid;
+      }
     },
     decrementBid() {
       if (this.userBid > this.currentBid) {
@@ -235,6 +241,9 @@ export default {
       if (minutes <= 0 && days <= 0 && hours <= 0 && seconds <= 0) {
         this.formattedTimeRemaining = "Auction is over!";
         this.auctionLive = false;
+        if (this.ws) {
+          this.ws.close();
+        }
       } else {
         this.auctionLive = true;
         this.formattedTimeRemaining = `${days}D ${hours}H ${minutes}M ${seconds}S`;
@@ -255,10 +264,8 @@ export default {
           if (data.type === "update") {
             const saleDate = data.sale_date;
             const bidAmount = data.bid_amount;
-            // Update the component state with the new sale date and bid amount
             this.currentSaleDate = saleDate;
             this.currentVehicleBid = bidAmount;
-            // Recalculate the time remaining
             const total = Date.parse(this.saleDate) - Date.parse(new Date());
             const days = Math.floor(total / (1000 * 60 * 60 * 24));
             const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
@@ -274,10 +281,24 @@ export default {
           let icon = require("@/assets/paper-clip-svg.svg");
           this.$root.showNotificationBar(
             "Auction Is Over. Thank you for participating!",
-            "yellow",
+            "red",
             3000,
             icon
           );
+          // send a request to declar the winner of the auction
+          api.post(
+            "declare-winner/",
+            {
+              carID: this.car.id,
+            },
+            {
+              headers: {
+                "X-CSRFToken": store.getters.csrfToken,
+              },
+              withCredentials: true,
+            }
+          );
+
         };
       } else {
         //updating the current bid when user increments bid
