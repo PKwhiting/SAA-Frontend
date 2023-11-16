@@ -34,7 +34,7 @@ const routes = [
   {
     path: '/single-car-view/:id',
     component: SingleCarView,
-    name: 'login',
+    name: 'single-car-view',
   },
   {
     path: '/about-us',
