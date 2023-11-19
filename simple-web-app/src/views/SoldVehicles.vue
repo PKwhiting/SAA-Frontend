@@ -2,7 +2,7 @@
   <div class="vehicle-list">
     <div id="data-table" class="mg-bottom-16px">
       <div class="header-container">
-        <h2 class="text-500 bold">Vehicle Listings</h2>
+        <h2 class="text-500 bold">Sold Vehicles</h2>
         <button class="btn-primary btn-filter" @click="showFiltersModal = true">
           <i class="fas fa-filter"></i> Start Filtering Here
         </button>
@@ -241,7 +241,7 @@
                   v-model="filterName"
                   class="filter-name-input input"
                 />
-                <button class="btn-primary" @click="saveFilter">
+                <button class="btn-primary" @click="saveFilter" style="min-width: 100%">
                   Save Filter
                 </button>
                 <select
@@ -262,7 +262,7 @@
               </div>
 
               <div class="buttons-row">
-                <button class="btn-primary" @click="applyFilters">
+                <button class="btn-primary" @click="applyFilters" style="min-width: 100%">
                   Apply Filters
                 </button>
               </div>
@@ -270,13 +270,14 @@
                 <h4>Unused/Undamaged Parts</h4>
                 <p>Select the parts you need on the car you are looking for</p>
                 <div>
-                  <div class="standalone-checkbox">
+                  <div class="standalone-checkbox" style="display: flex">
                     <input
                       type="checkbox"
                       id="vehicle_starts"
                       name="vehicle_starts"
                       class="checkbox-input"
                       v-model="vehicleStarts"
+                      style="max-width: 30px; margin-bottom: 30px"
                     />
                     <label for="vehicle_starts" class="checkbox-label"
                       >Vehicle Starts</label

@@ -7,7 +7,7 @@
       <div
         id="w-node-a99c1661-31b6-9ad4-73d2-7f6491da01b0-91da01b0"
         class="inner-container _370px"
-        style="width: 400px; margin-top: 200px"
+        style="width: 400px; margin-top: 125px"
       >
         <div class="position-relative---z-index-1">
           <div class="card pd-24px---18px text-center">
@@ -143,6 +143,35 @@
                         <div class="text-50 medium">{{ emailError }}</div>
                       </div>
                     </div>
+                    <div style="margin-top: 24px">
+                      <input
+                        type="text"
+                        class="input w-input"
+                        maxlength="12"
+                        name="phoneNumber"
+                        data-name="Phone Number"
+                        placeholder="Phone Number"
+                        id="phoneNumber"
+                        :value="formattedPhoneNumber"
+                        @input="updatePhoneNumber"
+                      />
+                      <div
+                        class="error-message small"
+                        v-show="phoneNumberError"
+                      >
+                        <div class="flex align-center gap-column-4px">
+                          <img
+                            src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                            loading="eager"
+                            alt=""
+                            class="max-w-12px"
+                          />
+                          <div class="text-50 medium">
+                            {{ phoneNumberError }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -202,7 +231,7 @@
 import api from "../../axios";
 import axios from "axios";
 import { mapState, mapMutations } from "vuex";
-import store from "../store"
+import store from "../store";
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -216,26 +245,39 @@ export default {
       firstName: "",
       lastName: "",
       email: "",
+      phoneNumber: "",
       usernameError: "",
       passwordError: "",
       firstNameError: "",
       lastNameError: "",
       emailError: "",
+      phoneNumberError: "",
       errorMessage: "",
     };
   },
 
-  
   methods: {
-    ...mapMutations(['setIsLoggedIn']),
+    ...mapMutations(["setIsLoggedIn"]),
     closeLoginModal() {
-      this.$emit('toggle-login-modal');
+      this.clearFields()
+      this.$emit("toggle-login-modal");
       this.$root.flipLoginModalVisibility();
     },
     toggleForm() {
       this.isLogin = !this.isLogin;
     },
     async submitForm() {
+      if (this.isLogin && (!this.username || !this.password)) {
+        console.log("LOGGIN IN")
+        this.errorMessage = "Please fill out all fields.";
+        return;
+      }
+      else if (!this.isLogin && (!this.username || !this.password || !this.firstName || !this.lastName || !this.email || !this.phoneNumber)) {
+        console.log("REGISTERING")
+        console.log(this.isLogin)
+        this.errorMessage = "Please fill out all fields.";
+        return;
+      }
       try {
         const response = await api.post(
           "/login_or_register/",
@@ -245,6 +287,7 @@ export default {
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
+            phoneNumber: this.phoneNumber,
             isLogin: this.isLogin,
           },
           {
@@ -255,13 +298,18 @@ export default {
           }
         );
         if (response.data.success) {
-          store.commit('login')
-          store.commit('setUsername', this.username)
-          store.commit('setUserID', response.data.userID)
-          store.commit('setIsStaff', response.data.isStaff)
-          const icon = require('@/assets/paper-clip-svg.svg');
+          store.commit("login");
+          store.commit("setUsername", this.username);
+          store.commit("setUserID", response.data.userID);
+          store.commit("setIsStaff", response.data.isStaff);
+          const icon = require("@/assets/paper-clip-svg.svg");
           this.$root.flipLoginModalVisibility();
-          this.$root.showNotificationBar(`${this.isLogin ? 'Login' : 'Registration'} Succesful`, 'green', 2500, icon);
+          this.$root.showNotificationBar(
+            `${this.isLogin ? "Login" : "Registration"} Succesful`,
+            "green",
+            2500,
+            icon
+          );
           this.$forceUpdate();
         } else {
           this.errorMessage = response.data.message;
@@ -288,17 +336,41 @@ export default {
         (days ? `; expires=${expirationDate.toUTCString()}` : "");
       document.cookie = `${name}=${cookieValue}; path=/`;
     },
+    clearFields() {
+      this.username = "";
+      this.password = "";
+      this.firstName = "";
+      this.lastName = "";
+      this.email = "";
+      this.phoneNumber = "";
+      this.usernameError = "";
+      this.passwordError = "";
+      this.firstNameError = "";
+      this.lastNameError = "";
+      this.emailError = "";
+      this.phoneNumberError = "";
+      this.errorMessage = "";
+    },
+    updatePhoneNumber(event) {
+      const inputPhoneNumber = event.target.value;
+      const phoneNumber = inputPhoneNumber.replace(/\D/g, "").slice(0, 10); // Remove non-digit characters
+      let formattedPhoneNumber = "";
+      if (phoneNumber.length > 0) {
+        formattedPhoneNumber += phoneNumber.slice(0, 3);
+        if (phoneNumber.length > 3) {
+          formattedPhoneNumber += "-" + phoneNumber.slice(3, 6);
+          if (phoneNumber.length > 6) {
+            formattedPhoneNumber += "-" + phoneNumber.slice(6);
+          }
+        }
+      }
+      this.phoneNumber = formattedPhoneNumber;
+    },
   },
-  // created() {
-  //   // Fetch the CSRF token
-  //   api
-  //     .get("get_csrf_token/")
-  //     .then((response) => {
-  //       this.csrfToken = response.data.csrfToken;
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching CSRF token:", error);
-  //     });
-  // },
+  computed: {
+    formattedPhoneNumber() {
+      return this.phoneNumber;
+    },
+  },
 };
 </script>

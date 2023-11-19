@@ -249,7 +249,7 @@
                   v-model="filterName"
                   class="filter-name-input input input w-input"
                 />
-                <button class="btn-primary" @click="saveFilter">
+                <button class="btn-primary" @click="saveFilter" style="min-width: 100%">
                   Save Filter
                 </button>
                 <select
@@ -271,7 +271,7 @@
               </div>
 
               <div class="buttons-row">
-                <button class="btn-primary" @click="applyFilters">
+                <button class="btn-primary" @click="applyFilters" style="min-width: 100%">
                   Apply Filters
                 </button>
               </div>
@@ -279,13 +279,14 @@
                 <h4>Unused/Undamaged Parts</h4>
                 <p>Select the parts you need on the car you are looking for</p>
                 <div>
-                  <div class="standalone-checkbox">
+                  <div class="standalone-checkbox" style="display: flex">
                     <input
                       type="checkbox"
                       id="vehicle_starts"
                       name="vehicle_starts"
                       class="checkbox-input"
                       v-model="vehicleStarts"
+                      style="max-width: 30px; margin-bottom: 30px"
                     />
                     <label for="vehicle_starts" class="checkbox-label"
                       >Vehicle Starts</label
