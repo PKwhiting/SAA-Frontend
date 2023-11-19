@@ -495,7 +495,7 @@
               />
             </div>
           </div>
-          <div style="margin: auto">
+          <div style="margin: auto; display: flex">
             <div style="display: flex">
               <input
                 type="checkbox"
@@ -1045,6 +1045,7 @@ export default {
 </script>
 
 <style scoped>
+
 .w-select {
   min-height: 50px;
 }
@@ -1052,9 +1053,10 @@ export default {
   min-height: 50px;
 }
 .damage-fields-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+  padding-top: 16px;
 }
 
 .checkbox-and-label-container {
