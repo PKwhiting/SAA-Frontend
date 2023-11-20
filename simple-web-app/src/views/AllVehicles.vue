@@ -64,7 +64,7 @@
                         class="max-w-20px"
                         style="margin-top: 0px"
                       />
-                      <img
+                                            <img
                         v-if="car.vehicle_starts"
                         src="@/assets/green-checkmark.svg"
                         alt="Green checkmark"
@@ -240,6 +240,7 @@
               </div>
 
               <div
+                v-if="isLoggedIn"
                 class="filter-container"
                 style="margin-right: 1em; margin-top: 3em"
               >

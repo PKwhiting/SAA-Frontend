@@ -234,7 +234,7 @@
                 </div>
               </div>
 
-              <div class="filter-actions" style="margin-right: 1em; margin-top: 3em">
+              <div v-if="isLoggedIn" class="filter-actions" style="margin-right: 1em; margin-top: 3em">
                 <input
                   type="text"
                   placeholder="Filter name"
