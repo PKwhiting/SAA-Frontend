@@ -62,6 +62,34 @@
             </div>
           </div>
           <div>
+            <label for="year">Year</label>
+            <div>
+              <select
+                class="input w-select"
+                name="year"
+                data-name="year"
+                id="year"
+                v-model="year"
+              >
+                <option value="">Select year</option>
+                <option v-for="year in years" :key="year" :value="year">
+                  {{ year }}
+                </option>
+              </select>
+            </div>
+            <div v-if="!year && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
+            </div>
+          </div>
+          <div>
             <label for="make">Make</label>
             <div>
               <select
@@ -122,34 +150,6 @@
             </div>
           </div>
           <div>
-            <label for="year">Year</label>
-            <div>
-              <select
-                class="input w-select"
-                name="year"
-                data-name="year"
-                id="year"
-                v-model="year"
-              >
-                <option value="">Select year</option>
-                <option v-for="year in years" :key="year" :value="year">
-                  {{ year }}
-                </option>
-              </select>
-            </div>
-            <div v-if="!year && submitted" class="error-message small">
-              <div class="flex align-center gap-column-4px">
-                <img
-                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
-                  loading="eager"
-                  alt=""
-                  class="max-w-12px"
-                />
-                <div class="text-50 medium">This field is required.</div>
-              </div>
-            </div>
-          </div>
-          <div>
             <label for="color">Color</label>
             <div>
               <select
@@ -186,7 +186,7 @@
                 maxlength="256"
                 name="odometer"
                 data-name="odometer"
-                placeholder="Enter vehicle odometer"
+                placeholder="Enter Vehicle Mileage"
                 id="odometer"
                 v-model="odometer"
               />
@@ -198,6 +198,39 @@
                     /> -->
             </div>
             <div v-if="!odometer && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="odometerBranding">Odometer Branding</label>
+            <div>
+              <select
+                class="input w-select"
+                name="odometerBranding"
+                data-name="odometerBranding"
+                id="odometerBranding"
+                v-model="odometerBranding"
+              >
+                <option value="">Select odometer branding</option>
+                <option value="ACTUAL">Actual</option>
+                <option value="EXEMPT">Exempt</option>
+                <option value="NOT ACTUAL">Not Actual</option>
+                <option value="INOPERABLE">Inoperable</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+            <div
+              v-if="!odometerBranding && submitted"
+              class="error-message small"
+            >
               <div class="flex align-center gap-column-4px">
                 <img
                   src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
@@ -374,10 +407,12 @@
                 v-model="titleStatus"
               >
                 <option value="">Select title status</option>
-                <option value="clean">Clean</option>
-                <option value="salvage">Salvage</option>
-                <option value="junk">Junk</option>
-                <option value="export">Export</option>
+                <option value="CLEAN">Clean</option>
+                <option value="SALVAGE">Salvage</option>
+                <option value="REBUILD">Rebuilt</option>
+                <option value="EXPORT ONLY">Export Only</option>
+                <option value="PARTS ONLY">Parts Only</option>
+                <option value="OTHER">Other</option>
               </select>
             </div>
             <div v-if="!titleStatus && submitted" class="error-message small">
@@ -393,10 +428,23 @@
             </div>
           </div>
           <div>
+            <label for="numKeys">Title Note</label>
+            <div>
+              <input
+                type="text"
+                class="input w-input"
+                name="titleNote"
+                data-name="titleNote"
+                id="titleNote"
+                v-model="titleNote"
+              />
+            </div>
+          </div>
+          <div>
             <label for="numKeys">Number of Keys</label>
             <div>
               <input
-                type="number"
+                type="integer"
                 class="input w-input"
                 name="numKeys"
                 data-name="numKeys"
@@ -417,18 +465,46 @@
             </div>
           </div>
           <div>
-            <label for="location">Vehicle Location (Zip)</label>
+            <label for="vehicleZip">Vehicle Location (Zip)</label>
             <div>
               <input
                 type="text"
                 class="input w-input"
-                name="location"
-                data-name="location"
-                id="location"
-                v-model="location"
+                name="vehicleZip"
+                data-name="vehicleZip"
+                id="vehicleZip"
+                v-model="vehicleZip"
               />
             </div>
-            <div v-if="!location && submitted" class="error-message small">
+            <div v-if="!vehicleZip && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="vehicleState">Vehicle Location (State)</label>
+            <div>
+              <select
+                class="input w-select"
+                name="vehicleState"
+                data-name="vehicleState"
+                id="vehicleState"
+                v-model="vehicleState"
+              >
+                <option value="">Select a State</option>
+                <option v-for="state in states" :key="state" :value="state">
+                  {{ state.label }}
+                </option>
+              </select>
+            </div>
+            <div v-if="!vehicleState && submitted" class="error-message small">
               <div class="flex align-center gap-column-4px">
                 <img
                   src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
@@ -475,7 +551,7 @@
               </div>
             </div>
           </div>
-          <div>
+          <div v-show="!pureSale">
             <label for="reservePrice">Reserve Price</label>
             <div class="position-relative---z-index-1 flex-horizontal">
               <input
@@ -486,6 +562,7 @@
                 data-name="reservePrice"
                 placeholder="Enter vehicle reserve price"
                 id="reservePrice"
+                v-model="reservePrice"
               />
               <img
                 src="@/assets/dollar-sign.svg"
@@ -495,44 +572,143 @@
               />
             </div>
           </div>
-          <div style="margin: auto; display: flex">
-            <div style="display: flex">
+          <div v-show="buyItNow">
+            <label for="buyNowPrice">Buy It Now Price</label>
+            <div class="position-relative---z-index-1 flex-horizontal">
               <input
-                type="checkbox"
-                :id="vehicleRuns"
-                :name="vehicleRuns"
-                class="checkbox-input"
-                v-model="vehicleRuns"
+                type="number"
+                class="input icon-inside-left w-input"
+                maxlength="256"
+                name="buyNowPrice"
+                data-name="buyNowPrice"
+                placeholder="Enter vehicle buy now price"
+                id="buyNowPrice"
+                v-model="buyNowPrice"
               />
-              <label :for="vehicleRuns" class="checkbox-label"
-                >Vehicle Runs</label
-              >
-            </div>
-            <div style="display: flex">
-              <input
-                type="checkbox"
-                :id="vehicleDrives"
-                :name="vehicleDrives"
-                class="checkbox-input"
-                v-model="vehicleDrives"
+              <img
+                src="@/assets/dollar-sign.svg"
+                loading="eager"
+                alt=""
+                class="icon-inside-input-left"
               />
-              <label :for="vehicleDrives" class="checkbox-label"
-                >Vehicle Drives</label
-              >
             </div>
           </div>
           <div>
-            <label for="images">Images</label>
-            <div>
-              <input
-                type="file"
-                name="images"
-                id="images"
-                accept="image/*"
-                multiple
-                @change="handleImageUpload"
-              />
-            </div>
+            <label for="saleDate">Sale Date:</label>
+            <input type="datetime-local" id="saleDate" v-model="saleDate" class="input icon-inside-left w-input" />
+          </div>
+        </div>
+        <div>
+          <div
+            class="description-container"
+            style="max-width: 100%; height: 50px; margin-top: 30px"
+          >
+            <label for="description">Description:</label>
+            <textarea
+              id="description"
+              v-model="description"
+              style="resize: none; width: 100%; height: 60px"
+            ></textarea>
+          </div>
+        </div>
+        <div
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 35px;
+            margin-bottom: 30px;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              margin-right: 10px;
+              margin-top: 5px;
+            "
+          >
+            <input
+              type="checkbox"
+              id="vehicleRuns"
+              :name="vehicleRuns"
+              class="checkbox-input"
+              v-model="vehicleRuns"
+              style="width: 24px; height: 24px; margin-right: 8px"
+            />
+            <label :for="vehicleRuns" class="checkbox-label">
+              Vehicle Runs
+            </label>
+          </div>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              margin-right: 10px;
+              margin-top: 5px;
+            "
+          >
+            <div></div>
+            <input
+              type="checkbox"
+              id="vehicleDrives"
+              :name="vehicleDrives"
+              class="checkbox-input"
+              v-model="vehicleDrives"
+              style="width: 24px; height: 24px; margin-right: 8px"
+            />
+            <label :for="vehicleDrives" class="checkbox-label"
+              >Vehicle Drives</label
+            >
+          </div>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              margin-right: 10px;
+              margin-top: 5px;
+            "
+          >
+            <input
+              type="checkbox"
+              id="pureSale"
+              :name="pureSale"
+              class="checkbox-input"
+              v-model="pureSale"
+              style="width: 24px; height: 24px; margin-right: 8px"
+            />
+            <label :for="pureSale" class="checkbox-label">Pure Sale</label>
+          </div>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              margin-right: 10px;
+              margin-top: 5px;
+            "
+          >
+            <input
+              type="checkbox"
+              id="buyItNow"
+              :name="buyItNow"
+              class="checkbox-input"
+              v-model="buyItNow"
+              style="width: 24px; height: 24px; margin-right: 8px"
+            />
+            <label :for="buyItNow" class="checkbox-label">Buy it Now</label>
+          </div>
+        </div>
+        <div>
+          <label for="images">Images</label>
+          <div>
+            <input
+              type="file"
+              name="images"
+              id="images"
+              accept="image/*"
+              multiple
+              @change="handleImageUpload"
+            />
           </div>
         </div>
         <div style="margin-top: 24px">
@@ -607,7 +783,14 @@ export default {
   name: "AddVehicle",
   data() {
     return {
+      pureSale: false,
+      buyItNow: false,
+      buyNowPrice: 0,
+      reservePrice: 0,
       submitted: false,
+      titleNote: "",
+      vehicleState: "",
+      odometerBranding: "",
       vin: "",
       make: "",
       model: "",
@@ -622,8 +805,10 @@ export default {
       engineType: "",
       titleStatus: "",
       vehicleType: "",
-      location: "",
+      vehicleZip: "",
       numKeys: "",
+      saleDate: "",
+      description: "",
       vehicleRuns: false,
       vehicleDrives: false,
       years: Array.from({ length: 44 }, (_, i) => 2023 - i),
@@ -857,6 +1042,58 @@ export default {
           value: false,
         },
       ],
+      states: [
+        { label: "Alabama", value: "AL" },
+        { label: "Alaska", value: "AK" },
+        { label: "Arizona", value: "AZ" },
+        { label: "Arkansas", value: "AR" },
+        { label: "California", value: "CA" },
+        { label: "Colorado", value: "CO" },
+        { label: "Connecticut", value: "CT" },
+        { label: "Delaware", value: "DE" },
+        { label: "Florida", value: "FL" },
+        { label: "Georgia", value: "GA" },
+        { label: "Hawaii", value: "HI" },
+        { label: "Idaho", value: "ID" },
+        { label: "Illinois", value: "IL" },
+        { label: "Indiana", value: "IN" },
+        { label: "Iowa", value: "IA" },
+        { label: "Kansas", value: "KS" },
+        { label: "Kentucky", value: "KY" },
+        { label: "Louisiana", value: "LA" },
+        { label: "Maine", value: "ME" },
+        { label: "Maryland", value: "MD" },
+        { label: "Massachusetts", value: "MA" },
+        { label: "Michigan", value: "MI" },
+        { label: "Minnesota", value: "MN" },
+        { label: "Mississippi", value: "MS" },
+        { label: "Missouri", value: "MO" },
+        { label: "Montana", value: "MT" },
+        { label: "Nebraska", value: "NE" },
+        { label: "Nevada", value: "NV" },
+        { label: "New Hampshire", value: "NH" },
+        { label: "New Jersey", value: "NJ" },
+        { label: "New Mexico", value: "NM" },
+        { label: "New York", value: "NY" },
+        { label: "North Carolina", value: "NC" },
+        { label: "North Dakota", value: "ND" },
+        { label: "Ohio", value: "OH" },
+        { label: "Oklahoma", value: "OK" },
+        { label: "Oregon", value: "OR" },
+        { label: "Pennsylvania", value: "PA" },
+        { label: "Rhode Island", value: "RI" },
+        { label: "South Carolina", value: "SC" },
+        { label: "South Dakota", value: "SD" },
+        { label: "Tennessee", value: "TN" },
+        { label: "Texas", value: "TX" },
+        { label: "Utah", value: "UT" },
+        { label: "Vermont", value: "VT" },
+        { label: "Virginia", value: "VA" },
+        { label: "Washington", value: "WA" },
+        { label: "West Virginia", value: "WV" },
+        { label: "Wisconsin", value: "WI" },
+        { label: "Wyoming", value: "WY" },
+      ],
     };
   },
   methods: {
@@ -942,6 +1179,7 @@ export default {
       formData.append("year", this.year);
       formData.append("color", this.color);
       formData.append("odometer", this.odometer);
+      formData.append("odometerBranding", this.odometerBranding);
       formData.append("fuel", this.fuel);
       formData.append("transmission", this.transmission);
       formData.append("drive", this.drive);
@@ -949,12 +1187,21 @@ export default {
       formData.append("displacement", this.displacement);
       formData.append("engineType", this.engineType);
       formData.append("titleStatus", this.titleStatus);
+      formData.append("titleNote", this.titleNote);
       formData.append("vehicleType", this.vehicleType);
-      formData.append("location", this.location);
+      formData.append("vehicleZip", this.vehicleZip);
       formData.append("numKeys", this.numKeys);
       formData.append("userID", store.state.userID);
       formData.append("vehicleRuns", this.vehicleRuns);
       formData.append("vehicleDrives", this.vehicleDrives);
+      formData.append("pureSale", this.pureSale);
+      formData.append("buyItNow", this.buyItNow);
+      formData.append("buyNowPrice", this.buyNowPrice);
+      formData.append("reservePrice", this.reservePrice);
+      formData.append("vehicleState", this.vehicleState.value);
+      formData.append("saleDate", this.saleDate);
+      formData.append("description", this.description);
+
       for (let i = 0; i < this.damageFields.length; i++) {
         formData.append(this.damageFields[i].name, this.damageFields[i].value);
       }
@@ -971,8 +1218,10 @@ export default {
         !this.engineType ||
         !this.titleStatus ||
         !this.vehicleType ||
-        !this.location ||
+        !this.vehicleZip ||
         !this.numKeys ||
+        !this.vehicleState ||
+        !this.odometerBranding ||
         this.images.length < 1
       ) {
         const icon = require("@/assets/cross.svg");
@@ -1009,8 +1258,10 @@ export default {
             this.engineType = "";
             this.titleStatus = "";
             this.numKeys = "";
-            this.location = "";
+            this.vehicleZip = "";
             this.vehicleType = "";
+            this.buyNowPrice = "";
+            this.vehicleState = "";
             this.images = [];
             const icon = require("@/assets/paper-clip-svg.svg");
             this.$root.showNotificationBar(
@@ -1024,7 +1275,7 @@ export default {
             const icon = require("@/assets/paper-clip-svg.svg");
             this.$root.showNotificationBar(
               "Error adding vehicle. Please Contact Admin.",
-              "green",
+              "red",
               3000,
               icon
             );
@@ -1045,7 +1296,6 @@ export default {
 </script>
 
 <style scoped>
-
 .w-select {
   min-height: 50px;
 }
