@@ -108,7 +108,7 @@
                     }}</a>
                     <br />
                     <a :href="getCarUrl(car.id)">{{
-                      car.vehicle_location.toUpperCase()
+                      car.state
                     }}</a>
                   </div>
                   <div class="hide-tablet hide-mobile">
@@ -573,6 +573,7 @@ export default {
           }
         )
         .then((response) => {
+          console.log(response.data.cars)
           this.cars = response.data.cars;
           this.currentPage = pageNumber;
           this.totalPages = response.data.num_pages;
