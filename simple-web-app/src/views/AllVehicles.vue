@@ -108,7 +108,7 @@
                     }}</a>
                     <br />
                     <a :href="getCarUrl(car.id)">{{
-                      car.state
+                      car.state.state_name
                     }}</a>
                   </div>
                   <div class="hide-tablet hide-mobile">
