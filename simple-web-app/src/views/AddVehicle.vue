@@ -595,7 +595,23 @@
           </div>
           <div>
             <label for="saleDate">Sale Date:</label>
-            <input type="datetime-local" id="saleDate" v-model="saleDate" class="input icon-inside-left w-input" />
+            <input
+              type="datetime-local"
+              id="saleDate"
+              v-model="saleDate"
+              class="input icon-inside-left w-input"
+            />
+            <div v-if="!saleDate && submitted" class="error-message small">
+              <div class="flex align-center gap-column-4px">
+                <img
+                  src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                  loading="eager"
+                  alt=""
+                  class="max-w-12px"
+                />
+                <div class="text-50 medium">This field is required.</div>
+              </div>
+            </div>
           </div>
         </div>
         <div>
@@ -709,6 +725,17 @@
               multiple
               @change="handleImageUpload"
             />
+          </div>
+        </div>
+        <div v-if="images.length == 0 && submitted" class="error-message small">
+          <div class="flex align-center gap-column-4px">
+            <img
+              src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+              loading="eager"
+              alt=""
+              class="max-w-12px"
+            />
+            <div class="text-50 medium">This field is required.</div>
           </div>
         </div>
         <div style="margin-top: 24px">
@@ -1222,7 +1249,8 @@ export default {
         !this.numKeys ||
         !this.vehicleState ||
         !this.odometerBranding ||
-        this.images.length < 1
+        this.images.length < 1 ||
+        !this.saleDate
       ) {
         const icon = require("@/assets/cross.svg");
         this.$root.showNotificationBar(
