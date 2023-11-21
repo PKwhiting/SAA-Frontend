@@ -172,6 +172,36 @@
                         </div>
                       </div>
                     </div>
+                    <div style="margin-top: 24px; margin-bottom: 40px; text-align: left">
+                      Drivers License
+                      <input
+                        type="file"
+                        class="input w-input"
+                        maxlength="12"
+                        name="driverLicense"
+                        data-name="Drivers License"
+                        placeholder="Drivers License"
+                        id="driverLicense"
+                        :value="driversLicense"
+                        @change="handleImageUpload"
+                      />
+                      <div
+                        class="error-message small"
+                        v-show="driverLicenseError"
+                      >
+                        <div class="flex align-center gap-column-4px">
+                          <img
+                            src="https://assets.website-files.com/645128e3dbdad55ed2803eff/646e463b97f63d68810f02f6_error-message-icon-dashflow-webflow-template.svg"
+                            loading="eager"
+                            alt=""
+                            class="max-w-12px"
+                          />
+                          <div class="text-50 medium">
+                            {{ driverLicenseError }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -246,12 +276,14 @@ export default {
       lastName: "",
       email: "",
       phoneNumber: "",
+      driverLicense: [],
       usernameError: "",
       passwordError: "",
       firstNameError: "",
       lastNameError: "",
       emailError: "",
       phoneNumberError: "",
+      driverLicenseError: "",
       errorMessage: "",
     };
   },
@@ -268,28 +300,28 @@ export default {
     },
     async submitForm() {
       if (this.isLogin && (!this.username || !this.password)) {
-        console.log("LOGGIN IN")
         this.errorMessage = "Please fill out all fields.";
         return;
       }
       else if (!this.isLogin && (!this.username || !this.password || !this.firstName || !this.lastName || !this.email || !this.phoneNumber)) {
-        console.log("REGISTERING")
-        console.log(this.isLogin)
         this.errorMessage = "Please fill out all fields.";
         return;
       }
       try {
+        const formData = new FormData();
+        for (let i = 0; i < this.driverLicense.length; i++) {
+          formData.append("images", this.driverLicense[i]);
+        }
+        formData.append("username", this.username);
+        formData.append("password", this.password);
+        formData.append("firstName", this.firstName);
+        formData.append("lastName", this.lastName);
+        formData.append("email", this.email);
+        formData.append("phoneNumber", this.phoneNumber);
+        formData.append("isLogin", this.isLogin);
+
         const response = await api.post(
-          "/login_or_register/",
-          {
-            username: this.username,
-            password: this.password,
-            firstName: this.firstName,
-            lastName: this.lastName,
-            email: this.email,
-            phoneNumber: this.phoneNumber,
-            isLogin: this.isLogin,
-          },
+          "/login_or_register/", formData,
           {
             headers: {
               "X-CSRFToken": store.getters.csrfToken,
@@ -349,6 +381,7 @@ export default {
       this.lastNameError = "";
       this.emailError = "";
       this.phoneNumberError = "";
+      this.driverLicenseError = "";
       this.errorMessage = "";
     },
     updatePhoneNumber(event) {
@@ -365,6 +398,13 @@ export default {
         }
       }
       this.phoneNumber = formattedPhoneNumber;
+    },
+    handleImageUpload(event) {
+      const files = event.target.files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        this.driverLicense.push(file);
+      }
     },
   },
   computed: {

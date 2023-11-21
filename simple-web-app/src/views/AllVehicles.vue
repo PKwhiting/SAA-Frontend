@@ -573,7 +573,6 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response.data.cars)
           this.cars = response.data.cars;
           this.currentPage = pageNumber;
           this.totalPages = response.data.num_pages;
