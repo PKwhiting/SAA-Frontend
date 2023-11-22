@@ -1,8 +1,44 @@
 <template>
   <div v-if="this.car" id="cards" class="pd-top-24px">
-    <h2 class="text-500 bold mg-bottom-12px">
-      {{ car.year }} {{ car.make }} {{ car.model }}
-    </h2>
+    <div>
+      <div>
+        <div style="display: flex; align-items: center">
+          <h2
+            class="text-500 bold mg-bottom-12px"
+            style="
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            "
+          >
+            {{ car.year }} {{ car.make }} {{ car.model }}
+          </h2>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              margin-bottom: 10px;
+              margin-left: 10px;
+            "
+          >
+            <img
+              @click="saveCar(car.id)"
+              src="@/assets/heart-svg.svg"
+              loading="eager"
+              alt="Changelog - Dashflow X Webflow Template"
+              style="margin-left: 5px; max-width: 30px"
+            />
+            <img
+              src="@/assets/green-checkmark.svg"
+              alt="Green checkmark"
+              class="max-w-20px"
+              style="margin-left: 10px; max-width: 30px"
+              title="Vehicle Runs"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="text-cards" class="mg-bottom-16px">
       <div class="card component-card">
         <div class="grid-2-columns">
@@ -44,11 +80,19 @@
                     <div class="text-100 bold color-neutral-800">
                       Title Code
                     </div>
-                    <div class="text-100 medium">{{ car.title_code }}</div>
+                    <div class="text-100 medium">
+                      {{ car.title_classification }}
+                    </div>
                   </div>
                   <div class="data-table-row">
                     <div class="text-100 bold color-neutral-800">Odometer</div>
                     <div class="text-100 medium">{{ car.mileage }}</div>
+                  </div>
+                  <div class="data-table-row">
+                    <div class="text-100 bold color-neutral-800">
+                      Odometer Brand
+                    </div>
+                    <div class="text-100 medium">{{ car.odometer_brand }}</div>
                   </div>
                   <div class="data-table-row">
                     <div class="text-100 bold color-neutral-800">Cylinders</div>
@@ -89,14 +133,26 @@
                     <div class="text-100 medium">{{ car.keys }}</div>
                   </div>
                   <div class="data-table-row">
-                    <div class="text-100 bold color-neutral-800">Vehicle Starts</div>
-                    <div class="text-100 medium">{{ car.vehicle_starts ? 'Starts' : 'No Start' }}</div>
+                    <div class="text-100 bold color-neutral-800">
+                      Vehicle Starts
+                    </div>
+                    <div class="text-100 medium">
+                      {{ car.vehicle_starts ? "Starts" : "No Start" }}
+                    </div>
+                  </div>
+                  <div class="data-table-row">
+                    <div class="text-100 bold color-neutral-800">
+                      Vehicle Location
+                    </div>
+                    <div class="text-100 medium">
+                      {{ car.state.state_name }} {{ car.vehicle_zip }}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <!-- <vehicle-reports :reports="car.reports"></vehicle-reports> -->
-            <div class="card border-none" style="margin-top: 12px">
+            <div class="card border-none" style="margin-top: 24px">
               <div>
                 <div class="data-table-row table-header">
                   <div class="text-50 bold color-neutral-700">Parts</div>
@@ -108,7 +164,9 @@
                       <div class="text-100 bold color-neutral-800">
                         {{ field.label }}
                       </div>
-                      <div class="text-100 medium">{{ car[field] ? 'Damaged' : 'Undamaged' }}</div>
+                      <div class="text-100 medium">
+                        {{ car[field] ? "Damaged" : "Undamaged" }}
+                      </div>
                     </div>
                   </template>
                 </div>
@@ -127,6 +185,7 @@ import BidCard from "../components/BidCard.vue";
 import SaleInfo from "../components/SaleInfo.vue";
 import VehicleReports from "../components/VehicleReports.vue";
 import api from "../../axios";
+import store from "../store";
 
 export default {
   components: { ImageViewer, BidCard, SaleInfo, VehicleReports },
@@ -317,9 +376,54 @@ export default {
         .get(`single-car/?id=${carId}`)
         .then((response) => {
           this.car = response.data.car;
+          console.log(this.car);
         })
         .catch((error) => {
           console.error(error);
+        });
+    },
+    saveCar(carID) {
+      if (!store.getters.isLoggedIn) {
+        const icon = require("@/assets/cross.svg");
+        this.$root.showNotificationBar(
+          "Please log in to save vehicles",
+          "red",
+          3000,
+          icon
+        );
+        return;
+      }
+
+      api
+        .post(
+          `add-saved-vehicle/${store.state.userID}`,
+          {
+            carID: carID,
+          },
+          {
+            headers: {
+              "X-CSRFToken": store.getters.csrfToken,
+            },
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+          const icon = require("@/assets/heart-svg.svg");
+          this.$root.showNotificationBar(
+            "Vehicle Saved Successfully",
+            "green",
+            1500,
+            icon
+          );
+        })
+        .catch((error) => {
+          const icon = require("@/assets/cross.svg");
+          this.$root.showNotificationBar(
+            "Issue adding vehicle to saved vehicles. Contact Admin for help.",
+            "red",
+            3000,
+            icon
+          );
         });
     },
   },
