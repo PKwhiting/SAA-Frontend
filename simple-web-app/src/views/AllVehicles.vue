@@ -563,6 +563,8 @@ export default {
             makes: this.filters.make,
             models: this.filters.model,
             years: this.filters.year,
+            vehicle_starts: this.vehicleStarts,
+            damageFields: this.damageFields,
             sold: false,
           },
           {

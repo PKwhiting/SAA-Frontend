@@ -1269,7 +1269,6 @@ export default {
             },
             withCredentials: true,
           });
-          console.log(response.data);
           if (response.status === 200) {
             this.$refs.vehicleForm.reset();
             this.vin = "";

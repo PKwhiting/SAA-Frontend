@@ -376,7 +376,6 @@ export default {
         .get(`single-car/?id=${carId}`)
         .then((response) => {
           this.car = response.data.car;
-          console.log(this.car);
         })
         .catch((error) => {
           console.error(error);
