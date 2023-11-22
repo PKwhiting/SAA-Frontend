@@ -1332,6 +1332,7 @@ export default {
 <style scoped>
 .w-select {
   min-height: 50px;
+  height: 50px;
 }
 .w-input {
   min-height: 50px;
