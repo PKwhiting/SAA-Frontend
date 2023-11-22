@@ -1290,6 +1290,12 @@ export default {
             this.vehicleType = "";
             this.buyNowPrice = "";
             this.vehicleState = "";
+            this.reservePrice = 0;
+            this.pureSale = false;
+            this.buyItNow = false;
+            this.vehicleRuns = false;
+            this.vehicleDrives = false;
+
             this.images = [];
             const icon = require("@/assets/paper-clip-svg.svg");
             this.$root.showNotificationBar(
