@@ -57,7 +57,7 @@
                   </div>
                   <div class="hide-mobile">
                     <a :href="getCarUrl(car.id)">{{
-                      car.vehicle_location.toUpperCase()
+                      car.state.state_name
                     }}</a>
                   </div>
                   <div class="hide-mobile">

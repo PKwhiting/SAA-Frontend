@@ -44,7 +44,7 @@
                   </a>
                   <a href="/account" class="sidebar-link w-inline-block">
                     <div class="avatar-name-circle _24px" v-show="isLoggedIn">
-                      {{ username[0].toUpperCase() }}
+                      {{ username ? username[0].toUpperCase() : ''   }}
                     </div>
                     <div class="text-100 medium" v-show="isLoggedIn">
                       Account

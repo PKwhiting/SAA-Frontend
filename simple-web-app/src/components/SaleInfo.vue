@@ -39,7 +39,7 @@
             id="w-node-_269d1d2d-2cb2-3200-d275-6492145f0d8b-145f0d88"
             class="text-100 medium"
           >
-            {{ vehicle_location.toUpperCase() }}
+            {{ vehicle_location }}
           </div>
         </div>
         <div class="data-table-row">

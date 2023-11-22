@@ -2,6 +2,7 @@
   <div
     id="w-node-_9dd682ff-5944-0545-c8a7-6848bb794a95-e9803f0d"
     class="sticky-top hidden-on-tablet"
+    style="overflow: hidden;"
   >
     <div
       id="w-node-_33df89bc-f82c-cc1e-d5c4-4959632564a9-632564a9"
@@ -10,7 +11,7 @@
       <div class="grid-1-column sidebar-links-grid mg-bottom-48px" style="margin-top: 75px">
         <a href="/account" class="sidebar-link w-inline-block"
           >
-          <div class="avatar-name-circle _48px" v-show="isLoggedIn">{{ username[0].toUpperCase() }}</div>
+          <div class="avatar-name-circle _48px" v-show="isLoggedIn">{{ username ? username[0].toUpperCase() : ''  }}</div>
           <div class="text-100 medium" v-show="isLoggedIn">{{ username }}</div></a
         >
         <a href="/" class="sidebar-link w-inline-block"

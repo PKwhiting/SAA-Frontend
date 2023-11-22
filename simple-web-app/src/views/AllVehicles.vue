@@ -287,7 +287,7 @@
                       name="vehicle_starts"
                       class="checkbox-input"
                       v-model="vehicleStarts"
-                      style="max-width: 30px; margin-bottom: 30px"
+                      style="width: 30px; margin-bottom: 30px"
                     />
                     <label for="vehicle_starts" class="checkbox-label"
                       >Vehicle Starts</label
@@ -695,6 +695,9 @@ export default {
         });
     },
     getSavedFilters() {
+      if (!store.getters.isLoggedIn) {
+        return;
+      }
       api
         .get(`get-saved-filters/${store.state.userID}`)
         .then((response) => {
@@ -924,6 +927,7 @@ img {
 .checkbox-input {
   margin-left: 10px;
   margin-right: 5px;
+  width: 30px;
 }
 
 /* Damage fields */

@@ -7,7 +7,7 @@
       <div
         id="w-node-a99c1661-31b6-9ad4-73d2-7f6491da01b0-91da01b0"
         class="inner-container _370px"
-        style="width: 400px; margin-top: 125px"
+        style="width: 400px; margin-top: 25px"
       >
         <div class="position-relative---z-index-1">
           <div class="card pd-24px---18px text-center">

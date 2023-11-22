@@ -103,7 +103,7 @@
                     }}</a>
                     <br />
                     <a :href="getCarUrl(car.id)">{{
-                      car.vehicle_location.toUpperCase()
+                      car.state.state_name
                     }}</a>
                   </div>
                   <div class="hide-tablet hide-mobile">
@@ -674,6 +674,9 @@ export default {
         });
     },
     getSavedFilters() {
+      if (!store.getters.isLoggedIn) {
+        return;
+      }
       api
         .get(`get-saved-filters/${store.state.userID}`)
         .then((response) => {

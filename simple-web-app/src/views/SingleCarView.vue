@@ -17,7 +17,7 @@
             <sale-info
               :sale_date="car.sale_date"
               :last_updated="car.last_updated"
-              :vehicle_location="car.vehicle_location"
+              :vehicle_location="car.state.state_name"
             ></sale-info>
           </div>
           <div class="inner-container _384px _100-tablet">
