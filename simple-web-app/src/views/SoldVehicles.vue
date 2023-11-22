@@ -2,7 +2,7 @@
   <div class="vehicle-list">
     <div id="data-table" class="mg-bottom-16px">
       <div class="header-container">
-        <h2 class="text-500 bold">Sold Vehicles</h2>
+        <h2 class="text-500 bold">Vehicle Listings</h2>
         <button class="btn-primary btn-filter" @click="showFiltersModal = true">
           <i class="fas fa-filter"></i> Start Filtering Here
         </button>
@@ -64,11 +64,16 @@
                         class="max-w-20px"
                         style="margin-top: 0px"
                       />
-                       <img
+                                            <img
+                        v-if="car.vehicle_starts"
                         src="@/assets/green-checkmark.svg"
                         alt="Green checkmark"
                         class="max-w-20px"
-                        style="margin-left: 5px; margin-top: 0px; margin-right: 5px"
+                        style="
+                          margin-left: 5px;
+                          margin-top: 0px;
+                          margin-right: 5px;
+                        "
                       />
                       <a
                         class="hide-desktop hide-tablet"
@@ -234,12 +239,16 @@
                 </div>
               </div>
 
-              <div v-if="isLoggedIn" class="filter-actions" style="margin-right: 1em; margin-top: 3em">
+              <div
+                v-if="isLoggedIn"
+                class="filter-container"
+                style="margin-right: 1em; margin-top: 3em"
+              >
                 <input
                   type="text"
                   placeholder="Filter name"
                   v-model="filterName"
-                  class="filter-name-input input"
+                  class="filter-name-input input input w-input"
                 />
                 <button class="btn-primary" @click="saveFilter" style="min-width: 100%">
                   Save Filter
@@ -248,6 +257,7 @@
                   v-model="selectedFilter"
                   @change="loadFilter(selectedFilter)"
                   class="filter-select input"
+                  style="margin-top: 1em"
                 >
                   <option disabled value="">Select a filter</option>
                   <option
@@ -277,7 +287,7 @@
                       name="vehicle_starts"
                       class="checkbox-input"
                       v-model="vehicleStarts"
-                      style="max-width: 30px; margin-bottom: 30px"
+                      style="width: 30px; margin-bottom: 30px"
                     />
                     <label for="vehicle_starts" class="checkbox-label"
                       >Vehicle Starts</label
@@ -581,6 +591,17 @@ export default {
       }
     },
     saveCar(carID) {
+      if (!store.getters.isLoggedIn) {
+        const icon = require("@/assets/cross.svg");
+        this.$root.showNotificationBar(
+          "Please log in to save vehicles",
+          "red",
+          3000,
+          icon
+        );
+        return;
+      }
+
       api
         .post(
           `add-saved-vehicle/${store.state.userID}`,
@@ -687,10 +708,18 @@ export default {
         });
     },
     loadFilter() {
-      this.filters.make = this.selectedFilter.make ? this.selectedFilter.make : "";
-      this.filters.model = this.selectedFilter.model ? this.selectedFilter.model : "";
-      this.filters.year.start = this.selectedFilter.start ? this.selectedFilter.start : "";
-      this.filters.year.end = this.selectedFilter.end ? this.selectedFilter.end : "";
+      this.filters.make = this.selectedFilter.make
+        ? this.selectedFilter.make
+        : "";
+      this.filters.model = this.selectedFilter.model
+        ? this.selectedFilter.model
+        : "";
+      this.filters.year.start = this.selectedFilter.start
+        ? this.selectedFilter.start
+        : "";
+      this.filters.year.end = this.selectedFilter.end
+        ? this.selectedFilter.end
+        : "";
     },
   },
   mounted() {
@@ -898,6 +927,7 @@ img {
 .checkbox-input {
   margin-left: 10px;
   margin-right: 5px;
+  width: 30px;
 }
 
 /* Damage fields */
