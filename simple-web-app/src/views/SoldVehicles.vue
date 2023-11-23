@@ -657,6 +657,7 @@ export default {
           {
             name: this.filterName,
             filters: this.filters,
+            damageFields: this.damageFields,
           },
           {
             headers: {
