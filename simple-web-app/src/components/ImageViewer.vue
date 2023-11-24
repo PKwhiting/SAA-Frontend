@@ -9,7 +9,12 @@
           style="max-width: 100%"
         />
       </div>
-      <div id="photo-container-holder">
+      <div
+        id="photo-container-holder"
+        @touchstart="handleTouchStart"
+        @touchmove="handleTouchMove"
+        @touchend="handleTouchEnd"
+      >
         <div
           id="photo-container"
           :style="{
@@ -63,6 +68,8 @@ export default {
       selectedPhoto: { url: "", alt: "" },
       photos: [],
       containerMargin: 0,
+      touchStartX: 0,
+      touchEndX: 0,
     };
   },
   mounted() {
@@ -70,7 +77,7 @@ export default {
       for (const image of this.images) {
         this.photos.push({ url: image });
       }
-      this.photos.push({ url: this.images[0] })
+      this.photos.push({ url: this.images[0] });
       this.selectedPhoto = this.photos[0];
     }
   },
@@ -90,6 +97,21 @@ export default {
           -containerWidth + 500,
           this.containerMargin - step
         );
+      }
+    },
+    handleTouchStart(event) {
+      this.touchStartX = event.touches[0].clientX;
+    },
+    handleTouchMove(event) {
+      this.touchEndX = event.touches[0].clientX;
+    },
+    handleTouchEnd() {
+      if (this.touchStartX - this.touchEndX > 150) {
+        // Swipe left
+        this.scrollPhotos('right');
+      } else if (this.touchStartX - this.touchEndX < -150) {
+        // Swipe right
+        this.scrollPhotos('left');
       }
     },
   },
