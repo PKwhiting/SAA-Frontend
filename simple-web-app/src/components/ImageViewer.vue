@@ -106,10 +106,10 @@ export default {
       this.touchEndX = event.touches[0].clientX;
     },
     handleTouchEnd() {
-      if (this.touchStartX - this.touchEndX > 150) {
+      if (this.touchStartX - this.touchEndX > 75) {
         // Swipe left
         this.scrollPhotos('right');
-      } else if (this.touchStartX - this.touchEndX < -150) {
+      } else if (this.touchStartX - this.touchEndX < -75) {
         // Swipe right
         this.scrollPhotos('left');
       }
