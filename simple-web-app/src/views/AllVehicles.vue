@@ -57,12 +57,22 @@
                       style="display: block; flex-basis: 100%; margin-top: 5px"
                     >
                       <img
-                        @click="saveCar(car.id)"
-                        src="@/assets/heart-svg.svg"
+                        @click="unsaveCar(car.id)"
+                        :src="require('@/assets/heart-filled.svg')"
                         loading="eager"
                         alt="Changelog - Dashflow X Webflow Template"
                         class="max-w-20px"
                         style="margin-top: 0px"
+                        :style="{ display: isCarSaved(car.id) ? 'block' : 'none' }"
+                      />
+                      <img
+                        @click="saveCar(car.id)"
+                        :src="require('@/assets/heart.svg')"
+                        loading="eager"
+                        alt="Changelog - Dashflow X Webflow Template"
+                        class="max-w-20px"
+                        style="margin-top: 0px"
+                        :style="{ display: isCarSaved(car.id) ? 'none' : 'block' }"
                       />
                                             <img
                         v-if="car.vehicle_starts"
@@ -342,6 +352,7 @@ export default {
   data() {
     return {
       cars: null,
+      saved_cars: null,
       filters: {
         make: "",
         model: "",
@@ -583,6 +594,22 @@ export default {
           console.error(error);
         });
     },
+    fetchSavedCars() {
+      api
+        .get(`saved-vehicles/${store.state.userID}`)
+        .then((response) => {
+          this.saved_cars = response.data.saved_cars;
+        })
+        .catch((error) => {
+          const icon = require("@/assets/cross.svg");
+          this.$root.showNotificationBar(
+            "Issue loading saved vehicles. Contact Admin for help.",
+            "red",
+            3000,
+            icon
+          );
+        });
+    },
     changePage(page) {
       if (page === "prev") {
         this.fetchCars(this.currentPage - 1);
@@ -619,6 +646,7 @@ export default {
         )
         .then((response) => {
           const icon = require("@/assets/heart-svg.svg");
+          this.saved_cars.push({ id: carID });
           this.$root.showNotificationBar(
             "Vehicle Saved Successfully",
             "green",
@@ -630,6 +658,41 @@ export default {
           const icon = require("@/assets/cross.svg");
           this.$root.showNotificationBar(
             "Issue adding vehicle to saved vehicles. Contact Admin for help.",
+            "red",
+            3000,
+            icon
+          );
+        });
+    },
+    unsaveCar(carID) {
+      api
+        .post(
+          `remove-saved-vehicle/${store.state.userID}`,
+          {
+            carID: carID,
+          },
+          {
+            headers: {
+              "X-CSRFToken": store.getters.csrfToken,
+            },
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+          const icon = require("@/assets/heart-svg.svg");
+          this.saved_cars = this.saved_cars.filter(car => car.id !== carID);
+          this.$root.showNotificationBar(
+            "Vehicle Unsaved Successfully",
+            "green",
+            2000,
+            icon
+          );
+        })
+        .catch((error) => {
+          console.log(error)
+          const icon = require("@/assets/cross.svg");
+          this.$root.showNotificationBar(
+            "Issue removing saved vehicle to saved vehicles. Contact Admin for help.",
             "red",
             3000,
             icon
@@ -724,8 +787,12 @@ export default {
         ? this.selectedFilter.end
         : "";
     },
+    isCarSaved(carId) {
+      return this.saved_cars.some(savedCar => savedCar.id === carId);
+    },
   },
   mounted() {
+    this.fetchSavedCars();
     this.fetchCars();
     this.getSavedFilters();
   },
