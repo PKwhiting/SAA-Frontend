@@ -56,15 +56,16 @@
                     <div
                       style="display: block; flex-basis: 100%; margin-top: 5px"
                     >
-                      <img
-                        @click="saveCar(car.id)"
-                        src="@/assets/heart-svg.svg"
-                        loading="eager"
-                        alt="Changelog - Dashflow X Webflow Template"
-                        class="max-w-20px"
-                        style="margin-top: 0px"
+                      <SaveIcon
+                        v-if="
+                          car &&
+                          isCarSaved(car.id) !== null &&
+                          isCarSaved(car.id) !== undefined
+                        "
+                        :carId="car.id"
+                        :isSavedInitially="isCarSaved(car.id)"
                       />
-                                            <img
+                      <img
                         v-if="car.vehicle_starts"
                         src="@/assets/green-checkmark.svg"
                         alt="Green checkmark"
@@ -107,9 +108,7 @@
                       })
                     }}</a>
                     <br />
-                    <a :href="getCarUrl(car.id)">{{
-                      car.state.state_name
-                    }}</a>
+                    <a :href="getCarUrl(car.id)">{{ car.state.state_name }}</a>
                   </div>
                   <div class="hide-tablet hide-mobile">
                     <bid-card
@@ -250,7 +249,11 @@
                   v-model="filterName"
                   class="filter-name-input input input w-input"
                 />
-                <button class="btn-primary" @click="saveFilter" style="min-width: 100%">
+                <button
+                  class="btn-primary"
+                  @click="saveFilter"
+                  style="min-width: 100%"
+                >
                   Save Filter
                 </button>
                 <select
@@ -272,7 +275,11 @@
               </div>
 
               <div class="buttons-row">
-                <button class="btn-primary" @click="applyFilters" style="min-width: 100%">
+                <button
+                  class="btn-primary"
+                  @click="applyFilters"
+                  style="min-width: 100%"
+                >
                   Apply Filters
                 </button>
               </div>
@@ -333,15 +340,18 @@
 <script>
 import api from "../../axios";
 import BidCard from "../components/BidCard.vue";
+import SaveIcon from "../components/SaveIcon.vue";
 import store from "../store";
 
 export default {
   components: {
     BidCard,
+    SaveIcon,
   },
   data() {
     return {
       cars: null,
+      saved_cars: null,
       filters: {
         make: "",
         model: "",
@@ -563,6 +573,8 @@ export default {
             makes: this.filters.make,
             models: this.filters.model,
             years: this.filters.year,
+            vehicle_starts: this.vehicleStarts,
+            damageFields: this.damageFields,
             sold: true,
           },
           {
@@ -581,6 +593,22 @@ export default {
           console.error(error);
         });
     },
+    fetchSavedCars() {
+      api
+        .get(`saved-vehicles/${store.state.userID}`)
+        .then((response) => {
+          this.saved_cars = response.data.saved_cars;
+        })
+        .catch((error) => {
+          const icon = require("@/assets/cross.svg");
+          this.$root.showNotificationBar(
+            "Issue loading saved vehicles. Contact Admin for help.",
+            "red",
+            3000,
+            icon
+          );
+        });
+    },
     changePage(page) {
       if (page === "prev") {
         this.fetchCars(this.currentPage - 1);
@@ -589,50 +617,6 @@ export default {
       } else {
         this.fetchCars(page);
       }
-    },
-    saveCar(carID) {
-      if (!store.getters.isLoggedIn) {
-        const icon = require("@/assets/cross.svg");
-        this.$root.showNotificationBar(
-          "Please log in to save vehicles",
-          "red",
-          3000,
-          icon
-        );
-        return;
-      }
-
-      api
-        .post(
-          `add-saved-vehicle/${store.state.userID}`,
-          {
-            carID: carID,
-          },
-          {
-            headers: {
-              "X-CSRFToken": store.getters.csrfToken,
-            },
-            withCredentials: true,
-          }
-        )
-        .then((response) => {
-          const icon = require("@/assets/heart-svg.svg");
-          this.$root.showNotificationBar(
-            "Vehicle Saved Successfully",
-            "green",
-            1500,
-            icon
-          );
-        })
-        .catch((error) => {
-          const icon = require("@/assets/cross.svg");
-          this.$root.showNotificationBar(
-            "Issue adding vehicle to saved vehicles. Contact Admin for help.",
-            "red",
-            3000,
-            icon
-          );
-        });
     },
     maskNumber(number) {
       if (number.toString().includes("*")) {
@@ -722,8 +706,12 @@ export default {
         ? this.selectedFilter.end
         : "";
     },
+    isCarSaved(carId) {
+      return this.saved_cars.some((savedCar) => savedCar.id === carId);
+    },
   },
   mounted() {
+    this.fetchSavedCars();
     this.fetchCars();
     this.getSavedFilters();
   },

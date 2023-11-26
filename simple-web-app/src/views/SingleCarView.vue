@@ -21,14 +21,18 @@
               margin-left: 10px;
             "
           >
-            <img
-              @click="saveCar(car.id)"
-              src="@/assets/heart-svg.svg"
-              loading="eager"
-              alt="Changelog - Dashflow X Webflow Template"
-              style="margin-left: 5px; max-width: 30px"
+            <SaveIcon
+              v-if="
+                car &&
+                isCarSaved(car.id) !== null &&
+                isCarSaved(car.id) !== undefined
+              "
+              :carId="car.id"
+              :isSavedInitially="isCarSaved(car.id)"
             />
+
             <img
+              v-if="car.vehicle_starts"
               src="@/assets/green-checkmark.svg"
               alt="Green checkmark"
               class="max-w-20px"
@@ -186,12 +190,14 @@ import SaleInfo from "../components/SaleInfo.vue";
 import VehicleReports from "../components/VehicleReports.vue";
 import api from "../../axios";
 import store from "../store";
+import SaveIcon from "../components/SaveIcon.vue";
 
 export default {
-  components: { ImageViewer, BidCard, SaleInfo, VehicleReports },
+  components: { ImageViewer, BidCard, SaleInfo, VehicleReports, SaveIcon },
   data() {
     return {
       car: null,
+      saved_cars: null,
       damageFields: [
         {
           id: "bumper_damage",
@@ -368,6 +374,7 @@ export default {
   },
   mounted() {
     this.fetchCar();
+    this.fetchSavedCars();
   },
   methods: {
     fetchCar() {
@@ -381,49 +388,28 @@ export default {
           console.error(error);
         });
     },
-    saveCar(carID) {
-      if (!store.getters.isLoggedIn) {
-        const icon = require("@/assets/cross.svg");
-        this.$root.showNotificationBar(
-          "Please log in to save vehicles",
-          "red",
-          3000,
-          icon
-        );
-        return;
-      }
-
+    fetchSavedCars() {
       api
-        .post(
-          `add-saved-vehicle/${store.state.userID}`,
-          {
-            carID: carID,
-          },
-          {
-            headers: {
-              "X-CSRFToken": store.getters.csrfToken,
-            },
-            withCredentials: true,
-          }
-        )
+        .get(`saved-vehicles/${store.state.userID}`)
         .then((response) => {
-          const icon = require("@/assets/heart-svg.svg");
-          this.$root.showNotificationBar(
-            "Vehicle Saved Successfully",
-            "green",
-            1500,
-            icon
-          );
+          this.saved_cars = response.data.saved_cars;
         })
         .catch((error) => {
           const icon = require("@/assets/cross.svg");
           this.$root.showNotificationBar(
-            "Issue adding vehicle to saved vehicles. Contact Admin for help.",
+            "Issue loading saved vehicles. Contact Admin for help.",
             "red",
             3000,
             icon
           );
         });
+    },
+    isCarSaved(carId) {
+      return (
+        this.saved_cars &&
+        Array.isArray(this.saved_cars) &&
+        this.saved_cars.some((savedCar) => savedCar.id === carId)
+      );
     },
   },
 };
