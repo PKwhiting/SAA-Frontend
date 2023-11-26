@@ -708,7 +708,9 @@ export default {
         : "";
     },
     isCarSaved(carId) {
-      return this.saved_cars.some((savedCar) => savedCar.id === carId);
+      if (this.savedCars){
+        return this.saved_cars.some((savedCar) => savedCar.id === carId);
+      }
     },
   },
   mounted() {
