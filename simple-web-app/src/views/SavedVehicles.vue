@@ -2,10 +2,7 @@
   <div class="vehicle-list">
     <div id="data-table" class="mg-bottom-16px">
       <div class="header-container">
-        <h2 class="text-500 bold">Vehicle Listings</h2>
-        <button class="btn-primary btn-filter" @click="showFiltersModal = true">
-          <i class="fas fa-filter"></i> Start Filtering Here
-        </button>
+        <h2 class="text-500 bold">Saved Vehicles</h2>
       </div>
       <div class="card component-card">
         <div class="grid-1-column">
@@ -169,170 +166,6 @@
           </ul>
         </div>
       </div>
-      <div class="modal" v-if="showFiltersModal">
-        <div class="modal-overlay" @click="showFiltersModal = false"></div>
-        <div class="modal-container">
-          <div class="modal-header">
-            <h3 class="modal-title">Filters</h3>
-            <button
-              class="modal-close"
-              @click="showFiltersModal = false"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="filter-container">
-              <div>
-                <label for="year-start-filter">Year Start</label>
-                <div>
-                  <input
-                    type="text"
-                    class="input w-input"
-                    maxlength="256"
-                    name="Name"
-                    data-name="Name"
-                    id="year-start-filter"
-                    v-model="filters.year.start"
-                  />
-                </div>
-              </div>
-              <div>
-                <label for="year-end-filter">Year End</label>
-                <div>
-                  <input
-                    type="text"
-                    class="input w-input"
-                    maxlength="256"
-                    name="Name"
-                    data-name="Name"
-                    id="year-end-filter"
-                    v-model="filters.year.end"
-                  />
-                </div>
-              </div>
-              <div>
-                <label for="make-filter">Make</label>
-                <div>
-                  <input
-                    type="text"
-                    class="input w-input"
-                    maxlength="256"
-                    name="Name"
-                    data-name="Name"
-                    id="make-filter"
-                    v-model="filters.make"
-                  />
-                </div>
-              </div>
-              <div>
-                <label for="model-filter">Model</label>
-                <div>
-                  <input
-                    type="text"
-                    class="input w-input"
-                    maxlength="256"
-                    name="Name"
-                    data-name="Name"
-                    id="model-filter"
-                    v-model="filters.model"
-                  />
-                </div>
-              </div>
-
-              <div
-                v-if="isLoggedIn"
-                class="filter-container"
-                style="margin-right: 1em; margin-top: 3em"
-              >
-                <input
-                  type="text"
-                  placeholder="Filter name"
-                  v-model="filterName"
-                  class="filter-name-input input input w-input"
-                />
-                <button
-                  class="btn-primary"
-                  @click="saveFilter"
-                  style="min-width: 100%"
-                >
-                  Save Filter
-                </button>
-                <select
-                  v-model="selectedFilter"
-                  @change="loadFilter(selectedFilter)"
-                  class="filter-select input"
-                  style="margin-top: 1em"
-                >
-                  <option disabled value="">Select a filter</option>
-                  <option
-                    v-for="filter in savedFilters"
-                    :key="filter.id"
-                    :value="filter"
-                    @click="loadFilter()"
-                  >
-                    {{ filter.name }}
-                  </option>
-                </select>
-              </div>
-
-              <div class="buttons-row">
-                <button
-                  class="btn-primary"
-                  @click="applyFilters"
-                  style="min-width: 100%"
-                >
-                  Apply Filters
-                </button>
-              </div>
-              <div style="margin-top: 24px">
-                <h4>Unused/Undamaged Parts</h4>
-                <p>Select the parts you need on the car you are looking for</p>
-                <div>
-                  <div class="standalone-checkbox" style="display: flex">
-                    <input
-                      type="checkbox"
-                      id="vehicle_starts"
-                      name="vehicle_starts"
-                      class="checkbox-input"
-                      v-model="vehicleStarts"
-                      style="width: 30px; margin-bottom: 30px"
-                    />
-                    <label for="vehicle_starts" class="checkbox-label"
-                      >Vehicle Starts</label
-                    >
-                  </div>
-                </div>
-                <div class="checkbox-sections">
-                  <div
-                    class="checkbox-section"
-                    v-for="(items, section) in damageFields"
-                    :key="section"
-                  >
-                    <h5 class="checkbox-section-title">{{ section }}</h5>
-                    <div class="checkbox-group">
-                      <div
-                        class="checkbox-and-label-container"
-                        v-for="field in items"
-                        :key="field.id"
-                      >
-                        <input
-                          type="checkbox"
-                          :id="field.id"
-                          :name="field.name"
-                          class="checkbox-input"
-                          v-model="field.value"
-                        />
-                        <label :for="field.id" class="checkbox-label">{{
-                          field.label
-                        }}</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -342,22 +175,185 @@ import api from "../../axios";
 import BidCard from "../components/BidCard.vue";
 import SaveIcon from "../components/SaveIcon.vue";
 import store from "../store";
+import FilterModal from "../components/FilterModal.vue";
 
 export default {
   components: {
     BidCard,
     SaveIcon,
+    FilterModal,
   },
   data() {
     return {
       cars: null,
       saved_cars: null,
       filters: {
-        make: "",
-        model: "",
         year: {
           start: "",
           end: "",
+        },
+        make: "",
+        model: "",
+        vehicleStarts: false,
+        damageFields: {
+          Doors: [
+            {
+              id: "driver_door_damage",
+              name: "driver_door_damage",
+              label: "Driver Door",
+              value: false,
+            },
+            {
+              id: "passenger_door_damage",
+              name: "passenger_door_damage",
+              label: "Passenger Door",
+              value: false,
+            },
+            {
+              id: "driver_rear_door_damage",
+              name: "driver_rear_door_damage",
+              label: "Driver Rear Door",
+              value: false,
+            },
+            {
+              id: "passenger_rear_door_damage",
+              name: "passenger_rear_door_damage",
+              label: "Passenger Rear Door",
+              value: false,
+            },
+          ],
+          Lights: [
+            {
+              id: "driver_headlight_damage",
+              name: "driver_headlight_damage",
+              label: "Driver Headlight",
+              value: false,
+            },
+            {
+              id: "passenger_headlight_damage",
+              name: "passenger_headlight_damage",
+              label: "Passenger Headlight",
+              value: false,
+            },
+            {
+              id: "driver_tail_light_damage",
+              name: "driver_tail_light_damage",
+              label: "Driver Tail Light",
+              value: false,
+            },
+            {
+              id: "passenger_tail_light_damage",
+              name: "passenger_tail_light_damage",
+              label: "Passenger Tail Light",
+              value: false,
+            },
+          ],
+          Panels: [
+            {
+              id: "hood_damage",
+              name: "hood_damage",
+              label: "Hood",
+              value: false,
+            },
+            {
+              id: "roof_damage",
+              name: "roof_damage",
+              label: "Roof",
+              value: false,
+            },
+            {
+              id: "driver_fender_damage",
+              name: "driver_fender_damage",
+              label: "Driver Fender",
+              value: false,
+            },
+            {
+              id: "passenger_fender_damage",
+              name: "passenger_fender_damage",
+              label: "Passenger Fender",
+              value: false,
+            },
+            {
+              id: "driver_rear_quarter_damage",
+              name: "driver_rear_quarter_damage",
+              label: "Driver Rear Quarter",
+              value: false,
+            },
+            {
+              id: "passenger_rear_quarter_damage",
+              name: "passenger_rear_quarter_damage",
+              label: "Passenger Rear Quarter",
+              value: false,
+            },
+            {
+              id: "trunk_damage",
+              name: "trunk_damage",
+              label: "Trunk",
+              value: false,
+            },
+            {
+              id: "rear_bumper_damage",
+              name: "rear_bumper_damage",
+              label: "Rear Bumper",
+              value: false,
+            },
+            {
+              id: "driver_mirror_damage",
+              name: "driver_mirror_damage",
+              label: "Driver Mirror",
+              value: false,
+            },
+            {
+              id: "passenger_mirror_damage",
+              name: "passenger_mirror_damage",
+              label: "Passenger Mirror",
+              value: false,
+            },
+            {
+              id: "truck_bed_damage",
+              name: "truck_bed_damage",
+              label: "Truck Bed",
+              value: false,
+            },
+          ],
+          Glass: [
+            {
+              id: "windshield_damage",
+              name: "windshield_damage",
+              label: "Windshield",
+              value: false,
+            },
+            {
+              id: "driver_window_damage",
+              name: "driver_window_damage",
+              label: "Driver Window",
+              value: false,
+            },
+            {
+              id: "passenger_window_damage",
+              name: "passenger_window_damage",
+              label: "Passenger Window",
+              value: false,
+            },
+            {
+              id: "driver_rear_window_damage",
+              name: "driver_rear_window_damage",
+              label: "Driver Rear Window",
+              value: false,
+            },
+            {
+              id: "passenger_rear_window_damage",
+              name: "passenger_rear_window_damage",
+              label: "Passenger Rear Window",
+              value: false,
+            },
+            {
+              id: "back_glass_damage",
+              name: "back_glass_damage",
+              label: "Back Glass",
+              value: false,
+            },
+          ],
         },
       },
       savedFilters: [],
@@ -532,8 +528,8 @@ export default {
   },
   computed: {
     filteredCars() {
-      let filtered = this.cars;
-      if (this.cars) {
+      let filtered = this.saved_cars;
+      if (this.saved_cars) {
         return filtered;
       }
     },
@@ -597,7 +593,6 @@ export default {
       api
         .get(`saved-vehicles/${store.state.userID}`)
         .then((response) => {
-          this.cars = response.data.saved_cars;
           this.saved_cars = response.data.saved_cars;
         })
         .catch((error) => {
@@ -628,93 +623,33 @@ export default {
         return asterisks + lastFourDigits; // Combine the asterisks and last 4 digits to create the masked number
       }
     },
-    applyFilters() {
+    applyFilters(filters) {
+      this.filters.make = filters.make;
+      this.filters.model = filters.model;
+      this.filters.year.start = filters.year.start;
+      this.filters.year.end = filters.year.end;
+      this.vehicleStarts = filters.vehicleStarts; 
+      this.damageFields = filters.damageFields;
       this.fetchCars();
       this.showFiltersModal = false;
     },
     getCarUrl(carId) {
       return `/single-car-view/${carId}`;
     },
-    saveFilter() {
-      api
-        .post(
-          `save-filter/${store.state.userID}`,
-          {
-            name: this.filterName,
-            filters: this.filters,
-            damageFields: this.damageFields,
-          },
-          {
-            headers: {
-              "X-CSRFToken": store.getters.csrfToken,
-            },
-            withCredentials: true,
-          }
-        )
-        .then((response) => {
-          const icon = require("@/assets/heart-svg.svg");
-          this.$root.showNotificationBar(
-            "Filter Saved Successfully",
-            "green",
-            1500,
-            icon
-          );
-          this.filters = {
-            make: "",
-            model: "",
-            year: {
-              start: "",
-              end: "",
-            },
-          };
-          this.filterName = "";
-          this.showFiltersModal = false;
-        })
-        .catch((error) => {
-          const icon = require("@/assets/cross.svg");
-          this.$root.showNotificationBar(
-            "Issue saving filter. Contact Admin for help.",
-            "red",
-            3000,
-            icon
-          );
-        });
-    },
-    getSavedFilters() {
-      if (!store.getters.isLoggedIn) {
-        return;
-      }
-      api
-        .get(`get-saved-filters/${store.state.userID}`)
-        .then((response) => {
-          this.savedFilters = response.data.filters;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    loadFilter() {
-      this.filters.make = this.selectedFilter.make
-        ? this.selectedFilter.make
-        : "";
-      this.filters.model = this.selectedFilter.model
-        ? this.selectedFilter.model
-        : "";
-      this.filters.year.start = this.selectedFilter.start
-        ? this.selectedFilter.start
-        : "";
-      this.filters.year.end = this.selectedFilter.end
-        ? this.selectedFilter.end
-        : "";
-    },
     isCarSaved(carId) {
       return this.saved_cars.some((savedCar) => savedCar.id === carId);
+    },
+    toggleFilterModal() {
+      if (this.showFiltersModal) {
+        this.showFiltersModal = false;
+      } else {
+        this.showFiltersModal = true;
+      }
     },
   },
   mounted() {
     this.fetchSavedCars();
     // this.fetchCars();
-    this.getSavedFilters();
   },
 };
 </script>
