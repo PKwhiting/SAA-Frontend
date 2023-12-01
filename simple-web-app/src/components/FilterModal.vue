@@ -102,7 +102,6 @@
                   v-for="filter in savedFilters"
                   :key="filter.id"
                   :value="filter"
-                  
                 >
                   {{ filter.name }}
                 </option>
@@ -625,7 +624,173 @@ export default {
     clearSelectedFilter() {
       this.selectedFilter = null;
       this.filters = {
-        ...this.defaultFilters,
+        year: {
+          start: "",
+          end: "",
+        },
+        make: "",
+        model: "",
+        vehicleStarts: false,
+        damageFields: {
+          Doors: [
+            {
+              id: "driver_door_damage",
+              name: "driver_door_damage",
+              label: "Driver Door",
+              value: false,
+            },
+            {
+              id: "passenger_door_damage",
+              name: "passenger_door_damage",
+              label: "Passenger Door",
+              value: false,
+            },
+            {
+              id: "driver_rear_door_damage",
+              name: "driver_rear_door_damage",
+              label: "Driver Rear Door",
+              value: false,
+            },
+            {
+              id: "passenger_rear_door_damage",
+              name: "passenger_rear_door_damage",
+              label: "Passenger Rear Door",
+              value: false,
+            },
+          ],
+          Lights: [
+            {
+              id: "driver_headlight_damage",
+              name: "driver_headlight_damage",
+              label: "Driver Headlight",
+              value: false,
+            },
+            {
+              id: "passenger_headlight_damage",
+              name: "passenger_headlight_damage",
+              label: "Passenger Headlight",
+              value: false,
+            },
+            {
+              id: "driver_tail_light_damage",
+              name: "driver_tail_light_damage",
+              label: "Driver Tail Light",
+              value: false,
+            },
+            {
+              id: "passenger_tail_light_damage",
+              name: "passenger_tail_light_damage",
+              label: "Passenger Tail Light",
+              value: false,
+            },
+          ],
+          Panels: [
+            {
+              id: "hood_damage",
+              name: "hood_damage",
+              label: "Hood",
+              value: false,
+            },
+            {
+              id: "roof_damage",
+              name: "roof_damage",
+              label: "Roof",
+              value: false,
+            },
+            {
+              id: "driver_fender_damage",
+              name: "driver_fender_damage",
+              label: "Driver Fender",
+              value: false,
+            },
+            {
+              id: "passenger_fender_damage",
+              name: "passenger_fender_damage",
+              label: "Passenger Fender",
+              value: false,
+            },
+            {
+              id: "driver_rear_quarter_damage",
+              name: "driver_rear_quarter_damage",
+              label: "Driver Rear Quarter",
+              value: false,
+            },
+            {
+              id: "passenger_rear_quarter_damage",
+              name: "passenger_rear_quarter_damage",
+              label: "Passenger Rear Quarter",
+              value: false,
+            },
+            {
+              id: "trunk_damage",
+              name: "trunk_damage",
+              label: "Trunk",
+              value: false,
+            },
+            {
+              id: "rear_bumper_damage",
+              name: "rear_bumper_damage",
+              label: "Rear Bumper",
+              value: false,
+            },
+            {
+              id: "driver_mirror_damage",
+              name: "driver_mirror_damage",
+              label: "Driver Mirror",
+              value: false,
+            },
+            {
+              id: "passenger_mirror_damage",
+              name: "passenger_mirror_damage",
+              label: "Passenger Mirror",
+              value: false,
+            },
+            {
+              id: "truck_bed_damage",
+              name: "truck_bed_damage",
+              label: "Truck Bed",
+              value: false,
+            },
+          ],
+          Glass: [
+            {
+              id: "windshield_damage",
+              name: "windshield_damage",
+              label: "Windshield",
+              value: false,
+            },
+            {
+              id: "driver_window_damage",
+              name: "driver_window_damage",
+              label: "Driver Window",
+              value: false,
+            },
+            {
+              id: "passenger_window_damage",
+              name: "passenger_window_damage",
+              label: "Passenger Window",
+              value: false,
+            },
+            {
+              id: "driver_rear_window_damage",
+              name: "driver_rear_window_damage",
+              label: "Driver Rear Window",
+              value: false,
+            },
+            {
+              id: "passenger_rear_window_damage",
+              name: "passenger_rear_window_damage",
+              label: "Passenger Rear Window",
+              value: false,
+            },
+            {
+              id: "back_glass_damage",
+              name: "back_glass_damage",
+              label: "Back Glass",
+              value: false,
+            },
+          ],
+        },
       };
     },
   },
@@ -795,13 +960,13 @@ export default {
   border-radius: 4px;
 }
 .btn-primary.btn-primary:disabled {
-    background-color: #cccccc;
-    background-image: none; /* This will remove the gradient */
-    color: #666666;
-    cursor: not-allowed;
-    transform: none;
-    transition: none;
-    box-shadow: none;
+  background-color: #cccccc;
+  background-image: none; /* This will remove the gradient */
+  color: #666666;
+  cursor: not-allowed;
+  transform: none;
+  transition: none;
+  box-shadow: none;
 }
 
 .btn-clear {
