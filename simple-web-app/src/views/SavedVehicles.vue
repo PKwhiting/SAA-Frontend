@@ -51,7 +51,7 @@
                     </div>
                     <br />
                     <div
-                      style="display: block; flex-basis: 100%; margin-top: 5px"
+                      style="display: flex; flex-basis: 100%; margin-top: 5px"
                     >
                       <SaveIcon
                         v-if="
@@ -74,6 +74,7 @@
                         "
                       />
                       <a
+                        v-if="car.auction !== 'SAA'"
                         class="hide-desktop hide-tablet"
                         v-bind:href="car.vehicle_auction_link"
                         target="_blank"
@@ -89,7 +90,7 @@
                       style="flex-basis: 100%; margin-top: 5px"
                       class="hide-desktop hide-mobile"
                     >
-                      <a v-bind:href="car.vehicle_auction_link" target="_blank"
+                      <a v-bind:href="car.vehicle_auction_link" target="_blank" v-if="car.auction !== 'SAA'"
                         ><div class="primary-badge">
                           Go to {{ car.auction }}
                         </div></a

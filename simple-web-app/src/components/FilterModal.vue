@@ -65,6 +65,26 @@
               />
             </div>
           </div>
+          <div>
+            <label for="title-status-filter">Title Status</label>
+            <div>
+              <select
+                id="title-status-filter"
+                class="input w-input"
+                v-model="filters.titleStatus"
+                style="padding: 0px 14px 0px 14px;"
+              >
+                <option disabled value="">Select Title Status</option>
+                <option
+                  v-for="title in titleChoices"
+                  :key="title"
+                  :value="title"
+                >
+                  {{ title }}
+                </option>
+              </select>
+            </div>
+          </div>
 
           <!-- Save Filter Section for Logged In Users -->
           <div
@@ -95,7 +115,7 @@
                 v-model="selectedFilter"
                 @change="loadFilter(selectedFilter)"
                 class="filter-select input"
-                style="height: 50px"
+                style="height: 35px; padding: 0px 14px 0px 14px;"
               >
                 <option disabled value="">Select a filter</option>
                 <option
@@ -109,7 +129,7 @@
               <button
                 class="btn-clear btn-primary"
                 @click="clearSelectedFilter"
-                style="margin-left: 10px; height: 50px"
+                style="margin-left: 10px; height: 35px;"
               >
                 Clear Filter
               </button>
@@ -208,6 +228,7 @@ export default {
         make: "",
         model: "",
         vehicleStarts: false,
+        titleStatus: "",
         damageFields: {
           Doors: [
             {
@@ -369,175 +390,14 @@ export default {
           ],
         },
       },
-      defaultFilters: {
-        year: {
-          start: "",
-          end: "",
-        },
-        make: "",
-        model: "",
-        vehicleStarts: false,
-        damageFields: {
-          Doors: [
-            {
-              id: "driver_door_damage",
-              name: "driver_door_damage",
-              label: "Driver Door",
-              value: false,
-            },
-            {
-              id: "passenger_door_damage",
-              name: "passenger_door_damage",
-              label: "Passenger Door",
-              value: false,
-            },
-            {
-              id: "driver_rear_door_damage",
-              name: "driver_rear_door_damage",
-              label: "Driver Rear Door",
-              value: false,
-            },
-            {
-              id: "passenger_rear_door_damage",
-              name: "passenger_rear_door_damage",
-              label: "Passenger Rear Door",
-              value: false,
-            },
-          ],
-          Lights: [
-            {
-              id: "driver_headlight_damage",
-              name: "driver_headlight_damage",
-              label: "Driver Headlight",
-              value: false,
-            },
-            {
-              id: "passenger_headlight_damage",
-              name: "passenger_headlight_damage",
-              label: "Passenger Headlight",
-              value: false,
-            },
-            {
-              id: "driver_tail_light_damage",
-              name: "driver_tail_light_damage",
-              label: "Driver Tail Light",
-              value: false,
-            },
-            {
-              id: "passenger_tail_light_damage",
-              name: "passenger_tail_light_damage",
-              label: "Passenger Tail Light",
-              value: false,
-            },
-          ],
-          Panels: [
-            {
-              id: "hood_damage",
-              name: "hood_damage",
-              label: "Hood",
-              value: false,
-            },
-            {
-              id: "roof_damage",
-              name: "roof_damage",
-              label: "Roof",
-              value: false,
-            },
-            {
-              id: "driver_fender_damage",
-              name: "driver_fender_damage",
-              label: "Driver Fender",
-              value: false,
-            },
-            {
-              id: "passenger_fender_damage",
-              name: "passenger_fender_damage",
-              label: "Passenger Fender",
-              value: false,
-            },
-            {
-              id: "driver_rear_quarter_damage",
-              name: "driver_rear_quarter_damage",
-              label: "Driver Rear Quarter",
-              value: false,
-            },
-            {
-              id: "passenger_rear_quarter_damage",
-              name: "passenger_rear_quarter_damage",
-              label: "Passenger Rear Quarter",
-              value: false,
-            },
-            {
-              id: "trunk_damage",
-              name: "trunk_damage",
-              label: "Trunk",
-              value: false,
-            },
-            {
-              id: "rear_bumper_damage",
-              name: "rear_bumper_damage",
-              label: "Rear Bumper",
-              value: false,
-            },
-            {
-              id: "driver_mirror_damage",
-              name: "driver_mirror_damage",
-              label: "Driver Mirror",
-              value: false,
-            },
-            {
-              id: "passenger_mirror_damage",
-              name: "passenger_mirror_damage",
-              label: "Passenger Mirror",
-              value: false,
-            },
-            {
-              id: "truck_bed_damage",
-              name: "truck_bed_damage",
-              label: "Truck Bed",
-              value: false,
-            },
-          ],
-          Glass: [
-            {
-              id: "windshield_damage",
-              name: "windshield_damage",
-              label: "Windshield",
-              value: false,
-            },
-            {
-              id: "driver_window_damage",
-              name: "driver_window_damage",
-              label: "Driver Window",
-              value: false,
-            },
-            {
-              id: "passenger_window_damage",
-              name: "passenger_window_damage",
-              label: "Passenger Window",
-              value: false,
-            },
-            {
-              id: "driver_rear_window_damage",
-              name: "driver_rear_window_damage",
-              label: "Driver Rear Window",
-              value: false,
-            },
-            {
-              id: "passenger_rear_window_damage",
-              name: "passenger_rear_window_damage",
-              label: "Passenger Rear Window",
-              value: false,
-            },
-            {
-              id: "back_glass_damage",
-              name: "back_glass_damage",
-              label: "Back Glass",
-              value: false,
-            },
-          ],
-        },
-      },
+      titleChoices: [
+        "CLEAN",
+        "SALVAGE",
+        "REBUILT",
+        "EXPORT ONLY",
+        "PARTS ONLY",
+        "OTHER",
+      ],
     };
   },
   watch: {
@@ -631,6 +491,7 @@ export default {
         make: "",
         model: "",
         vehicleStarts: false,
+        titleStatus: "",
         damageFields: {
           Doors: [
             {
@@ -902,6 +763,11 @@ export default {
 .filter-container button:active {
   background-color: #005cbf;
 }
+
+.filter-container div {
+  max-width: 100%;
+}
+
 .checkboxes-container {
   margin-top: 24px;
   display: flex;
@@ -996,5 +862,20 @@ export default {
   /* Other styles */
 }
 
+.input {
+  max-width: 100%;
+}
+@media (max-width: 600px) {
+  .filter-dropdown-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-dropdown-container .btn-clear {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+  }
+}
 /* Add any additional CSS needed for the filter form */
 </style>

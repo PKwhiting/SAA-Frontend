@@ -54,7 +54,7 @@
                     </div>
                     <br />
                     <div
-                      style="display: block; flex-basis: 100%; margin-top: 5px"
+                      style="display: flex; flex-basis: 100%; margin-top: 5px"
                     >
                       <SaveIcon
                         v-if="
@@ -77,6 +77,7 @@
                         "
                       />
                       <a
+                        v-if="car.auction !== 'SAA'"
                         class="hide-desktop hide-tablet"
                         v-bind:href="car.vehicle_auction_link"
                         target="_blank"
@@ -92,7 +93,7 @@
                       style="flex-basis: 100%; margin-top: 5px"
                       class="hide-desktop hide-mobile"
                     >
-                      <a v-bind:href="car.vehicle_auction_link" target="_blank"
+                      <a v-bind:href="car.vehicle_auction_link" target="_blank" v-if="car.auction !== 'SAA'"
                         ><div class="primary-badge">
                           Go to {{ car.auction }}
                         </div></a
@@ -204,6 +205,7 @@ export default {
         make: "",
         model: "",
         vehicleStarts: false,
+        titleStatus: "",
         damageFields: {
           Doors: [
             {
@@ -579,6 +581,7 @@ export default {
             models: this.filters.model,
             years: this.filters.year,
             vehicle_starts: this.vehicleStarts,
+            titleStatus: this.filters.titleStatus,
             damageFields: this.damageFields,
             sold: false,
           },
@@ -638,6 +641,7 @@ export default {
       this.filters.year.start = filters.year.start;
       this.filters.year.end = filters.year.end;
       this.vehicleStarts = filters.vehicleStarts; 
+      this.filters.titleStatus = filters.titleStatus;
       this.damageFields = filters.damageFields;
       this.fetchCars();
       this.showFiltersModal = false;
@@ -963,11 +967,14 @@ img {
 
 /* Style form inputs */
 .input {
-  padding: 10px;
+  padding: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
   width: 100%;
+}
+div[data-v-01c254d6] .input.w-input {
+    padding: 0px !important;
 }
 
 /* Grid layout for checkboxes */
