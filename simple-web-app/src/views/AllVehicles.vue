@@ -206,6 +206,7 @@ export default {
         model: "",
         vehicleStarts: false,
         titleStatus: "",
+        odometerBrand: "",
         damageFields: {
           Doors: [
             {
@@ -582,6 +583,7 @@ export default {
             years: this.filters.year,
             vehicle_starts: this.vehicleStarts,
             titleStatus: this.filters.titleStatus,
+            odometerBrand: this.filters.odometerBrand,
             damageFields: this.damageFields,
             sold: false,
           },
@@ -642,6 +644,7 @@ export default {
       this.filters.year.end = filters.year.end;
       this.vehicleStarts = filters.vehicleStarts; 
       this.filters.titleStatus = filters.titleStatus;
+      this.filters.odometerBrand = filters.odometerBrand;
       this.damageFields = filters.damageFields;
       this.fetchCars();
       this.showFiltersModal = false;

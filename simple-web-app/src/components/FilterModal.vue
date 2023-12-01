@@ -72,7 +72,7 @@
                 id="title-status-filter"
                 class="input w-input"
                 v-model="filters.titleStatus"
-                style="padding: 0px 14px 0px 14px;"
+                style="padding: 0px 14px 0px 14px"
               >
                 <option disabled value="">Select Title Status</option>
                 <option
@@ -85,7 +85,26 @@
               </select>
             </div>
           </div>
-
+          <div>
+            <label for="odometer-brand-filter">Odometer Brand</label>
+            <div>
+              <select
+                id="odometer-brand-filter"
+                class="input w-input"
+                v-model="filters.odometerBrand"
+                style="padding: 0px 14px 0px 14px"
+              >
+                <option disabled value="">Select Odometer Brand</option>
+                <option
+                  v-for="brand in odometerBrandChoices"
+                  :key="brand"
+                  :value="brand"
+                >
+                  {{ brand }}
+                </option>
+              </select>
+            </div>
+          </div>
           <!-- Save Filter Section for Logged In Users -->
           <div
             v-if="isLoggedIn"
@@ -115,7 +134,7 @@
                 v-model="selectedFilter"
                 @change="loadFilter(selectedFilter)"
                 class="filter-select input"
-                style="height: 35px; padding: 0px 14px 0px 14px;"
+                style="height: 35px; padding: 0px 14px 0px 14px"
               >
                 <option disabled value="">Select a filter</option>
                 <option
@@ -129,7 +148,7 @@
               <button
                 class="btn-clear btn-primary"
                 @click="clearSelectedFilter"
-                style="margin-left: 10px; height: 35px;"
+                style="margin-left: 10px; height: 35px"
               >
                 Clear Filter
               </button>
@@ -229,6 +248,7 @@ export default {
         model: "",
         vehicleStarts: false,
         titleStatus: "",
+        odometerBrand: "",
         damageFields: {
           Doors: [
             {
@@ -398,6 +418,13 @@ export default {
         "PARTS ONLY",
         "OTHER",
       ],
+      odometerBrandChoices: [
+        "ACTUAL",
+        "EXEMPT",
+        "NOT ACTUAL",
+        "INOPERABLE",
+        "OTHER",
+      ],
     };
   },
   watch: {
@@ -464,9 +491,16 @@ export default {
       this.filters.vehicleStarts = this.selectedFilter.vehicleStarts
         ? this.selectedFilter.vehicleStarts
         : false;
+      this.filters.titleStatus = this.selectedFilter.titleStatus
+        ? this.selectedFilter.titleStatus
+        : "";
+      this.filters.odometerBrand = this.selectedFilter.odometerBrand
+        ? this.selectedFilter.odometerBrand
+        : "";
       this.filters.damageFields = this.selectedFilter.damageFields
         ? this.selectedFilter.damageFields
         : {};
+        console.log(this.filters.titleStatus)
     },
     getSavedFilters() {
       if (!store.getters.isLoggedIn) {
@@ -492,6 +526,7 @@ export default {
         model: "",
         vehicleStarts: false,
         titleStatus: "",
+        odometerBrand: "",
         damageFields: {
           Doors: [
             {
@@ -869,6 +904,11 @@ export default {
   .filter-dropdown-container {
     flex-direction: column;
     align-items: stretch;
+    min-width: 100%;
+  }
+
+  .filter-select {
+    min-width: 100%;
   }
 
   .filter-dropdown-container .btn-clear {
