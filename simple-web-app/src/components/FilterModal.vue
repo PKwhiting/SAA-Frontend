@@ -11,9 +11,9 @@
       <div class="modal-body">
         <div class="filter-container">
           <!-- Year Start Filter -->
-          <div>
-            <label for="year-start-filter">Year Start</label>
-            <div>
+          <div class="year-filter-row">
+            <div class="year-filter">
+              <label for="year-start-filter">Year Start</label>
               <input
                 type="text"
                 class="input w-input"
@@ -22,12 +22,8 @@
                 v-model="filters.year.start"
               />
             </div>
-          </div>
-
-          <!-- Year End Filter -->
-          <div>
-            <label for="year-end-filter">Year End</label>
-            <div>
+            <div class="year-filter">
+              <label for="year-end-filter">Year End</label>
               <input
                 type="text"
                 class="input w-input"
@@ -117,14 +113,25 @@
               v-model="filterName"
               class="filter-name-input input w-input"
             />
-            <button
+            <!-- <button
               class="btn-primary"
               @click="saveFilter"
               :disabled="selectedFilter !== null"
               style="min-width: 100%; margin-top: 12px; height: 35px"
             >
               Save Filter
-            </button>
+            </button> -->
+            <a
+              data-w-id="5228fae3-1046-92bf-afc3-a85185c5a451"
+              href="#"
+              class="btn-secondary w-inline-block"
+              @click="saveFilter"
+              :class="{ disabled: selectedFilter !== null }"
+              style="min-width: 100%; margin-top: 12px; height: 35px"
+              ><div class="flex-horizontal gap-column-4px">
+                <div>Save Filter</div>
+              </div></a
+            >
 
             <div
               class="filter-dropdown-container"
@@ -145,25 +152,34 @@
                   {{ filter.name }}
                 </option>
               </select>
-              <button
-                class="btn-clear btn-primary"
+              <!-- <button
+                class="btn-clear btn-secondary"
                 @click="clearSelectedFilter"
                 style="margin-left: 10px; height: 35px"
               >
                 Clear Filter
-              </button>
+              </button> -->
+              <a
+                href="#"
+                class="btn-secondary"
+                @click="clearSelectedFilter"
+                style="margin-left: 10px; height: 40px"
+                ><div class="flex-horizontal gap-column-4px">
+                  <div>Clear Filter</div>
+                </div></a
+              >
             </div>
-          </div>
-
-          <!-- Apply Filters Button -->
-          <div class="buttons-row">
-            <button
-              class="btn-primary"
-              @click="applyFilters"
-              style="min-width: 100%; height: 35px"
-            >
-              Apply Filters
-            </button>
+            <a
+            data-w-id="dc3b625c-4a68-4ebe-9b74-d3193fa9f32f"
+            href="#"
+            @click="applyFilters"
+            class="btn-primary w-inline-block"
+            style="min-width: 100%;"
+            :class="{ disabled: selectedFilter == null }"
+            ><div class="flex-horizontal gap-column-4px">
+              <div>Apply Filters</div>
+            </div></a
+          >
           </div>
           <div style="margin-top: 24px">
             <h4>Unused/Undamaged Parts</h4>
@@ -434,38 +450,41 @@ export default {
   },
   methods: {
     applyFilters() {
-      this.showModal = false;
-      this.$emit("applyFilters", this.filters);
+      if (this.selectedFilter !== null) {
+        this.showModal = false;
+        this.$emit("applyFilters", this.filters);
+      }
     },
     saveFilter(data) {
-      this.showModal = true;
-      api
-        .post(
-          `save-filter/${store.state.userID}`,
-          {
-            name: this.filterName,
-            filters: this.filters,
-            damageFields: this.filters.damageFields,
-          },
-          {
-            headers: {
-              "X-CSRFToken": store.getters.csrfToken,
+      if (this.selectedFilter === null) {
+        this.showModal = true;
+        api
+          .post(
+            `save-filter/${store.state.userID}`,
+            {
+              name: this.filterName,
+              filters: this.filters,
+              damageFields: this.filters.damageFields,
             },
-            withCredentials: true,
-          }
-        )
-        .then((response) => {
-          const icon = require("@/assets/heart-svg.svg");
-          this.$root.showNotificationBar(
-            "Filter Saved Successfully",
-            "green",
-            1500,
-            icon
-          );
-          this.showModal = false;
-          this.$emit("applyFilters", this.filters);
-        })
-        .catch((error) => {
+            {
+              headers: {
+                "X-CSRFToken": store.getters.csrfToken,
+              },
+              withCredentials: true,
+            }
+          )
+          .then((response) => {
+            const icon = require("@/assets/heart-svg.svg");
+            this.$root.showNotificationBar(
+              "Filter Saved Successfully",
+              "green",
+              1500,
+              icon
+            );
+            this.showModal = false;
+            this.$emit("applyFilters", this.filters);
+          })
+          .catch((error) => {
           const icon = require("@/assets/cross.svg");
           this.$root.showNotificationBar(
             "Issue saving filter. Contact Admin for help.",
@@ -474,6 +493,7 @@ export default {
             icon
           );
         });
+      }
     },
     loadFilter(filter) {
       this.filters.make = this.selectedFilter.make
@@ -500,7 +520,7 @@ export default {
       this.filters.damageFields = this.selectedFilter.damageFields
         ? this.selectedFilter.damageFields
         : {};
-        console.log(this.filters.titleStatus)
+      console.log(this.filters.titleStatus);
     },
     getSavedFilters() {
       if (!store.getters.isLoggedIn) {
@@ -734,7 +754,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1em;
 }
 
 .modal-title {
@@ -850,13 +869,13 @@ export default {
 }
 .btn-primary,
 .btn-secondary {
-  padding: 10px 20px;
+  /* padding: 10px 20px;
   font-size: 16px;
   text-align: center;
   display: inline-block;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  text-transform: uppercase;
+  transition: background-color 0.3s ease;*/
+
   align-self: center;
   border-radius: 4px;
 }
@@ -914,7 +933,39 @@ export default {
   .filter-dropdown-container .btn-clear {
     margin-left: 0;
     margin-top: 10px;
-    width: 100%;
+    min-width: 100%;
+  }
+}
+.year-filter-row {
+  display: flex;
+  justify-content: space-between; /* Adjust to space-between for equal distribution */
+  width: 100%; /* Ensure the row takes full width */
+}
+
+.year-filter {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Allocate equal space to each year filter */
+  margin-top: 14px;
+}
+
+.year-filter input {
+  width: 100%; /* Full width for input fields */
+}
+
+/* Adjust gap between Year Start and Year End */
+.year-filter:not(:last-child) {
+  margin-right: 20px; /* Add margin to the right of the first year filter */
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 600px) {
+  .year-filter-row {
+    flex-direction: column;
+  }
+
+  .year-filter:not(:last-child) {
+    margin-right: 0;
   }
 }
 /* Add any additional CSS needed for the filter form */
