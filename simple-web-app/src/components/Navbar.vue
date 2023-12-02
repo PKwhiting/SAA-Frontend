@@ -30,7 +30,7 @@
               >
                 <!-- <div class="text-50 medium sidebar-title">Start here</div> -->
                 <div class="grid-1-column sidebar-links-grid mg-bottom-48px">
-                  <a
+                  <!-- <a
                     href="/"
                     aria-current="page"
                     class="sidebar-link w-inline-block w--current"
@@ -41,7 +41,7 @@
                       class="max-w-20px"
                     />
                     <div class="text-100 medium">Home</div>
-                  </a>
+                  </a> -->
                   <a href="/account" class="sidebar-link w-inline-block">
                     <div class="avatar-name-circle _24px" v-show="isLoggedIn">
                       {{ username ? username[0].toUpperCase() : ''   }}

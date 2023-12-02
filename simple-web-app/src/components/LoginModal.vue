@@ -143,7 +143,7 @@
                         <div class="text-50 medium">{{ emailError }}</div>
                       </div>
                     </div>
-                    <div style="margin-top: 24px">
+                    <!-- <div style="margin-top: 24px">
                       <input
                         type="text"
                         class="input w-input"
@@ -171,7 +171,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                     <div style="margin-top: 24px; margin-bottom: 40px; text-align: left">
                       Drivers License
                       <input

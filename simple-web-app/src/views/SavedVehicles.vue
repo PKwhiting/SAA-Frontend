@@ -148,24 +148,6 @@
             </div>
           </div>
         </div>
-        <div class="pagination">
-          <span>Page {{ currentPage }} of {{ totalPages }}</span>
-          <ul>
-            <li>
-              <button @click="changePage('prev')">&lt;</button>
-            </li>
-            <li
-              v-for="pageNumber in pageNumbers"
-              :key="pageNumber"
-              style="padding-left: 0px"
-            >
-              <button @click="changePage(pageNumber)">{{ pageNumber }}</button>
-            </li>
-            <li v-if="currentPage + 5 <= totalPages">
-              <button @click="changePage('next')">&gt;</button>
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
   </div>

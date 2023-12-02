@@ -2,7 +2,9 @@
   <div class="account">
     <div class="account-header">
       <h1>My Account</h1>
-      <button class="btn btn-primary" @click="showModal = true">Edit Profile</button>
+      <button class="btn btn-primary" @click="showModal = true">
+        Edit Profile
+      </button>
     </div>
     <div class="account-body">
       <div class="account-info">
@@ -18,6 +20,14 @@
         <div class="info-row">
           <span>Email:</span>
           <span>{{ user.email }}</span>
+        </div>
+        <div class="info-row">
+          <span>Phone Number:</span>
+          <span>{{ user.phone }}</span>
+        </div>
+        <div class="info-row">
+          <span>Driver's License:</span>
+          <span>{{ getFileName(user.licensePhoto) }}</span>
         </div>
       </div>
       <div class="account-orders">
@@ -45,27 +55,82 @@
       <div class="modal-container">
         <div class="modal-header">
           <h3>Edit Profile</h3>
-          <button class="modal-close" @click="showModal = false">&times;</button>
+          <button class="modal-close" @click="showModal = false">
+            &times;
+          </button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="saveProfile">
             <div class="form-group">
               <label for="first_name">First Name:</label>
-              <input type="text" id="first_name" v-model="editedUser.first_name" required>
-              <div v-if="!editedUser.first_name" class="error-message">First name is required</div>
+              <input
+                type="text"
+                id="first_name"
+                v-model="editedUser.first_name"
+                required
+              />
+              <div v-if="!editedUser.first_name" class="error-message">
+                First name is required
+              </div>
             </div>
             <div class="form-group">
               <label for="last_name">Last Name:</label>
-              <input type="text" id="last_name" v-model="editedUser.last_name" required>
-              <div v-if="!editedUser.last_name" class="error-message">Last name is required</div>
+              <input
+                type="text"
+                id="last_name"
+                v-model="editedUser.last_name"
+                required
+              />
+              <div v-if="!editedUser.last_name" class="error-message">
+                Last name is required
+              </div>
             </div>
             <div class="form-group">
               <label for="email">Email:</label>
-              <input type="email" id="email" v-model="editedUser.email" required>
-              <div v-if="!editedUser.email" class="error-message">Email is required</div>
+              <input
+                type="email"
+                id="email"
+                v-model="editedUser.email"
+                required
+              />
+              <div v-if="!editedUser.email" class="error-message">
+                Email is required
+              </div>
             </div>
-            <button type="submit" class="btn btn-primary" :disabled="!isValidForm">Save</button>
-            <button type="button" class="btn btn-secondary" @click="cancelEdit">Cancel</button>
+            <div class="form-group">
+              <label for="phone">Phone Number:</label>
+              <input
+                type="text"
+                id="phone"
+                required
+                :value="formattedPhoneNumber"
+                @input="updatePhoneNumber"
+              />
+              <div v-if="!editedUser.phone" class="error-message">
+                Phone number is required
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="licensePhoto">Driver's License Photo:</label>
+              <input
+                type="file"
+                id="licensePhoto"
+                @change="handleLicensePhotoChange"
+              />
+              <div v-if="!editedUser.licensePhoto" class="error-message">
+                Photo of drivers license is required
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              :disabled="!isValidForm"
+            >
+              Save
+            </button>
+            <button type="button" class="btn btn-secondary" @click="cancelEdit">
+              Cancel
+            </button>
           </form>
         </div>
       </div>
@@ -75,7 +140,7 @@
 
 <script>
 import api from "../../axios";
-import store from '../store';
+import store from "../store";
 
 export default {
   data() {
@@ -84,11 +149,13 @@ export default {
       bids: [],
       showModal: false,
       editedUser: {
-        first_name: '',
-        last_name: '',
-        email: ''
-      }
-    }
+        first_name: "",
+        last_name: "",
+        email: "",
+        phone: "",
+        licensePhoto: null,
+      },
+    };
   },
   created() {
     this.getUserInfo();
@@ -104,34 +171,72 @@ export default {
     getBidHistory() {
       api.get(`bid-history/${store.state.userID}`).then((response) => {
         this.bids = response.data.bids;
-        });
+      });
     },
     cancelEdit() {
       this.showModal = false;
       this.editedUser = {
-        first_name: '',
-        last_name: '',
-        email: ''
+        first_name: "",
+        last_name: "",
+        email: "",
+        phone: "",
       };
     },
     saveProfile() {
-      api.post(`update-user/${store.state.userID}`, this.editedUser).then((response) => {
-        this.user = response.data;
-        this.showModal = false;
-        this.editedUser = {
-          first_name: '',
-          last_name: '',
-          email: ''
-        };
-      });
+      const formData = new FormData();
+      formData.append("first_name", this.editedUser.first_name);
+      formData.append("last_name", this.editedUser.last_name);
+      formData.append("email", this.editedUser.email);
+      formData.append("phone", this.editedUser.phone);
+      formData.append("licensePhoto", this.editedUser.licensePhoto);
+
+      api
+        .post(`update-user/${store.state.userID}`, formData)
+        .then((response) => {
+          this.user = response.data;
+          this.showModal = false;
+        });
+    },
+    updatePhoneNumber(event) {
+      const inputPhoneNumber = event.target.value;
+      const phoneNumber = inputPhoneNumber.replace(/\D/g, "").slice(0, 10); // Remove non-digit characters
+      let formattedPhoneNumber = "";
+      if (phoneNumber.length > 0) {
+        formattedPhoneNumber += phoneNumber.slice(0, 3);
+        if (phoneNumber.length > 3) {
+          formattedPhoneNumber += "-" + phoneNumber.slice(3, 6);
+          if (phoneNumber.length > 6) {
+            formattedPhoneNumber += "-" + phoneNumber.slice(6);
+          }
+        }
+      }
+      this.editedUser.phone = formattedPhoneNumber;
+    },
+    handleLicensePhotoChange(event) {
+      const file = event.target.files[0];
+      this.editedUser.licensePhoto = file;
+    },
+    getFileName(file) {
+    if (file) {
+      const fileName = file.split('/').pop();
+      return fileName;
     }
+    return '';
+  },
   },
   computed: {
     isValidForm() {
-      return this.editedUser.first_name && this.editedUser.last_name && this.editedUser.email;
-    }
-  }
-}
+      return (
+        this.editedUser.first_name &&
+        this.editedUser.last_name &&
+        this.editedUser.email
+      );
+    },
+    formattedPhoneNumber() {
+      return this.editedUser.phone;
+    },
+  },
+};
 </script>
 
 <style>
