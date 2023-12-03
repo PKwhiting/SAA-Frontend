@@ -131,7 +131,7 @@
                     <div class="text-100 bold color-neutral-800">Drive</div>
                     <div class="text-100 medium">{{ car.drive_type }}</div>
                   </div>
-                  <div class="data-table-row">
+                  <div class="data-table-row" v-if="car.vehicle_type">
                     <div class="text-100 bold color-neutral-800">
                       Vehicle Type
                     </div>
@@ -155,7 +155,7 @@
                       {{ car.vehicle_starts ? "Starts" : "No Start" }}
                     </div>
                   </div>
-                  <div class="data-table-row">
+                  <div class="data-table-row" v-if="car.state.state_name">
                     <div class="text-100 bold color-neutral-800">
                       Vehicle Location
                     </div>
