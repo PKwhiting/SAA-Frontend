@@ -126,7 +126,7 @@
                     <div class="text-100 bold color-neutral-800">
                       Vehicle Type
                     </div>
-                    <div class="text-100 medium">{{ car.vehicle_type }}</div>
+                    <div class="text-100 medium">{{ car.vehicle_type.toUpperCase() }}</div>
                   </div>
                   <div class="data-table-row">
                     <div class="text-100 bold color-neutral-800">Fuel</div>
@@ -169,7 +169,7 @@
                         {{ field.label }}
                       </div>
                       <div class="text-100 medium">
-                        {{ car[field] ? "Damaged" : "Undamaged" }}
+                        {{ field.value ? "Damaged" : "Undamaged" }}
                       </div>
                     </div>
                   </template>
@@ -383,6 +383,7 @@ export default {
         .get(`single-car/?id=${carId}`)
         .then((response) => {
           this.car = response.data.car;
+          this.updateDamageFields();
         })
         .catch((error) => {
           console.error(error);
@@ -410,6 +411,13 @@ export default {
         Array.isArray(this.saved_cars) &&
         this.saved_cars.some((savedCar) => savedCar.id === carId)
       );
+    },
+    updateDamageFields() {
+      if (this.car) {
+        this.damageFields.forEach((field) => {
+          field.value = this.car[field.id];
+        });
+      }
     },
   },
 };
