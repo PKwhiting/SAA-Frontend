@@ -19,20 +19,6 @@
             id="w-node-_269d1d2d-2cb2-3200-d275-6492145f0d89-145f0d88"
             class="text-100 bold color-neutral-800"
           >
-            Sale Name
-          </div>
-          <div
-            id="w-node-_269d1d2d-2cb2-3200-d275-6492145f0d8b-145f0d88"
-            class="text-100 medium"
-          >
-            SAA NATIONAL AUCTION
-          </div>
-        </div>
-        <div class="data-table-row">
-          <div
-            id="w-node-_269d1d2d-2cb2-3200-d275-6492145f0d89-145f0d88"
-            class="text-100 bold color-neutral-800"
-          >
             Sale Location
           </div>
           <div
@@ -78,7 +64,6 @@
 <script>
 export default {
   props: {
-    sale_name: String,
     vehicle_location: String,
     sale_date: String,
     last_updated: String,

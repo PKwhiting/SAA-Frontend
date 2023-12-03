@@ -72,9 +72,21 @@
                 <div class="rows">
                   <div class="data-table-row">
                     <div class="text-100 bold color-neutral-800">
+                      Auction
+                    </div>
+                    <div class="text-100 medium">{{ car.auction }}</div>
+                  </div>
+                  <div class="data-table-row">
+                    <div class="text-100 bold color-neutral-800">
                       Lot Number
                     </div>
                     <div class="text-100 medium">{{ car.id }}</div>
+                  </div>
+                  <div class="data-table-row" v-if="car.reserve_price > 0">
+                    <div class="text-100 bold color-neutral-800">
+                      Reserve Price
+                    </div>
+                    <div class="text-100 medium">${{ car.reserve_price }}</div>
                   </div>
                   <div class="data-table-row">
                     <div class="text-100 bold color-neutral-800">VIN</div>
@@ -90,7 +102,9 @@
                   </div>
                   <div class="data-table-row">
                     <div class="text-100 bold color-neutral-800">Odometer</div>
-                    <div class="text-100 medium">{{ car.mileage }}</div>
+                    <div class="text-100 medium">
+                      {{ car.mileage.toLocaleString() }}
+                    </div>
                   </div>
                   <div class="data-table-row">
                     <div class="text-100 bold color-neutral-800">
@@ -126,7 +140,9 @@
                     <div class="text-100 bold color-neutral-800">
                       Vehicle Type
                     </div>
-                    <div class="text-100 medium">{{ car.vehicle_type.toUpperCase() }}</div>
+                    <div class="text-100 medium">
+                      {{ car.vehicle_type.toUpperCase() }}
+                    </div>
                   </div>
                   <div class="data-table-row">
                     <div class="text-100 bold color-neutral-800">Fuel</div>
@@ -383,7 +399,7 @@ export default {
         .get(`single-car/?id=${carId}`)
         .then((response) => {
           this.car = response.data.car;
-          this.updateDamageFields();
+                    this.updateDamageFields();
         })
         .catch((error) => {
           console.error(error);
