@@ -175,7 +175,6 @@
             @click="applyFilters"
             class="btn-primary w-inline-block"
             style="min-width: 100%;"
-            :class="{ disabled: selectedFilter == null }"
             ><div class="flex-horizontal gap-column-4px">
               <div>Apply Filters</div>
             </div></a
@@ -450,10 +449,8 @@ export default {
   },
   methods: {
     applyFilters() {
-      if (this.selectedFilter !== null) {
-        this.showModal = false;
-        this.$emit("applyFilters", this.filters);
-      }
+      this.showModal = false;
+      this.$emit("applyFilters", this.filters);
     },
     saveFilter(data) {
       if (this.selectedFilter === null) {
