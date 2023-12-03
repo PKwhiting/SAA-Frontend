@@ -316,7 +316,6 @@
                 <option v-for="drive in drives" :key="drive" :value="drive">
                   {{ drive }}
                 </option>
-                <option value="4 wheel drive">4 wheel drive</option>
               </select>
             </div>
             <div v-if="!drive && submitted" class="error-message small">
@@ -895,7 +894,7 @@ export default {
         "NATURAL GAS",
       ],
       transmissions: ["AUTOMATIC", "MANUAL", "CVT"],
-      drives: ["Two-Wheel Drive", "All-Wheel Drive", "Four-Wheel Drive"],
+      drives: ["Rear-Wheel Drive", "Front-Wheel Drive", "All-Wheel Drive", "Four-Wheel Drive"],
       images: [],
       damageFields: [
         {
