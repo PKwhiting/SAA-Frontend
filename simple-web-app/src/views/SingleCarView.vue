@@ -55,6 +55,7 @@
               :saleDate="new Date(car.sale_date)"
             ></bid-card>
             <sale-info
+              :auction="car.auction"
               :sale_date="car.sale_date"
               :last_updated="car.last_updated"
               :vehicle_location="car.state.state_name"
@@ -70,12 +71,6 @@
                   <div class="text-50 bold color-neutral-700"></div>
                 </div>
                 <div class="rows">
-                  <div class="data-table-row">
-                    <div class="text-100 bold color-neutral-800">
-                      Auction
-                    </div>
-                    <div class="text-100 medium">{{ car.auction }}</div>
-                  </div>
                   <div class="data-table-row">
                     <div class="text-100 bold color-neutral-800">
                       Lot Number

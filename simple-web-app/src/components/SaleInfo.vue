@@ -19,6 +19,20 @@
             id="w-node-_269d1d2d-2cb2-3200-d275-6492145f0d89-145f0d88"
             class="text-100 bold color-neutral-800"
           >
+            Auction
+          </div>
+          <div
+            id="w-node-_269d1d2d-2cb2-3200-d275-6492145f0d8b-145f0d88"
+            class="text-100 medium"
+          >
+            {{ auction }}
+          </div>
+        </div>
+        <div class="data-table-row">
+          <div
+            id="w-node-_269d1d2d-2cb2-3200-d275-6492145f0d89-145f0d88"
+            class="text-100 bold color-neutral-800"
+          >
             Sale Location
           </div>
           <div
@@ -64,6 +78,7 @@
 <script>
 export default {
   props: {
+    auction: String,
     vehicle_location: String,
     sale_date: String,
     last_updated: String,
@@ -72,15 +87,15 @@ export default {
     formatDate(dateString) {
       const date = new Date(dateString);
       const options = {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        timeZoneName: 'short',
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        timeZoneName: "short",
       };
-      return date.toLocaleDateString('en-US', options);
+      return date.toLocaleDateString("en-US", options);
     },
   },
 };
