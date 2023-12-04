@@ -93,7 +93,10 @@
                       style="flex-basis: 100%; margin-top: 5px"
                       class="hide-desktop hide-mobile"
                     >
-                      <a v-bind:href="car.vehicle_auction_link" target="_blank" v-if="car.auction !== 'SAA'"
+                      <a
+                        v-bind:href="car.vehicle_auction_link"
+                        target="_blank"
+                        v-if="car.auction !== 'SAA'"
                         ><div class="primary-badge">
                           Go to {{ car.auction }}
                         </div></a
@@ -208,6 +211,47 @@ export default {
         titleStatus: "",
         odometerBrand: "",
         damageFields: {
+          Safety: [
+            {
+              id: "airbags_deployed",
+              name: "airbags_deployed",
+              label: "Undeployed Airbags",
+              value: false,
+            },
+          ],
+          Front: [
+            {
+              id: "front_bumper_damage",
+              name: "front_bumper_damage",
+              label: "Front Bumper",
+              value: false,
+            },
+            {
+              id: "radiator_support_damage",
+              name: "radiator_support_damage",
+              label: "Radiator Support",
+              value: false,
+            },
+            {
+              id: "grille_damage",
+              name: "grille_damage",
+              label: "Grille",
+              value: false,
+            },
+            {
+              id: "driver_headlight_damage",
+              name: "driver_headlight_damage",
+              label: "Driver Headlight",
+              value: false,
+            },
+            {
+              id: "passenger_headlight_damage",
+              name: "passenger_headlight_damage",
+              label: "Passenger Headlight",
+              value: false,
+            },
+            // ... additional front panel damages if needed
+          ],
           Doors: [
             {
               id: "driver_door_damage",
@@ -298,8 +342,8 @@ export default {
               value: false,
             },
             {
-              id: "trunk_damage",
-              name: "trunk_damage",
+              id: "deck_lid_damage",
+              name: "deck_lid_damage",
               label: "Trunk",
               value: false,
             },
@@ -327,6 +371,7 @@ export default {
               label: "Truck Bed",
               value: false,
             },
+            // ... additional panel damages if needed
           ],
           Glass: [
             {
@@ -366,6 +411,29 @@ export default {
               value: false,
             },
           ],
+          Rear: [
+            {
+              id: "tailgate_damage",
+              name: "tailgate_damage",
+              label: "Tailgate",
+              value: false,
+            },
+            {
+              id: "hatch_damage",
+              name: "hatch_damage",
+              label: "Hatch",
+              value: false,
+            },
+          ],
+          General: [
+            {
+              id: "all_over_damage",
+              name: "all_over_damage",
+              label: "All Over Damage",
+              value: false,
+            },
+          ],
+          // ... any additional categories or fields if needed
         },
       },
       savedFilters: [],
@@ -374,6 +442,47 @@ export default {
       totalPages: 0,
       showFiltersModal: false,
       damageFields: {
+        Safety: [
+          {
+            id: "airbags_deployed",
+            name: "airbags_deployed",
+            label: "Undeployed Airbags",
+            value: false,
+          },
+        ],
+        Front: [
+          {
+            id: "front_bumper_damage",
+            name: "front_bumper_damage",
+            label: "Front Bumper",
+            value: false,
+          },
+          {
+            id: "radiator_support_damage",
+            name: "radiator_support_damage",
+            label: "Radiator Support",
+            value: false,
+          },
+          {
+            id: "grille_damage",
+            name: "grille_damage",
+            label: "Grille",
+            value: false,
+          },
+          {
+            id: "driver_headlight_damage",
+            name: "driver_headlight_damage",
+            label: "Driver Headlight",
+            value: false,
+          },
+          {
+            id: "passenger_headlight_damage",
+            name: "passenger_headlight_damage",
+            label: "Passenger Headlight",
+            value: false,
+          },
+          // ... additional front panel damages if needed
+        ],
         Doors: [
           {
             id: "driver_door_damage",
@@ -464,8 +573,8 @@ export default {
             value: false,
           },
           {
-            id: "trunk_damage",
-            name: "trunk_damage",
+            id: "deck_lid_damage",
+            name: "deck_lid_damage",
             label: "Trunk",
             value: false,
           },
@@ -493,6 +602,7 @@ export default {
             label: "Truck Bed",
             value: false,
           },
+          // ... additional panel damages if needed
         ],
         Glass: [
           {
@@ -532,6 +642,29 @@ export default {
             value: false,
           },
         ],
+        Rear: [
+          {
+            id: "tailgate_damage",
+            name: "tailgate_damage",
+            label: "Tailgate",
+            value: false,
+          },
+          {
+            id: "hatch_damage",
+            name: "hatch_damage",
+            label: "Hatch",
+            value: false,
+          },
+        ],
+        General: [
+          {
+            id: "all_over_damage",
+            name: "all_over_damage",
+            label: "All Over Damage",
+            value: false,
+          },
+        ],
+        // ... any additional categories or fields if needed
       },
       vehicleStarts: false,
       filterName: "",
@@ -642,7 +775,7 @@ export default {
       this.filters.model = filters.model;
       this.filters.year.start = filters.year.start;
       this.filters.year.end = filters.year.end;
-      this.vehicleStarts = filters.vehicleStarts; 
+      this.vehicleStarts = filters.vehicleStarts;
       this.filters.titleStatus = filters.titleStatus;
       this.filters.odometerBrand = filters.odometerBrand;
       this.damageFields = filters.damageFields;
@@ -977,7 +1110,7 @@ img {
   width: 100%;
 }
 div[data-v-01c254d6] .input.w-input {
-    padding: 0px !important;
+  padding: 0px !important;
 }
 
 /* Grid layout for checkboxes */
