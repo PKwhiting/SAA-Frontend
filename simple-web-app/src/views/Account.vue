@@ -414,7 +414,12 @@ input {
 }
 .error-message {
   color: red;
-  margin-top: 5px;
+  margin-top: 2px;
+  display: flex;
+  height: 10px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 @media (max-width: 767px) {
