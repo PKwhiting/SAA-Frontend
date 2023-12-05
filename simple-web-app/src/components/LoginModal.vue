@@ -172,7 +172,7 @@
                         </div>
                       </div>
                     </div> -->
-                    <div style="margin-top: 24px; margin-bottom: 40px; text-align: left">
+                    <!-- <div style="margin-top: 24px; margin-bottom: 40px; text-align: left">
                       Drivers License
                       <input
                         type="file"
@@ -201,7 +201,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -303,7 +303,7 @@ export default {
         this.errorMessage = "Please fill out all fields.";
         return;
       }
-      else if (!this.isLogin && (!this.username || !this.password || !this.firstName || !this.lastName || !this.email || !this.phoneNumber)) {
+      else if (!this.isLogin && (!this.username || !this.password || !this.firstName || !this.lastName || !this.email)) {
         this.errorMessage = "Please fill out all fields.";
         return;
       }
@@ -317,7 +317,6 @@ export default {
         formData.append("firstName", this.firstName);
         formData.append("lastName", this.lastName);
         formData.append("email", this.email);
-        formData.append("phoneNumber", this.phoneNumber);
         formData.append("isLogin", this.isLogin);
 
         const response = await api.post(
