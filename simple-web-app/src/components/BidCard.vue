@@ -18,7 +18,7 @@
         style="background: #ff5733; border-color: #ff5733"
         ><div class="flex-horizontal gap-column-4px">-</div></a
       >
-      <div style="max-width: 70%">
+      <div style="max-width: 70%" v-if="this.auctionType === 'SAA'">
         <input
           type="number"
           class="input w-input"

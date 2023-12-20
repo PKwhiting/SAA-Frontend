@@ -120,6 +120,15 @@
                 </a>
                 <a
                   data-w-id="5228fae3-1046-92bf-afc3-a85185c5a451"
+                  href="/contact-us"
+                  class="btn-secondary w-inline-block"
+                >
+                  <div class="flex-horizontal gap-column-4px">
+                    <div>Contact Us</div>
+                  </div>
+                </a>
+                <a
+                  data-w-id="5228fae3-1046-92bf-afc3-a85185c5a451"
                   href="#"
                   class="btn-secondary w-inline-block"
                   @click="login()"
@@ -142,6 +151,15 @@
                 >
                   <div class="flex-horizontal gap-column-4px">
                     <div>About Us</div>
+                  </div>
+                </a>
+                <a
+                  data-w-id="5228fae3-1046-92bf-afc3-a85185c5a451"
+                  href="/contact-us"
+                  class="btn-secondary w-inline-block"
+                >
+                  <div class="flex-horizontal gap-column-4px">
+                    <div>Contact Us</div>
                   </div>
                 </a>
                 <a

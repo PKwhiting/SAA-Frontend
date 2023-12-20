@@ -8,6 +8,7 @@ import SoldVehicles from '@/views/SoldVehicles.vue'
 import AddVehicle from '@/views/AddVehicle.vue'
 import SavedVehicles from '@/views/SavedVehicles.vue'
 import Account from '@/views/Account.vue'
+import ContactUs from '@/views/ContactUs.vue'
 import store from '@/store'
 
 const requireAuth = (to, from, next) => {
@@ -40,6 +41,11 @@ const routes = [
     path: '/about-us',
     component: AboutUs,
     name: 'about-us',
+  },
+  {
+    path: '/contact-us',
+    component: ContactUs,
+    name: 'contact-us',
   },
   {
     path: '/sold',
